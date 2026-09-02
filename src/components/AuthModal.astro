@@ -1,0 +1,320 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<dialog id="auth-modal" class="bg-transparent m-auto backdrop:bg-slate-950/80 backdrop:backdrop-blur-sm open:flex flex-col w-full max-w-md p-0 rounded-2xl shadow-2xl border border-slate-800/80 opacity-0 transition-opacity duration-300 [&[open]]:opacity-100">
+  <div class="bg-slate-900 w-full p-8 rounded-2xl flex flex-col items-center text-center">
+    
+    <div class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center mb-6 shadow-inner">
+      <i data-lucide="fingerprint" class="w-7 h-7 text-sky-400"></i>
+    </div>
+    
+    <h2 class="text-xl font-bold text-slate-100 mb-2">{t('auth.title')}</h2>
+    <p class="text-sm text-slate-400 mb-4">{t('auth.subtitle')}</p>
+
+    <!-- Dynamic Status Message -->
+    <p id="auth-status" class="text-sm font-medium mb-4 hidden px-4 py-2 rounded-lg w-full"></p>
+
+    <div class="w-full space-y-4">
+      <!-- Active Passkey Button -->
+      <button id="passkey-btn" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold px-4 py-3.5 rounded-xl transition shadow-lg shadow-sky-500/20 flex items-center justify-center gap-3">
+        <i id="passkey-icon" data-lucide="scan-face" class="w-5 h-5"></i>
+        <span id="passkey-text">{t('auth.passkeyLogin')}</span>
+        <i data-lucide="loader-2" class="w-5 h-5 animate-spin hidden" id="passkey-loader"></i>
+      </button>
+
+      <!-- Toggle Mode Text -->
+      <div class="text-xs text-slate-400">
+        <span id="toggle-prefix">{t('auth.noAccount')}</span> 
+        <button id="auth-toggle-btn" class="text-sky-400 hover:text-sky-300 font-medium transition ml-1">
+          {t('auth.signUpToggle')}
+        </button>
+      </div>
+
+      <div class="relative py-2 flex items-center">
+        <div class="flex-grow border-t border-slate-800"></div>
+        <span class="shrink-0 text-xs text-slate-500 px-3">{t('auth.comingSoon')}</span>
+        <div class="flex-grow border-t border-slate-800"></div>
+      </div>
+
+      <!-- Disabled OAuth Buttons -->
+      <button disabled class="w-full bg-slate-800/50 text-slate-500 border border-slate-800 px-4 py-3 rounded-xl flex items-center justify-center gap-3 cursor-not-allowed">
+        <i data-lucide="chrome" class="w-4 h-4"></i>
+        {t('auth.google')}
+      </button>
+      <button disabled class="w-full bg-slate-800/50 text-slate-500 border border-slate-800 px-4 py-3 rounded-xl flex items-center justify-center gap-3 cursor-not-allowed">
+        <i data-lucide="github" class="w-4 h-4"></i>
+        {t('auth.github')}
+      </button>
+    </div>
+
+    <!-- Close Button -->
+    <button id="close-modal" class="mt-6 text-sm text-slate-400 hover:text-slate-200 transition">
+      {t('auth.cancel')}
+    </button>
+  </div>
+</dialog>
+
+<script is:inline define:vars={{ 
+  lang, 
+  txtLogin: t('auth.passkeyLogin'), 
+  txtSignup: t('auth.passkeySignup'),
+  txtNoAccount: t('auth.noAccount'),
+  txtHasAccount: t('auth.hasAccount'),
+  txtToggleSignUp: t('auth.signUpToggle'),
+  txtToggleSignIn: t('auth.signInToggle'),
+  txtSessionExpired: t('auth.sessionExpired')
+}}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const BASE_URL = "http://localhost:8008"; // Update for production
+    
+    // UI Elements
+    const modal = document.getElementById('auth-modal');
+    const loginBtns = document.querySelectorAll('#login-btn');
+    const closeBtn = document.getElementById('close-modal');
+    const passkeyBtn = document.getElementById('passkey-btn');
+    const passkeyText = document.getElementById('passkey-text');
+    const passkeyIcon = document.getElementById('passkey-icon');
+    const passkeyLoader = document.getElementById('passkey-loader');
+    const authToggleBtn = document.getElementById('auth-toggle-btn');
+    const togglePrefix = document.getElementById('toggle-prefix');
+    const statusMsg = document.getElementById('auth-status');
+
+    let currentMode = 'login'; // 'login' or 'signup'
+
+    // --- Token Validation Helper ---
+    const isTokenValid = () => {
+      const token = localStorage.getItem("token");
+      const expiry = localStorage.getItem("token_expiry");
+      if (!token || !expiry) return false;
+      
+      const expiryTime = !isNaN(expiry) ? 
+        (String(expiry).length === 10 ? Number(expiry) * 1000 : Number(expiry)) : 
+        new Date(expiry).getTime();
+        
+      return Date.now() < expiryTime;
+    };
+
+    // --- Header UI Swapper ---
+    const updateHeaderUI = (isLoggedIn) => {
+      const loginBtn = document.getElementById('login-btn');
+      const loggedInActions = document.getElementById('logged-in-actions');
+      
+      if (isLoggedIn) {
+        if (loginBtn) loginBtn.classList.add('hidden');
+        if (loggedInActions) {
+          loggedInActions.classList.remove('hidden');
+          loggedInActions.classList.add('flex'); // Ensure flex layout applies when shown
+        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      } else {
+        if (loginBtn) loginBtn.classList.remove('hidden');
+        if (loggedInActions) {
+          loggedInActions.classList.add('hidden');
+          loggedInActions.classList.remove('flex');
+        }
+      }
+    };
+
+    // --- Logout Logic ---
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("token_expiry");
+        updateHeaderUI(false);
+      });
+    }
+
+    // --- Modal Controls ---
+    const openModal = (msg = null, isError = false) => {
+      modal.showModal();
+      document.body.style.overflow = 'hidden';
+      if (msg) showStatus(msg, isError);
+    };
+
+    const closeModal = () => {
+      modal.close();
+      document.body.style.overflow = '';
+      hideStatus();
+    };
+
+    loginBtns.forEach(btn => btn.addEventListener('click', () => openModal()));
+    
+    closeBtn.addEventListener('click', closeModal);
+    
+    modal.addEventListener('click', (e) => {
+      const rect = modal.getBoundingClientRect();
+      if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
+        closeModal();
+      }
+    });
+
+    // --- UI State Helpers (Login/Signup toggle) ---
+    authToggleBtn.addEventListener('click', () => {
+      currentMode = currentMode === 'login' ? 'signup' : 'login';
+      hideStatus();
+      if (currentMode === 'login') {
+        passkeyText.innerText = txtLogin;
+        togglePrefix.innerText = txtNoAccount;
+        authToggleBtn.innerText = txtToggleSignUp;
+      } else {
+        passkeyText.innerText = txtSignup;
+        togglePrefix.innerText = txtHasAccount;
+        authToggleBtn.innerText = txtToggleSignIn;
+      }
+    });
+
+    const setLoader = (isLoading) => {
+      passkeyBtn.disabled = isLoading;
+      if (isLoading) {
+        passkeyIcon.classList.add('hidden');
+        passkeyLoader.classList.remove('hidden');
+      } else {
+        passkeyIcon.classList.remove('hidden');
+        passkeyLoader.classList.add('hidden');
+      }
+    };
+
+    const showStatus = (msg, isError = false) => {
+      statusMsg.textContent = msg;
+      statusMsg.className = `text-sm font-medium mb-4 px-4 py-2 rounded-lg w-full ${isError ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}`;
+      statusMsg.classList.remove('hidden');
+    };
+
+    const hideStatus = () => statusMsg.classList.add('hidden');
+
+    // --- Base64URL Helpers ---
+    const b64dec = (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+    const b64enc = (b) => btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+
+    // --- WebAuthn Logic ---
+    passkeyBtn.addEventListener('click', async () => {
+      setLoader(true);
+      hideStatus();
+      currentMode === 'login' ? await performLogin() : await performSignup();
+      setLoader(false);
+    });
+
+    async function performSignup() {
+      try {
+        const startRes = await fetch(`${BASE_URL}/api/signup/start`);
+        if (!startRes.ok) throw new Error("Could not reach auth server.");
+        const data = await startRes.json();
+
+        const pk = data.options.publicKey;
+        pk.challenge = b64dec(pk.challenge);
+        pk.user.id = b64dec(pk.user.id);
+        if (pk.excludeCredentials) pk.excludeCredentials.forEach(c => c.id = b64dec(c.id));
+
+        const cred = await navigator.credentials.create({ publicKey: pk });
+
+        const body = {
+          id: cred.id,
+          rawId: b64enc(cred.rawId),
+          type: cred.type,
+          response: {
+            attestationObject: b64enc(cred.response.attestationObject),
+            clientDataJSON: b64enc(cred.response.clientDataJSON),
+          },
+        };
+
+        const finishRes = await fetch(`${BASE_URL}/api/signup/finish?session_token=${data.sessionToken}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        
+        if (!finishRes.ok) throw new Error(await finishRes.text());
+        const res = await finishRes.json();
+        
+        handleSuccess(res.token, res.expiry, "Registration successful!");
+      } catch (err) {
+        console.error(err);
+        showStatus("Registration canceled or failed.", true);
+      }
+    }
+
+    async function performLogin() {
+      try {
+        const startRes = await fetch(`${BASE_URL}/api/login/start`);
+        if (!startRes.ok) throw new Error("Could not reach auth server.");
+        const data = await startRes.json();
+
+        const pk = data.options.publicKey;
+        pk.challenge = b64dec(pk.challenge);
+        if (pk.allowCredentials) pk.allowCredentials.forEach(c => c.id = b64dec(c.id));
+
+        const cred = await navigator.credentials.get({ publicKey: pk });
+
+        const body = {
+          id: cred.id,
+          rawId: b64enc(cred.rawId),
+          type: cred.type,
+          response: {
+            authenticatorData: b64enc(cred.response.authenticatorData),
+            clientDataJSON: b64enc(cred.response.clientDataJSON),
+            signature: b64enc(cred.response.signature),
+            userHandle: cred.response.userHandle ? b64enc(cred.response.userHandle) : null,
+          },
+        };
+
+        const finishRes = await fetch(`${BASE_URL}/api/login/finish?session_token=${data.sessionToken}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        
+        if (!finishRes.ok) throw new Error(await finishRes.text());
+        const res = await finishRes.json();
+        
+        handleSuccess(res.token, res.expiry, "Login successful!");
+      } catch (err) {
+        console.error(err);
+        showStatus("Login canceled or failed.", true);
+      }
+    }
+
+    function handleSuccess(token, expiry, msg) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("token_expiry", expiry);
+      showStatus(msg, false);
+      updateHeaderUI(true);
+      
+      // Redirect to the chat workspace after a short delay
+      setTimeout(() => {
+        window.location.href = `/${lang}/chat`;
+      }, 800);
+    }
+
+    // --- Expiry Check on Load ---
+    function checkSessionExpiry() {
+      if (localStorage.getItem("token")) {
+        if (!isTokenValid()) {
+          // Token is present but expired
+          localStorage.removeItem("token");
+          localStorage.removeItem("token_expiry");
+          updateHeaderUI(false);
+          openModal(txtSessionExpired, true);
+        } else {
+          // Valid token - update header UI immediately
+          updateHeaderUI(true);
+        }
+      }
+    }
+
+    // Run expiry check immediately on load
+    checkSessionExpiry();
+  });
+</script>
+
+<style>
+  dialog::backdrop {
+    background: rgba(2, 6, 23, 0.8);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+</style>
