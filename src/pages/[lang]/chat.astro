@@ -55,6 +55,20 @@ const t = useTranslations(lang);
 			padding-inline-start: 1.5rem;
 			margin-bottom: 0.75rem;
 		}
+		.prose pre {
+			background-color: #0f172a !important;
+			border: 1px solid #334155;
+			border-radius: 0.5rem;
+			padding: 1rem;
+			overflow-x: auto;
+			white-space: pre;
+			word-break: normal;
+			overflow-wrap: normal;
+		}
+		.prose pre code {
+			background: transparent;
+			padding: 0;
+		}
 	</style>
 
 	<div class="flex flex-col h-screen w-full bg-slate-950">
@@ -143,7 +157,7 @@ const t = useTranslations(lang);
 						id="user-input"
 						rows="1"
 						placeholder={t("chat.placeholder")}
-						class="w-full bg-slate-950 border border-slate-800 rounded-xl ps-4 pe-14 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 resize-none shadow-inner transition"
+						class="w-full bg-slate-950 border border-slate-800 rounded-xl ps-4 pe-14 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 resize-none shadow-inner transition overflow-y-auto"
 					></textarea>
 					<button
 						type="submit"
@@ -165,6 +179,7 @@ const t = useTranslations(lang);
 	</div>
 
 	<script is:inline define:vars={{ lang }}>
+		
 		// --- Auth Guard ---
 		const token = localStorage.getItem("token");
 		const expiry = localStorage.getItem("token_expiry");
@@ -184,8 +199,15 @@ const t = useTranslations(lang);
 			window.location.href = `/${lang}/`; // Redirect home if not logged in
 		}
 
+		if (window.marked) {
+			marked.setOptions({
+				gfm: true,           // Enable GitHub Flavored Markdown (needed for fenced code blocks)
+				breaks: false,       // Keep line breaks as <br> disabled (default)
+			});
+		}
+
 		// --- Chat Logic ---
-		const BASE_URL = "http://localhost:8008";
+		const BASE_URL = "https://ln.tejory.io";
 
 		let chatHistory = [];
 		let sessionId = crypto.randomUUID();
@@ -199,7 +221,7 @@ const t = useTranslations(lang);
 			sendBtn.disabled = this.value.trim() === "";
 			this.style.height = "auto";
 			this.style.height =
-				(this.scrollHeight < 120 ? this.scrollHeight : 120) + "px";
+				(this.scrollHeight < 120 ? this.scrollHeight + 2 : 120) + "px";
 		});
 
 		inputField.addEventListener("keydown", function (event) {
@@ -228,6 +250,42 @@ const t = useTranslations(lang);
 			document.getElementById("token-counter").textContent =
 				"Context: Session reset";
 		});
+
+
+		const MATH_UNDERSCORE_PLACEHOLDER = 'MATHUNDERSCOREPLACEHOLDER';
+
+		function protectMathUnderscores(text) {
+			if (!text) return text;
+			let result = text;
+			// Protect display math $$...$$
+			result = result.replace(/\$\$([\s\S]+?)\$\$/g, (match, inner) => {
+				return '$$' + inner.replace(/_/g, MATH_UNDERSCORE_PLACEHOLDER) + '$$';
+			});
+			// Protect inline math $...$ (not preceded by $ or \)
+			result = result.replace(/(^|[^\\$])\$([^$\n]+?)\$/g, (match, prefix, inner) => {
+				return prefix + '$' + inner.replace(/_/g, MATH_UNDERSCORE_PLACEHOLDER) + '$';
+			});
+			return result;
+		}
+
+		function applyAutoDirection(container) {
+			// Add dir="auto" to common block elements that contain text
+			container.querySelectorAll('p, li, blockquote, h1, h2, h3, h4, h5, h6, td, th').forEach((el) => {
+				el.setAttribute('dir', 'auto');
+			});
+		}
+
+		function restoreMathUnderscores(html) {
+			return html.split(MATH_UNDERSCORE_PLACEHOLDER).join('_');
+		}
+
+		function applyHighlighting(container) {
+			if (window.hljs) {
+				container.querySelectorAll('pre code').forEach((block) => {
+					hljs.highlightElement(block);
+				});
+			}
+		}
 
 		// Helper function to unescape HTML entities and Unicode escapes
 		function unescapeHtmlEntities(str) {
@@ -276,7 +334,7 @@ const t = useTranslations(lang);
 			let rawBuffer = ""; // Buffer to handle partial tags
 
 			try {
-				const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+				const response = await fetch(`${BASE_URL}/api/v1/chat/completions`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -340,29 +398,16 @@ const t = useTranslations(lang);
 							// Determine the event type
 							let eventType = parsed.type || null;
 
-							// If no type, try to infer from the data
 							if (!eventType) {
-								if (parsed.metrics) {
-									eventType = "metrics";
-								} else if (parsed.content !== undefined) {
-									if (
-										!hasReceivedContent &&
-										!hasThinking &&
-										parsed.content.trim()
-									) {
-										eventType = "thinking";
+									if (parsed.metrics) {
+											eventType = "metrics";
+									} else if (parsed.error) {
+											eventType = "error";
+									} else if (parsed.content !== undefined) {
+											eventType = "content";
 									} else {
-										eventType = "content";
+											continue;
 									}
-								} else if (parsed.error) {
-									eventType = "error";
-								} else {
-									if (parsed.content !== undefined) {
-										eventType = "content";
-									} else {
-										continue;
-									}
-								}
 							}
 
 							switch (eventType) {
@@ -464,9 +509,10 @@ const t = useTranslations(lang);
 										// Update the display
 										const cleanText = displayContent.split("<suggestions>")[0];
 										if (cleanText) {
-											assistantMsgDiv.innerHTML = DOMPurify.sanitize(
-												marked.parse(cleanText),
-											);
+											const protectedStreamText = protectMathUnderscores(cleanText);
+											const streamHtml = marked.parse(protectedStreamText);
+											const streamSanitized = DOMPurify.sanitize(streamHtml);
+											assistantMsgDiv.innerHTML = restoreMathUnderscores(streamSanitized);
 										}
 										scrollToBottom();
 									}
@@ -529,9 +575,17 @@ const t = useTranslations(lang);
 							: "");
 
 					if (fullContent.trim()) {
-						chatHistory.push({ role: "assistant", content: fullContent });
+						chatHistory.push({
+							role: "assistant",
+							content: fullContent,
+						});
 						assistantMsgDiv.innerHTML = "";
 						renderAssistantMessage(assistantMsgDiv, fullContent, text);
+						if (window.MathJax && window.MathJax.typesetPromise) {
+							MathJax.typesetPromise([assistantMsgDiv]).catch((err) =>
+								console.warn("MathJax error:", err),
+							);
+						}
 					}
 				} else if (!hasReceivedContent) {
 					assistantMsgDiv.innerHTML = `<span class="text-amber-400 text-xs flex items-center gap-1.5">
@@ -570,14 +624,15 @@ const t = useTranslations(lang);
 			} else {
 				bubble.className =
 					"max-w-[85%] sm:max-w-[80%] rounded-2xl px-5 py-4 bg-slate-900 border border-slate-800 text-slate-200 text-sm shadow-xl leading-relaxed prose prose-invert";
-				bubble.innerHTML =
-					text === ""
-						? `<div class="flex items-center gap-2 text-slate-400 py-1">
-          <div class="w-2 h-2 rounded-full bg-sky-400 animate-bounce"></div>
-          <div class="w-2 h-2 rounded-full bg-sky-400 animate-bounce [animation-delay:0.2s]"></div>
-          <div class="w-2 h-2 rounded-full bg-sky-400 animate-bounce [animation-delay:0.4s]"></div>
-        </div>`
-						: DOMPurify.sanitize(marked.parse(text));
+				const protectedText = protectMathUnderscores(text);
+				const parsedHtml = marked.parse(protectedText);
+				const sanitizedHtml = DOMPurify.sanitize(parsedHtml);
+				bubble.innerHTML = restoreMathUnderscores(sanitizedHtml);
+				applyAutoDirection(bubble);
+				applyHighlighting(bubble);
+				if (window.MathJax && window.MathJax.typesetPromise) {
+					MathJax.typesetPromise([bubble]).catch(() => {});
+				}
 			}
 
 			wrapper.appendChild(bubble);
@@ -662,7 +717,7 @@ const t = useTranslations(lang);
 					console.log("✅ Parsed suggestions:", suggestions);
 				} catch (e) {
 					console.warn("⚠️ Failed to parse suggestions:", e);
-					console.warn("Raw suggestions JSON:", rawJson);
+					// console.warn("Raw suggestions JSON:", rawJson);
 					suggestions = [];
 				}
 			}
@@ -681,7 +736,16 @@ const t = useTranslations(lang);
 			);
 
 			// Clear the bubble and render the visible text
-			bubbleContainer.innerHTML = DOMPurify.sanitize(marked.parse(visibleText));
+			console.log('Visible text to parse:', JSON.stringify(visibleText));
+			const protectedText = protectMathUnderscores(visibleText);
+			const parsedHtml = marked.parse(protectedText);
+			const sanitizedHtml = DOMPurify.sanitize(parsedHtml);
+			bubbleContainer.innerHTML = restoreMathUnderscores(sanitizedHtml);
+			applyAutoDirection(bubbleContainer);
+			applyHighlighting(bubbleContainer);
+			if (window.MathJax && window.MathJax.typesetPromise) {
+				MathJax.typesetPromise([bubbleContainer]).catch(() => {});
+			}
 
 			console.log("Rendering suggestions:", suggestions);
 

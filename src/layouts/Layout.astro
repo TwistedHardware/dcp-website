@@ -22,7 +22,19 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		
+		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+		<!-- MathJax configuration -->
+		<script is:inline>
+			window.MathJax = {
+				tex: {
+					inlineMath: [['$', '$'], ['\\(', '\\)']],
+					displayMath: [['$$', '$$'], ['\\[', '\\]']]
+				}
+			};
+		</script>
+		<script is:inline src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 		<!-- Lucide Icons -->
 		<script src="https://unpkg.com/lucide@latest"></script>
 		
@@ -43,6 +55,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
 			::-webkit-scrollbar-track { background: transparent; }
 			::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
 			::-webkit-scrollbar-thumb:hover { background: #475569; }
+
 		</style>
 	</head>
 	<body class="h-full bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-sky-500 selection:text-white">
