@@ -231,7 +231,7 @@ const t = useTranslations(lang);
         if (!finishRes.ok) throw new Error(await finishRes.text());
         const res = await finishRes.json();
         
-        handleSuccess(res.token, res.expiry, "Registration successful!");
+        handleSuccess(res.token, res.expiry, res.publicKey, "Registration successful!");
       } catch (err) {
         console.error(err);
         showStatus("Registration canceled or failed.", true);
@@ -271,16 +271,17 @@ const t = useTranslations(lang);
         if (!finishRes.ok) throw new Error(await finishRes.text());
         const res = await finishRes.json();
         
-        handleSuccess(res.token, res.expiry, "Login successful!");
+        handleSuccess(res.token, res.expiry, res.publicKey, "Login successful!");
       } catch (err) {
         console.error(err);
         showStatus("Login canceled or failed.", true);
       }
     }
 
-    function handleSuccess(token, expiry, msg) {
+    function handleSuccess(token, expiry, publicKey, msg) {
       localStorage.setItem("token", token);
       localStorage.setItem("token_expiry", expiry);
+      localStorage.setItem("public_key", publicKey);
       showStatus(msg, false);
       updateHeaderUI(true);
       

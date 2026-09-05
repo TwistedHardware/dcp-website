@@ -206,6 +206,7 @@ const t = useTranslations(lang);
 		// --- Auth Guard ---
 		const token = localStorage.getItem("token");
 		const expiry = localStorage.getItem("token_expiry");
+		const publicKey = localStorage.getItem("public_key");
 
 		// Check expiry logic
 		const isExpired = () => {
@@ -373,6 +374,7 @@ const t = useTranslations(lang);
 					headers: {
 						"Content-Type": "application/json",
 						Authorization: `Bearer ${token}`,
+						"x-publickey-hex": publicKey,
 					},
 					body: JSON.stringify({
 						sessionId: sessionId,
