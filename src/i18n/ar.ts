@@ -1,77 +1,83 @@
 export const ar = {
-	nav: {
-		login: "تسجيل الدخول",
-		workspace: "مساحة العمل",
-		logout: "تسجيل الخروج",
-	},
-	hero: {
-		badge: "استضافة البيانات محلياً في السعودية",
-		title: "ذكاء اصطناعي للمؤسسات، بأمان تام.",
-		subtitle: "منصة ذكاء اصطناعي مُدارة بصفرية المعرفة (Zero-knowledge). تواصل مع نماذج Pro و Fast عبر مساحة محادثة مشفرة أو عبر واجهة برمجة التطبيقات (API) — برصيد استخدام مشترك.",
-		ctaPrimary: "فتح مساحة العمل",
-		ctaSecondary: "توثيق الواجهة",
-	},
-	features: {
-		privacyTitle: "تخزين بصفرية المعرفة",
-		privacyDesc: "سجلات المحادثة مشفرة بمفاتيح العميل. لا يمكننا الوصول إلى بياناتك بأي شكل.",
-		residencyTitle: "بنية تحتية محلية",
-		residencyDesc: "خوادم وتخزين بيانات داخل المملكة العربية السعودية بنسبة ١٠٠٪ لضمان الامتثال.",
-		unifiedTitle: "رصيد موحد",
-		unifiedDesc: "اشتراك واحد يغطي استخدام مساحة العمل وطلبات الواجهة البرمجية (API)."
-	},
-	pricing: {
-		title: "أسعار بسيطة وواضحة",
-		monthly: "ريال/شهر",
-		standard: {
-			name: "الأساسي",
-			price: "٣٠",
-			features: ["الوصول لنموذج Fast", "حدود قياسية للواجهة البرمجية", "رصيد شهري أساسي", "دعم مجتمعي"]
-		},
-		pro: {
-			name: "الاحترافي",
-			price: "٧٥",
-			badge: "الأكثر شيوعاً",
-			features: ["الوصول لنموذجي Pro و Fast", "مضاعفة رصيد الاستخدام ٥ مرات", "أولوية في الواجهة البرمجية", "دعم عبر البريد الإلكتروني"]
-		},
-		max: {
-			name: "الأقصى",
-			price: "٥٠٠",
-			features: ["مساحة محادثة غير محدودة", "أعلى معدل نقل للواجهة البرمجية", "حاوية بيانات مشفرة ومخصصة", "دعم على مدار الساعة"]
-		},
-		cta: "اختر الباقة"
-	},
-	auth: {
-		title: "مرحباً بك في سحابة DCP",
-		subtitle: "قم بتسجيل الدخول للوصول لمساحة العمل الآمنة الخاصة بك",
-		passkey: "المتابعة باستخدام مفتاح المرور (Passkey)",
-		comingSoon: "قريباً",
-		google: "جوجل",
-		github: "جيت هاب",
-		nafath: "نفاذ (Nafath)",
-		cancel: "إلغاء",
-		passkeyLogin: "تسجيل الدخول باستخدام مفتاح المرور",
-		passkeySignup: "إنشاء حساب بمفتاح المرور",
-		noAccount: "ليس لديك حساب؟",
-		hasAccount: "لديك حساب بالفعل؟",
-		signUpToggle: "إنشاء مفتاح مرور",
-		signInToggle: "تسجيل الدخول بدلاً من ذلك",
-		sessionExpired: "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
-	},
-	footer: {
-		rights: "© 2024 سحابة DCP. جميع الحقوق محفوظة.",
-		privacy: "سياسة الخصوصية",
-		terms: "شروط الخدمة"
-	},
-	chat: {
-		headerTitle: "DCP Enterprise AI - Workspace",
-		modelInfo: "Model: meta-llama/Llama-3.2-1B-Instruct",
-		cacheStatus: "LMCache Tier-2/3 Connected",
-		welcomeTitle: "Ready for Enterprise Workloads",
-		welcomeDesc: "Streaming responses live via local cache architecture. Type a prompt below to begin.",
-		placeholder: "Message DCP AI...",
-		tokenContext: "Context: 1 system turn active",
-		shiftEnter: "Shift + Enter for new line",
-		reset: "Reset Session",
-		backHome: "Back to Home"
-	}
+  // Hero
+  'hero.badge': 'بنية تحتية مشفرة بالكامل (Zero-Knowledge)',
+  'hero.title_start': 'ذكاء اصطناعي للمؤسسات،',
+  'hero.title_highlight': 'بدون أي تنازلات.',
+  'hero.subtitle': 'بنية تحتية آمنة ومحلية لمحادثات الذكاء الاصطناعي وواجهات برمجة التطبيقات (API). مدعومة بتشفير ECIES من جهة العميل وخوادم مدارة.',
+  'hero.cta_primary': 'ابدأ مساحة العمل',
+  'hero.cta_secondary': 'اقرأ المستندات',
+  
+  // Capabilities
+  'cap.section_title': 'ذكاء مخصص حسب المهمة',
+  'cap.section_subtitle': 'توجيه ذكي ومخفي يضمن حصولك على نموذج التفكير المناسب بالسعر المناسب وفي لحظات.',
+  'cap.fast.title': 'سريع (Fast)',
+  'cap.fast.desc': 'مُحسّن للمهام السريعة، الصياغة، والتلخيص الفوري. استخدام غير محدود لضمان سير عمل سلس.',
+  'cap.fast.badge': '0.2x استهلاك الرموز',
+  'cap.pro.title': 'احترافي (Pro)',
+  'cap.pro.desc': 'قدرات تفكير عالية الدقة واتباع للتعليمات المعقدة لأعباء عمل المؤسسات الضخمة.',
+  'cap.pro.badge': '1.0x استهلاك الرموز',
+  'cap.deep.title': 'بحث عميق (Deep Research)',
+  'cap.deep.desc': 'تفكير مستقل متعدد الخطوات مع حلقات تحليل مدمجة (Prolog) للمهام التحليلية العميقة.',
+  'cap.deep.badge': '1.2x استهلاك الرموز',
+
+  // Security Architecture
+  'sec.eyebrow': 'بنية خالية من الثقة المسبقة (Zero-Trust)',
+  'sec.title': 'خصوصية مشفرة يمكنك التحقق منها',
+  'sec.subtitle': 'قمنا بهندسة البنية التحتية بحيث لا تستطيع منصتنا أو مزود السحابة الاطلاع على سياق محادثاتك أو بياناتك.',
+  'sec.passkey.title': 'جلسات مشتقة من مفتاح المرور (Passkey)',
+  'sec.passkey.desc': 'تُنشئ كل جلسة محادثة مفتاح تشفير AES خاصاً بها، مرتبطاً مباشرة بجهاز المصادقة المادي الخاص بك عبر WebAuthn.',
+  'sec.envelope.title': 'تغليف تشفيري عبر ECIES',
+  'sec.envelope.desc': 'تُرسل المفاتيح داخل غلاف ECIES مشفر يُفك في الذاكرة الحية فقط، مما يمنع تسجيل المفاتيح الصريحة في سجلات الخوادم السحابية.',
+  'sec.zk.title': 'تخزين سياق خالي من المعرفة (ZK)',
+  'sec.zk.desc': 'تُخزن سجلات المحادثات مشفرة دائماً. نحن ندير قواعد البيانات، لكنك وحدك تملك مفاتيح فك التشفير المرتبطة بجلسة العميل.',
+  'sec.tee.title': 'تشفير شامل حتى شريحة المعالجة (GPU TEE)',
+  'sec.tee.desc': 'تشفير كامل من البداية إلى النهاية يمتد من متصفحك مباشرة إلى بيئات التنفيذ الموثوقة والمعزولة في معالجات الرسومات.',
+  'sec.tee.tag': 'قريباً',
+
+  // Pricing
+  'price.title': 'تسعير شفاف يعتمد على القدرات',
+  'price.subtitle': 'اختر اشتراك مساحة العمل لفريقك، أو ادفع حسب الاستخدام لربط واجهة برمجة التطبيقات (API).',
+  'price.workspace_title': 'اشتراكات مساحة العمل',
+  'price.standard.desc': 'مثالي للمهام اليومية وأعباء العمل القياسية.',
+  'price.month': 'شهر',
+  'price.feat.fast_unlimited': 'استخدام غير محدود للنموذج السريع (Fast)',
+  'price.feat.pro_standard': 'النموذج الاحترافي (حصة قياسية كل 4 ساعات)',
+  'price.feat.degrade': 'انتقال سلس للنموذج السريع عند انتهاء الحصة',
+  'price.recommended': 'موصى به',
+  'price.enterprise.desc': 'للتحليلات الثقيلة والأبحاث وعلوم البيانات.',
+  'price.feat.pro_high': 'النموذج الاحترافي (حصة عالية كل 4 ساعات)',
+  'price.feat.deep_research': 'الوصول لنموذج البحث العميق (Deep Research)',
+  'price.feat.jupyter': 'يشمل خوادم Jupyter المدارة',
+  'price.api_title': 'الدفع حسب الاستخدام (API)',
+  'price.api_desc': 'يُحسب الاستخدام بناءً على الرموز (Tokens). وتُحسب التكلفة ديناميكياً بناءً على وزن قدرة النموذج المختار.',
+  'price.weight': 'مُضاعِف (Multiplier)',
+  'price.sar': '⃁',
+
+  // App Teaser
+  'app.title': 'الذكاء الاصطناعي المشفر في أي مكان',
+  'app.subtitle': 'ستوفر تطبيقاتنا المحمولة الأصلية تشفيراً كاملاً ومزامنة سلسة لمساحة العمل أينما كنت.',
+  'app.download': 'حمّل من',
+  'app.coming_soon': 'قريباً',
+
+  // Auth Modal
+  'auth.title_login': 'مرحباً بعودتك',
+  'auth.subtitle_login': 'سجل الدخول بأمان باستخدام مفتاح المرور الخاص بك.',
+  'auth.title_signup': 'إنشاء حساب جديد',
+  'auth.subtitle_signup': 'الخطوة 1: المصادقة عبر مزود الخدمة الخاص بك.',
+  'auth.title_step2': 'تأمين حسابك',
+  'auth.subtitle_step2': 'الخطوة 2: قم بتسجيل مفتاح مرور لتفعيل التشفير الشامل.',
+  'auth.google': 'المتابعة باستخدام Google',
+  'auth.passkeyLogin': 'تسجيل الدخول بمفتاح المرور',
+  'auth.passkeySignup': 'تسجيل مفتاح مرور',
+  'auth.noAccount': 'ليس لديك حساب؟',
+  'auth.hasAccount': 'لديك حساب بالفعل؟',
+  'auth.signUpToggle': 'إنشاء حساب',
+  'auth.signInToggle': 'تسجيل الدخول',
+  'auth.sessionExpired': 'انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى.',
+  'auth.cancel': 'إلغاء',
+
+  // Navigation
+  'nav.login': 'تسجيل الدخول',
+  'nav.workspace': 'مساحة العمل',
+  'nav.logout': 'تسجيل الخروج',
 };

@@ -1,77 +1,83 @@
 export const en = {
-	nav: {
-		login: "Sign In",
-		workspace: "Workspace",
-		logout: "Log Out",
-	},
-	hero: {
-		badge: "Saudi Data Residency",
-		title: "Secure Enterprise AI.",
-		subtitle: "Zero-knowledge managed AI platform. Access our Pro and Fast models via an encrypted chat workspace or integrate directly via API—sharing one seamless token quota.",
-		ctaPrimary: "Launch Workspace",
-		ctaSecondary: "View API Docs",
-	},
-	features: {
-		privacyTitle: "Zero-Knowledge Storage",
-		privacyDesc: "Chat logs are encrypted with client-side keys. We cannot read your data.",
-		residencyTitle: "Local Infrastructure",
-		residencyDesc: "100% KSA-based compute and storage ensuring regulatory compliance.",
-		unifiedTitle: "Unified Quota",
-		unifiedDesc: "A single subscription covers both workspace chat and headless API usage."
-	},
-	pricing: {
-		title: "Simple, predictable pricing",
-		monthly: "SAR/month",
-		standard: {
-			name: "Standard",
-			price: "30",
-			features: ["Access to Fast Model", "Standard API rate limits", "Base monthly token quota", "Community support"]
-		},
-		pro: {
-			name: "Professional",
-			price: "75",
-			badge: "Most Popular",
-			features: ["Access to Pro & Fast Models", "5x token quota multiplier", "Priority API queue", "Email support"]
-		},
-		max: {
-			name: "Max",
-			price: "500",
-			features: ["Unlimited Chat Workspace", "Highest API throughput", "Dedicated encrypted container", "24/7 Priority support"]
-		},
-		cta: "Select Plan"
-	},
-	auth: {
-		title: "Welcome to DCP Cloud",
-		subtitle: "Sign in to access your secure AI workspace",
-		passkey: "Continue with Passkey",
-		comingSoon: "Coming Soon",
-		google: "Google",
-		github: "GitHub",
-		nafath: "Nafath (نفاذ)",
-		cancel: "Cancel",
-		passkeyLogin: "Log In with Passkey",
-		passkeySignup: "Sign Up with Passkey",
-		noAccount: "Don't have an account?",
-		hasAccount: "Already have an account?",
-		signUpToggle: "Create a Passkey",
-		signInToggle: "Log In instead",
-		sessionExpired: "Your session has expired. Please log in again.",
-	},
-	footer: {
-		rights: "© 2024 DCP Cloud. All rights reserved.",
-		privacy: "Privacy Policy",
-		terms: "Terms of Service"
-	},
-	chat: {
-		headerTitle: "DCP Enterprise AI - Workspace",
-		modelInfo: "Model: meta-llama/Llama-3.2-1B-Instruct",
-		cacheStatus: "LMCache Tier-2/3 Connected",
-		welcomeTitle: "Ready for Enterprise Workloads",
-		welcomeDesc: "Streaming responses live via local cache architecture. Type a prompt below to begin.",
-		placeholder: "Message DCP AI...",
-		tokenContext: "Context: 1 system turn active",
-		shiftEnter: "Shift + Enter for new line",
-		reset: "Reset Session",
-		backHome: "Back to Home"
-	}
+  // Hero
+  'hero.badge': '100% Zero-Knowledge Architecture',
+  'hero.title_start': 'Enterprise AI,',
+  'hero.title_highlight': 'Without the Compromise.',
+  'hero.subtitle': 'Secure, private, and localized AI chat and API infrastructure. Backed by client-side ECIES encryption and managed compute.',
+  'hero.cta_primary': 'Launch Workspace',
+  'hero.cta_secondary': 'Read the Docs',
+  
+  // Capabilities
+  'cap.section_title': 'Intelligence Tailored to the Task',
+  'cap.section_subtitle': 'Opaque, highly-optimized routing ensures you get the right reasoning model for the right price, instantly.',
+  'cap.fast.title': 'Fast',
+  'cap.fast.desc': 'Optimized for low-latency tasks, drafting, and instant summarization. Uncapped usage for smooth workflows.',
+  'cap.fast.badge': '0.2x Token Weight',
+  'cap.pro.title': 'Pro',
+  'cap.pro.desc': 'High-fidelity reasoning and complex instruction following for heavy enterprise workloads.',
+  'cap.pro.badge': '1.0x Token Weight',
+  'cap.deep.title': 'Deep Research',
+  'cap.deep.desc': 'Multi-step autonomous reasoning with built-in prolog loops for deep analytical tasks.',
+  'cap.deep.badge': '1.2x Token Weight',
+
+  // Security Architecture
+  'sec.eyebrow': 'Zero-Trust By Design',
+  'sec.title': 'Cryptographic Privacy You Can Verify',
+  'sec.subtitle': 'We engineered our infrastructure so that neither DCP nor our cloud provider can inspect your conversation context.',
+  'sec.passkey.title': 'Passkey-Derived Sessions',
+  'sec.passkey.desc': 'Every chat session generates a dedicated AES key anchored directly to your hardware authenticator using WebAuthn.',
+  'sec.envelope.title': 'ECIES Envelope Wrapping',
+  'sec.envelope.desc': 'Keys are transmitted inside an ECIES envelope decoded strictly in memory, preventing raw keys from ever surfacing in GCP request logs.',
+  'sec.zk.title': 'Zero-Knowledge Context',
+  'sec.zk.desc': 'Context history is stored in ciphertext. We maintain the database, but only client-authenticated sessions hold the decryption keys.',
+  'sec.tee.title': 'Client-to-GPU TEE',
+  'sec.tee.desc': 'Full end-to-end encryption extending from your browser directly into hardware-isolated Confidential GPU enclaves.',
+  'sec.tee.tag': 'Roadmap',
+
+  // Pricing
+  'price.title': 'Transparent, Capability-Based Pricing',
+  'price.subtitle': 'Choose a workspace subscription for your team, or pay-as-you-go for direct API integration.',
+  'price.workspace_title': 'Workspace Subscriptions',
+  'price.standard.desc': 'Ideal for everyday tasks and standard workloads.',
+  'price.month': 'month',
+  'price.feat.fast_unlimited': 'Unlimited Fast Model usage',
+  'price.feat.pro_standard': 'Pro Model (Standard 4-hour quota)',
+  'price.feat.degrade': 'Graceful shift to Fast when quota is met',
+  'price.recommended': 'Recommended',
+  'price.enterprise.desc': 'For heavy analytics, research, and data science.',
+  'price.feat.pro_high': 'Pro Model (High 4-hour quota)',
+  'price.feat.deep_research': 'Deep Research Model access',
+  'price.feat.jupyter': 'Managed Jupyter Compute included',
+  'price.api_title': 'API Pay-As-You-Go',
+  'price.api_desc': 'API usage is billed per token. Cost is calculated dynamically based on the capability weight of the chosen endpoint.',
+  'price.weight': 'Multiplier',
+  'price.sar': 'SAR',
+
+  // App Teaser
+  'app.title': 'Take Zero-Knowledge AI on the Go',
+  'app.subtitle': 'Our native mobile apps will bring full end-to-end encryption and seamless workspace syncing to your pocket.',
+  'app.download': 'Download on the',
+  'app.coming_soon': 'Coming Soon',
+
+  // Auth Modal
+  'auth.title_login': 'Welcome Back',
+  'auth.subtitle_login': 'Sign in securely using your hardware passkey.',
+  'auth.title_signup': 'Create Your Account',
+  'auth.subtitle_signup': 'Step 1: Authenticate with your provider.',
+  'auth.title_step2': 'Secure Your Account',
+  'auth.subtitle_step2': 'Step 2: Register a hardware passkey to enable end-to-end encryption.',
+  'auth.google': 'Continue with Google',
+  'auth.passkeyLogin': 'Sign in with Passkey',
+  'auth.passkeySignup': 'Register Passkey',
+  'auth.noAccount': "Don't have an account?",
+  'auth.hasAccount': 'Already have an account?',
+  'auth.signUpToggle': 'Sign Up',
+  'auth.signInToggle': 'Sign In',
+  'auth.sessionExpired': 'Session expired. Please sign in again.',
+  'auth.cancel': 'Cancel',
+
+  // Navigation
+  'nav.login': 'Sign In',
+  'nav.workspace': 'Workspace',
+  'nav.logout': 'Sign Out',
 };

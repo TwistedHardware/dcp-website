@@ -2,11 +2,17 @@ import { en } from './en';
 import { ar } from './ar';
 
 export const languages = {
-  en: 'English',
-  ar: 'العربية',
+  en: { label: 'English', dir: 'ltr' },
+  ar: { label: 'العربية', dir: 'rtl' },
 };
 
 export const defaultLang = 'en';
+
+// Map the imported dictionaries
+const ui = {
+  en,
+  ar,
+} as const;
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split('/');
@@ -15,13 +21,10 @@ export function getLangFromUrl(url: URL) {
 }
 
 export function useTranslations(lang: keyof typeof languages) {
-  return function t(key: keyof typeof en | string) {
-    const keys = key.split('.');
-    let result: any = lang === 'ar' ? ar : en;
-    for (const k of keys) {
-      if (result[k] === undefined) return key;
-      result = result[k];
-    }
-    return result;
+  return function t(key: keyof typeof en) {
+    // Return the translation for the current language, 
+    // fallback to English if missing, 
+    // or return the raw key if it doesn't exist in either.
+    return ui[lang][key] || ui[defaultLang][key] || key;
   }
 }

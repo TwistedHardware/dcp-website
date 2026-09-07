@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-.markdown-body pre {
-  white-space: pre-wrap !important;
-  word-break: break-all !important;
-  overflow-wrap: break-word !important;
+.riyal-sign {
+  font-family: 'SaudiRiyalSymbol', sans-serif;
 }

@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { FingerprintPattern, Fingerprint, ScanFace, Loader2 } from '@lucide/astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -9,46 +10,41 @@ const t = useTranslations(lang);
   <div class="bg-slate-900 w-full p-8 rounded-2xl flex flex-col items-center text-center">
     
     <div class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center mb-6 shadow-inner">
-      <i data-lucide="fingerprint" class="w-7 h-7 text-sky-400"></i>
+      <i data-lucide="fingerprint" class="w-7 h-7 text-indigo-400"></i>
+      <!-- <FingerprintPatter color="5C6BC0" class="w-7 h-7 text-indigo-400"></FingerprintPattern> -->
+      <!-- <ScanFace></ScanFace> -->
     </div>
     
-    <h2 class="text-xl font-bold text-slate-100 mb-2">{t('auth.title')}</h2>
-    <p class="text-sm text-slate-400 mb-4">{t('auth.subtitle')}</p>
+    <h2 class="text-xl font-bold text-slate-100 mb-2" id="modal-title"></h2>
+    <p class="text-sm text-slate-400 mb-6" id="modal-subtitle"></p>
 
     <!-- Dynamic Status Message -->
     <p id="auth-status" class="text-sm font-medium mb-4 hidden px-4 py-2 rounded-lg w-full"></p>
 
     <div class="w-full space-y-4">
-      <!-- Active Passkey Button -->
-      <button id="passkey-btn" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold px-4 py-3.5 rounded-xl transition shadow-lg shadow-sky-500/20 flex items-center justify-center gap-3">
+      
+      <!-- SIGN UP STEP 1: SSO Only -->
+      <div id="signup-step1-section" class="hidden space-y-3 mb-6">
+        <a href="https://ln.tejory.io/api/auth/google/init" class="w-full bg-white hover:bg-slate-50 text-slate-900 font-semibold border border-slate-200 px-4 py-3 rounded-xl flex items-center justify-center gap-3 transition">
+          <!-- <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> -->
+          <svg class="w-5 h-5" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
+          {t('auth.google')}
+        </a>
+      </div>
+
+      <!-- SIGN UP STEP 2 OR LOGIN: Passkey Only -->
+      <button id="passkey-btn" class="hidden w-full bg-indigo-500 hover:bg-indigo-400 text-white font-semibold px-4 py-3.5 rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-3">
         <i id="passkey-icon" data-lucide="scan-face" class="w-5 h-5"></i>
-        <span id="passkey-text">{t('auth.passkeyLogin')}</span>
+        <span id="passkey-text"></span>
         <i data-lucide="loader-2" class="w-5 h-5 animate-spin hidden" id="passkey-loader"></i>
       </button>
 
       <!-- Toggle Mode Text -->
-      <div class="text-xs text-slate-400">
-        <span id="toggle-prefix">{t('auth.noAccount')}</span> 
-        <button id="auth-toggle-btn" class="text-sky-400 hover:text-sky-300 font-medium transition ml-1">
-          {t('auth.signUpToggle')}
-        </button>
+      <div id="toggle-container" class="text-xs text-slate-400 mt-4">
+        <span id="toggle-prefix"></span> 
+        <button id="auth-toggle-btn" class="text-indigo-400 hover:text-indigo-300 font-medium transition ml-1"></button>
       </div>
 
-      <div class="relative py-2 flex items-center">
-        <div class="flex-grow border-t border-slate-800"></div>
-        <span class="shrink-0 text-xs text-slate-500 px-3">{t('auth.comingSoon')}</span>
-        <div class="flex-grow border-t border-slate-800"></div>
-      </div>
-
-      <!-- Disabled OAuth Buttons -->
-      <button disabled class="w-full bg-slate-800/50 text-slate-500 border border-slate-800 px-4 py-3 rounded-xl flex items-center justify-center gap-3 cursor-not-allowed">
-        <i data-lucide="chrome" class="w-4 h-4"></i>
-        {t('auth.google')}
-      </button>
-      <button disabled class="w-full bg-slate-800/50 text-slate-500 border border-slate-800 px-4 py-3 rounded-xl flex items-center justify-center gap-3 cursor-not-allowed">
-        <i data-lucide="github" class="w-4 h-4"></i>
-        {t('auth.github')}
-      </button>
     </div>
 
     <!-- Close Button -->
@@ -62,17 +58,26 @@ const t = useTranslations(lang);
   lang, 
   txtLogin: t('auth.passkeyLogin'), 
   txtSignup: t('auth.passkeySignup'),
+  txtTitleLogin: t('auth.title_login'),
+  txtTitleSignup: t('auth.title_signup'),
+  txtTitleStep2: t('auth.title_step2'),
+  txtSubLogin: t('auth.subtitle_login'),
+  txtSubSignup: t('auth.subtitle_signup'),
+  txtSubStep2: t('auth.subtitle_step2'),
   txtNoAccount: t('auth.noAccount'),
   txtHasAccount: t('auth.hasAccount'),
   txtToggleSignUp: t('auth.signUpToggle'),
   txtToggleSignIn: t('auth.signInToggle'),
   txtSessionExpired: t('auth.sessionExpired')
 }}>
-  document.addEventListener('DOMContentLoaded', () => {
-    const BASE_URL = "https://ln.tejory.io"; // Update for production
+  const initAuthModal = () => {
+    console.log("1");
+
+    const BASE_URL = "https://ln.tejory.io"; 
     
     // UI Elements
     const modal = document.getElementById('auth-modal');
+    console.log("Modal element found:", modal !== null);
     const loginBtns = document.querySelectorAll('#login-btn');
     const closeBtn = document.getElementById('close-modal');
     const passkeyBtn = document.getElementById('passkey-btn');
@@ -81,68 +86,107 @@ const t = useTranslations(lang);
     const passkeyLoader = document.getElementById('passkey-loader');
     const authToggleBtn = document.getElementById('auth-toggle-btn');
     const togglePrefix = document.getElementById('toggle-prefix');
+    const toggleContainer = document.getElementById('toggle-container');
     const statusMsg = document.getElementById('auth-status');
+    const signupStep1Section = document.getElementById('signup-step1-section');
+    const modalTitle = document.getElementById('modal-title');
+    const modalSubtitle = document.getElementById('modal-subtitle');
 
-    let currentMode = 'login'; // 'login' or 'signup'
+    // Modes: 'login', 'signup_step1', 'signup_step2'
+    let currentMode = localStorage.getItem('dcp_known_user') ? 'login' : 'signup_step1'; 
+    let ssoSessionToken = null;
 
-    // --- Token Validation Helper ---
-    const isTokenValid = () => {
-      const token = localStorage.getItem("token");
-      const expiry = localStorage.getItem("token_expiry");
-      if (!token || !expiry) return false;
+    // --- UI State Helpers ---
+    const hideStatus = () => statusMsg.classList.add('hidden');
+
+    function updateModalUIForMode() {
+      hideStatus();
       
-      const expiryTime = !isNaN(expiry) ? 
-        (String(expiry).length === 10 ? Number(expiry) * 1000 : Number(expiry)) : 
-        new Date(expiry).getTime();
+      if (currentMode === 'login') {
+        modalTitle.innerText = txtTitleLogin;
+        modalSubtitle.innerText = txtSubLogin;
+        passkeyText.innerText = txtLogin;
+        togglePrefix.innerText = txtNoAccount;
+        authToggleBtn.innerText = txtToggleSignUp;
         
-      return Date.now() < expiryTime;
-    };
-
-    // --- Header UI Swapper ---
-    const updateHeaderUI = (isLoggedIn) => {
-      const loginBtn = document.getElementById('login-btn');
-      const loggedInActions = document.getElementById('logged-in-actions');
-      
-      if (isLoggedIn) {
-        if (loginBtn) loginBtn.classList.add('hidden');
-        if (loggedInActions) {
-          loggedInActions.classList.remove('hidden');
-          loggedInActions.classList.add('flex'); // Ensure flex layout applies when shown
-        }
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-      } else {
-        if (loginBtn) loginBtn.classList.remove('hidden');
-        if (loggedInActions) {
-          loggedInActions.classList.add('hidden');
-          loggedInActions.classList.remove('flex');
-        }
+        signupStep1Section.classList.add('hidden');
+        passkeyBtn.classList.remove('hidden');
+        passkeyBtn.classList.add('flex');
+        toggleContainer.classList.remove('hidden');
+        
+      } else if (currentMode === 'signup_step1') {
+        modalTitle.innerText = txtTitleSignup;
+        modalSubtitle.innerText = txtSubSignup;
+        togglePrefix.innerText = txtHasAccount;
+        authToggleBtn.innerText = txtToggleSignIn;
+        
+        signupStep1Section.classList.remove('hidden');
+        passkeyBtn.classList.add('hidden');
+        passkeyBtn.classList.remove('flex');
+        toggleContainer.classList.remove('hidden');
+        
+      } else if (currentMode === 'signup_step2') {
+        modalTitle.innerText = txtTitleStep2;
+        modalSubtitle.innerText = txtSubStep2;
+        passkeyText.innerText = txtSignup;
+        
+        signupStep1Section.classList.add('hidden');
+        passkeyBtn.classList.remove('hidden');
+        passkeyBtn.classList.add('flex');
+        toggleContainer.classList.add('hidden'); // Cannot toggle back to login from here
       }
-    };
-
-    // --- Logout Logic ---
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("token_expiry");
-        updateHeaderUI(false);
-      });
     }
 
+    // --- Check for SSO Callback ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('setup_passkey') === 'true') {
+      ssoSessionToken = urlParams.get('session_token');
+      currentMode = 'signup_step2';
+      updateModalUIForMode();
+      openModal();
+      
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+      updateModalUIForMode(); // Initialize default view
+    }
+
+    // Listen for clicks on the Login button
+    document.addEventListener('click', (e) => {
+      const loginBtn = e.target.closest('#login-btn');
+      if (loginBtn) {
+        e.preventDefault();
+        console.log("Login button clicked!");
+        
+        // Call your existing openModal function
+        modal.showModal();
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    
+
     // --- Modal Controls ---
-    const openModal = (msg = null, isError = false) => {
+    function openModal(msg = null, isError = false) {
       modal.showModal();
       document.body.style.overflow = 'hidden';
       if (msg) showStatus(msg, isError);
-    };
+    }
 
-    const closeModal = () => {
+    function closeModal() {
       modal.close();
       document.body.style.overflow = '';
       hideStatus();
-    };
+    }
 
-    loginBtns.forEach(btn => btn.addEventListener('click', () => openModal()));
+    // Listen to all clicks on the document
+    document.addEventListener('click', (e) => {
+      // If the clicked element (or its parent) has the id 'login-btn', open modal
+      if (e.target.closest('#login-btn')) {
+        e.preventDefault();
+        openModal();
+      }
+    });
     
     closeBtn.addEventListener('click', closeModal);
     
@@ -153,19 +197,10 @@ const t = useTranslations(lang);
       }
     });
 
-    // --- UI State Helpers (Login/Signup toggle) ---
     authToggleBtn.addEventListener('click', () => {
-      currentMode = currentMode === 'login' ? 'signup' : 'login';
-      hideStatus();
-      if (currentMode === 'login') {
-        passkeyText.innerText = txtLogin;
-        togglePrefix.innerText = txtNoAccount;
-        authToggleBtn.innerText = txtToggleSignUp;
-      } else {
-        passkeyText.innerText = txtSignup;
-        togglePrefix.innerText = txtHasAccount;
-        authToggleBtn.innerText = txtToggleSignIn;
-      }
+      if (currentMode === 'signup_step2') return; // Locked in
+      currentMode = currentMode === 'login' ? 'signup_step1' : 'login';
+      updateModalUIForMode();
     });
 
     const setLoader = (isLoading) => {
@@ -185,13 +220,9 @@ const t = useTranslations(lang);
       statusMsg.classList.remove('hidden');
     };
 
-    const hideStatus = () => statusMsg.classList.add('hidden');
-
-    // --- Base64URL Helpers ---
     const b64dec = (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
     const b64enc = (b) => btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 
-    // --- WebAuthn Logic ---
     passkeyBtn.addEventListener('click', async () => {
       setLoader(true);
       hideStatus();
@@ -201,7 +232,11 @@ const t = useTranslations(lang);
 
     async function performSignup() {
       try {
-        const startRes = await fetch(`${BASE_URL}/api/signup/start`);
+        const endpoint = ssoSessionToken 
+          ? `${BASE_URL}/api/signup/start?session_token=${ssoSessionToken}`
+          : `${BASE_URL}/api/signup/start`;
+
+        const startRes = await fetch(endpoint);
         if (!startRes.ok) throw new Error("Could not reach auth server.");
         const data = await startRes.json();
 
@@ -282,40 +317,22 @@ const t = useTranslations(lang);
       localStorage.setItem("token", token);
       localStorage.setItem("token_expiry", expiry);
       localStorage.setItem("public_key", publicKey);
-      showStatus(msg, false);
-      updateHeaderUI(true);
       
-      // Redirect to the chat workspace after a short delay
+      // Mark as known user so future visits default to Login mode
+      localStorage.setItem("dcp_known_user", "true");
+      
+      showStatus(msg, false);
+      
       setTimeout(() => {
         window.location.href = `/${lang}/chat`;
       }, 800);
     }
+  };
 
-    // --- Expiry Check on Load ---
-    function checkSessionExpiry() {
-      if (localStorage.getItem("token")) {
-        if (!isTokenValid()) {
-          // Token is present but expired
-          localStorage.removeItem("token");
-          localStorage.removeItem("token_expiry");
-          updateHeaderUI(false);
-          openModal(txtSessionExpired, true);
-        } else {
-          // Valid token - update header UI immediately
-          updateHeaderUI(true);
-        }
-      }
-    }
-
-    // Run expiry check immediately on load
-    checkSessionExpiry();
-  });
-</script>
-
-<style>
-  dialog::backdrop {
-    background: rgba(2, 6, 23, 0.8);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+  // Run immediately if DOM is ready, otherwise wait
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuthModal);
+  } else {
+    initAuthModal();
   }
-</style>
+</script>

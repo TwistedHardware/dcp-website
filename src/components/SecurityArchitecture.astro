@@ -1,0 +1,92 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const securityPillars = [
+  {
+    step: '01',
+    title: t('sec.passkey.title'),
+    desc: t('sec.passkey.desc'),
+  },
+  {
+    step: '02',
+    title: t('sec.envelope.title'),
+    desc: t('sec.envelope.desc'),
+  },
+  {
+    step: '03',
+    title: t('sec.zk.title'),
+    desc: t('sec.zk.desc'),
+  },
+  {
+    step: '04',
+    title: t('sec.tee.title'),
+    desc: t('sec.tee.desc'),
+    tag: t('sec.tee.tag'),
+  },
+];
+---
+
+<section class="py-24 bg-slate-900 text-white relative overflow-hidden border-t border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="text-indigo-400 text-sm font-semibold tracking-wide uppercase">
+        {t('sec.eyebrow')}
+      </span>
+      <h2 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+        {t('sec.title')}
+      </h2>
+      <p class="mt-4 max-w-2xl text-lg text-slate-400 mx-auto">
+        {t('sec.subtitle')}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-start">
+      {securityPillars.map((pillar) => (
+        <div class="relative flex flex-col p-6 rounded-2xl bg-slate-800/60 border border-slate-700/60 backdrop-blur-sm">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-2xl font-black text-indigo-400">{pillar.step}</span>
+            {pillar.tag && (
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                {pillar.tag}
+              </span>
+            )}
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-2">{pillar.title}</h3>
+          <p class="text-sm text-slate-400 leading-relaxed flex-1">{pillar.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Terminal-like technical callout -->
+    <div class="mt-12 rounded-2xl bg-slate-950 border border-slate-800 p-6 max-w-4xl mx-auto">
+      <div class="flex items-center gap-2 mb-4 pb-3 border-b border-slate-800 text-xs text-slate-500 font-mono">
+        <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+        <span class="ms-2">client-side-handshake.ts</span>
+      </div>
+      <pre class="font-mono text-xs sm:text-sm text-slate-300 overflow-x-auto leading-relaxed">
+<code>{`// 1. Session AES key derived via WebAuthn PRF
+const sessionKey = await crypto.subtle.generateKey(
+	{ name: "AES-GCM", length: 256 },
+	true,
+	["encrypt", "decrypt"]
+);
+
+// 2. Wrap AES key in an ECIES envelope for runtime inference
+const encryptedKeyEnvelope = await eciesEncrypt(
+	sessionKeyRaw,
+	backendPublicVerificationKey
+);
+
+// 3. Dispatch payload - raw AES keys never enter cloud provider logs or databases
+await fetch("/api/v1/chat/completions", {
+  headers: { "X-DCP-Key-Envelope": encryptedKeyEnvelope },
+  body: encryptedContextPayload
+});`}</code></pre>
+    </div>
+  </div>
+</section>

@@ -1,71 +1,55 @@
 ---
-import '../styles/global.css'
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, languages } from '../i18n/utils';
+import '../styles/global.css';
 
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
-const dir = lang === 'ar' ? 'rtl' : 'ltr';
+const direction = languages[lang].dir;
 ---
 
 <!doctype html>
-<html lang={lang} dir={dir} class="h-full scroll-smooth">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>{title}</title>
-		
-		<!-- Fonts: Inter for EN, Cairo for AR -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
-		<!-- MathJax configuration -->
-		<script is:inline>
-			window.MathJax = {
-				tex: {
-					inlineMath: [['$', '$'], ['\\(', '\\)']],
-					displayMath: [['$$', '$$'], ['\\[', '\\]']]
-				}
-			};
-		</script>
-		<script is:inline src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-		<!-- Lucide Icons -->
+<html lang={lang} dir={direction} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
 		<script src="https://unpkg.com/lucide@latest"></script>
-		
 		<style>
-			:root {
-				--font-en: 'Inter', sans-serif;
-				--font-ar: 'Cairo', sans-serif;
-			}
-			body {
-				font-family: var(--font-en);
-			}
-			html[dir="rtl"] body {
-				font-family: var(--font-ar);
+			@font-face {
+				font-family: 'SaudiRiyalSymbol';
+				src: url('/fonts/saudi_riyal.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
 			}
 
-			/* Custom scrollbar matching DCP chat */
-			::-webkit-scrollbar { width: 6px; }
-			::-webkit-scrollbar-track { background: transparent; }
-			::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-			::-webkit-scrollbar-thumb:hover { background: #475569; }
-
+			@font-face {
+				font-family: 'SaudiRiyalSymbol';
+				src: url('/fonts/saudi_riyal_bold.woff2') format('woff2');
+				font-weight: 700;
+				font-style: normal;
+				font-display: swap;
+			}
 		</style>
-	</head>
-	<body class="h-full bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-sky-500 selection:text-white">
-		<slot />
-		
+    <title>{title}</title>
+    
+    <!-- Meta tags for Zero-Knowledge Enterprise AI positioning -->
+    <meta name="description" content="DCP Cloud: Zero-Knowledge Enterprise AI & Managed Compute. Secure, private, and localized in KSA." />
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50">
+    <slot />
 		<script is:inline>
-			// Initialize icons on mount
-			document.addEventListener('DOMContentLoaded', () => {
+			// Run Lucide icon replacement once the page loads
+			window.addEventListener('DOMContentLoaded', () => {
+			if (typeof lucide !== 'undefined') {
 				lucide.createIcons();
+			}
 			});
 		</script>
-	</body>
+  </body>
 </html>

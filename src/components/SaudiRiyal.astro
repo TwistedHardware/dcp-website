@@ -1,0 +1,38 @@
+---
+interface Props {
+  bold?: boolean;
+  font?: 'custom' | 'parent';
+  class?: string;
+}
+
+const { 
+  bold = false, 
+  font = 'custom', /* Changed default to 'custom' so it applies immediately */
+  class: className = '', 
+  ...rest 
+} = Astro.props;
+---
+
+<span 
+  class:list={[
+    'sar-symbol', 
+    { 'use-custom-font': font === 'custom' },
+    { 'is-bold': bold },
+    className
+  ]}
+  {...rest}
+>&#x20C1;</span>
+
+<style>
+  .sar-symbol {
+    display: inline-block;
+  }
+
+  .use-custom-font {
+    font-family: 'SaudiRiyalSymbol', sans-serif;
+  }
+
+  .is-bold {
+    font-weight: 700;
+  }
+</style>

@@ -2,10 +2,12 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Hero from '../../components/Hero.astro';
-import Features from '../../components/Features.astro';
+import Capabilities from '../../components/Capabilities.astro'; // Renamed from Features to reflect Fast/Pro/Deep Research
+import SecurityArchitecture from '../../components/SecurityArchitecture.astro'; // New component for ZK/ECIES
 import Pricing from '../../components/Pricing.astro';
-import AuthModal from '../../components/AuthModal.astro';
+import AppTeaser from '../../components/AppTeaser.astro'; // New mobile app component
 import Footer from '../../components/Footer.astro';
+import AuthModal from '../../components/AuthModal.astro';
 import { languages } from '../../i18n/utils';
 
 export function getStaticPaths() {
@@ -13,16 +15,19 @@ export function getStaticPaths() {
 }
 ---
 
-<Layout title="DCP Cloud | Managed AI Platform">
+<Layout title="DCP Cloud | Zero-Knowledge Enterprise AI">
   <Header />
   
   <main class="flex-1 overflow-x-hidden">
     <Hero />
-    <Features />
+    <Capabilities />
+    <SecurityArchitecture />
     <Pricing />
+    <AppTeaser />
   </main>
   
   <Footer />
   
+  <!-- We will convert this into the 2-step SSO + Passkey flow -->
   <AuthModal />
 </Layout>
