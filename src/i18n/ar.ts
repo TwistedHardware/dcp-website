@@ -80,4 +80,8 @@ export const ar = {
   'nav.login': 'تسجيل الدخول',
   'nav.workspace': 'مساحة العمل',
   'nav.logout': 'تسجيل الخروج',
+	'nav.capabilities': 'القدرات',
+  'nav.security': 'الأمان',
+  'nav.pricing': 'الأسعار',
+  'nav.docs': 'دليل المطورين',
 };

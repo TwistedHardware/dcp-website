@@ -80,4 +80,8 @@ export const en = {
   'nav.login': 'Sign In',
   'nav.workspace': 'Workspace',
   'nav.logout': 'Sign Out',
+	'nav.capabilities': 'Capabilities',
+  'nav.security': 'Security',
+  'nav.pricing': 'Pricing',
+  'nav.docs': 'Documentation',
 };
