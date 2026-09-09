@@ -10,35 +10,35 @@ const t = useTranslations(lang);
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-        {t('price.title')}
+        {t('home.price_title')}
       </h2>
       <p class="mt-4 max-w-2xl text-lg text-slate-600 dark:text-slate-400 mx-auto">
-        {t('price.subtitle')}
+        {t('home.price_subtitle')}
       </p>
     </div>
 
     <!-- Workspace Subscriptions -->
     <div class="mb-16">
-      <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-8 text-center">{t('price.workspace_title')}</h3>
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-8 text-center">{t('home.workspace_title')}</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-8xl mx-auto text-start">
         
         <!-- Standard Tier -->
         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
           <h4 class="text-lg font-semibold text-slate-900 dark:text-white">Standard</h4>
-          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{t('price.standard.desc')}</p>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{t('home.standard.desc')}</p>
           <p class="mt-6 flex items-baseline gap-x-1">
             <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">75 <SaudiRiyal /></span>
-            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('price.month')}</span>
+            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('home.month')}</span>
           </p>
           <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
             <li class="flex gap-x-3 items-center">
-              <span class="text-indigo-500">✓</span> {t('price.feat.fast_unlimited')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.fast_unlimited')}
             </li>
             <li class="flex gap-x-3 items-center">
-              <span class="text-indigo-500">✓</span> {t('price.feat.pro_standard')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.pro_standard')}
             </li>
             <li class="flex gap-x-3 items-center">
-              <span class="text-indigo-500">✓</span> {t('price.feat.degrade')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.degrade')}
             </li>
           </ul>
         </div>
@@ -46,23 +46,23 @@ const t = useTranslations(lang);
         <!-- Pro Tier -->
         <div class="rounded-2xl border-2 border-indigo-500 bg-white dark:bg-slate-800 p-8 shadow-md relative">
           <span class="absolute top-0 -translate-y-1/2 bg-indigo-500 text-white px-3 py-0.5 rounded-full text-xs font-semibold tracking-wide">
-            {t('price.recommended')}
+            {t('home.recommended')}
           </span>
           <h4 class="text-lg font-semibold text-slate-900 dark:text-white">Developer</h4>
-          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{t('price.enterprise.desc')}</p>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{t('home.enterprise.desc')}</p>
           <p class="mt-6 flex items-baseline gap-x-1">
             <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">100 <SaudiRiyal /></span>
-            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('price.month')}</span>
+            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('home.month')}</span>
           </p>
           <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
             <li class="flex gap-x-3 items-center">
-              <span class="text-indigo-500">✓</span> {t('price.feat.pro_high')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.pro_high')}
             </li>
             <li class="flex gap-x-3 items-center">
-              <span class="text-indigo-500">✓</span> {t('price.feat.deep_research')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.deep_research')}
             </li>
             <li class="flex gap-x-3 items-center font-semibold text-slate-900 dark:text-white">
-              <span class="text-indigo-500">✓</span> {t('price.feat.jupyter')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.jupyter')}
             </li>
           </ul>
         </div>
@@ -70,20 +70,20 @@ const t = useTranslations(lang);
         <!-- Enterprise Tier -->
         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
           <h4 class="text-lg font-semibold text-slate-900 dark:text-white">Enterprise & Compute</h4>
-          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{t('price.standard.desc')}</p>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{t('home.standard.desc')}</p>
           <p class="mt-6 flex items-baseline gap-x-1">
             <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">500 <SaudiRiyal /></span>
-            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('price.month')}</span>
+            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('home.month')}</span>
           </p>
           <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
             <li class="flex gap-x-3 items-center">
-              <span class="text-indigo-500">✓</span> {t('price.feat.pro_high')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.pro_high')}
             </li>
             <li class="flex gap-x-3 items-center">
-              <span class="text-indigo-500">✓</span> {t('price.feat.deep_research')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.deep_research')}
             </li>
             <li class="flex gap-x-3 items-center font-semibold text-slate-900 dark:text-white">
-              <span class="text-indigo-500">✓</span> {t('price.feat.jupyter')}
+              <span class="text-indigo-500">✓</span> {t('home.feat.jupyter')}
             </li>
           </ul>
         </div>
@@ -93,31 +93,31 @@ const t = useTranslations(lang);
     <!-- API Billing Info -->
     <div class="max-w-4xl mx-auto rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-8 text-start">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-        <h3 class="text-xl font-bold text-slate-900 dark:text-white">{t('price.api_title')}</h3>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white">{t('home.api_title')}</h3>
         <span class="inline-flex items-center rounded-full bg-indigo-500/10 text-indigo-400 px-3 py-1 text-sm font-semibold mt-2 sm:mt-0 w-fit">
-          15 <SaudiRiyal /> / 1M Tokens
+          150 <SaudiRiyal class="text-[1.5em] my-[-5px]" /> / 1M Tokens
         </span>
       </div>
-      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">{t('price.api_desc')}</p>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">{t('home.api_desc')}</p>
       
       <!-- Token direction explanation -->
       <div class="text-xs text-slate-500 dark:text-slate-400 mb-6 flex flex-wrap gap-4 bg-white dark:bg-slate-800/80 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
         <span>🔹 <strong class="text-slate-700 dark:text-slate-300">Input Tokens:</strong> 1x consumption</span>
-        <span>🔹 <strong class="text-slate-700 dark:text-slate-300">Output Tokens:</strong> 3x consumption</span>
+        <span>🔹 <strong class="text-slate-700 dark:text-slate-300">Output Tokens:</strong> 5x consumption</span>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
           <div class="font-mono text-sm text-indigo-500 mb-1">dcp/fast</div>
-          <div class="font-bold text-slate-900 dark:text-white">0.2x {t('price.weight')}</div>
+          <div class="font-bold text-slate-900 dark:text-white">0.2x {t('home.weight')}</div>
         </div>
         <div class="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
           <div class="font-mono text-sm text-indigo-500 mb-1">dcp/pro</div>
-          <div class="font-bold text-slate-900 dark:text-white">1.0x {t('price.weight')}</div>
+          <div class="font-bold text-slate-900 dark:text-white">1.0x {t('home.weight')}</div>
         </div>
         <div class="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
           <div class="font-mono text-sm text-indigo-500 mb-1">dcp/deep-research</div>
-          <div class="font-bold text-slate-900 dark:text-white">1.2x {t('price.weight')}</div>
+          <div class="font-bold text-slate-900 dark:text-white">1.2x {t('home.weight')}</div>
         </div>
       </div>
     </div>

@@ -1,0 +1,246 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'ar' } }
+  ];
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const codeExamples = {
+  python: `from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.dcp.cloud/v1",
+    api_key="dcp_your_api_key_here"
+)
+
+response = client.chat.completions.create(
+    model="dcp/pro",
+    messages=[
+			{"role": "user", "content": "Tell me a knock-knock joke about vibe coding."}
+		]
+)
+
+print(response.choices[0].message.content)`,
+
+  ts: `import OpenAI from 'openai';
+
+const openai = new OpenAI({
+    baseURL: 'https://api.dcp.cloud/v1',
+    apiKey: 'dcp_your_api_key_here'
+});
+
+const response = await openai.chat.completions.create({
+    model: 'dcp/pro',
+    messages=[
+			{"role": "user", "content": "Tell me a knock-knock joke about vibe coding."}
+		]
+});
+
+console.log(response.choices[0].message.content);`,
+
+  go: `package main
+
+import (
+    "context"
+    "fmt"
+    "github.com/sashabaranov/go-openai"
+)
+
+func main() {
+    config := openai.DefaultConfig("dcp_your_api_key_here")
+    config.BaseURL = "https://api.dcp.cloud/v1"
+    client := openai.NewClientWithConfig(config)
+
+    resp, _ := client.CreateChatCompletion(
+        context.Background(),
+        openai.ChatCompletionRequest{
+            Model: "dcp/pro",
+            Messages: []openai.ChatCompletionMessage{
+                {Role: "user", Content: "Tell me a knock-knock joke about vibe coding."},
+            },
+        },
+    )
+    fmt.Println(resp.Choices[0].Message.Content)
+}`,
+
+  curl: `curl https://api.dcp.cloud/v1/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer dcp_your_api_key_here" \\
+  -d '{
+    "model": "dcp/pro",
+    messages=[
+			{"role": "user", "content": "Tell me a knock-knock joke about vibe coding."}
+		]
+  }'`
+};
+---
+
+<Layout title={`DCP Cloud | ${t('nav.docs')}`}>
+  <Header />
+  
+  <main class="min-h-screen bg-slate-50 dark:bg-slate-950 pt-20 pb-24">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Hero -->
+      <div class="mb-12">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
+          {t('docs.hero.title')}
+        </h1>
+        <p class="text-lg text-slate-600 dark:text-slate-400">
+          {t('docs.hero.subtitle')}
+        </p>
+      </div>
+
+      <!-- Endpoint & Models -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{t('docs.endpoint.title')}</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">{t('docs.endpoint.desc')}</p>
+          <code class="block bg-slate-100 dark:bg-slate-950 px-4 py-3 rounded-xl text-sm font-mono text-indigo-600 dark:text-indigo-400 border border-slate-200 dark:border-slate-800">
+            https://api.dcp.cloud/v1
+          </code>
+        </div>
+        
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{t('docs.models.title')}</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">{t('docs.models.desc')}</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-md text-xs font-mono text-slate-800 dark:text-slate-300">dcp/fast</span>
+            <span class="bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-md text-xs font-mono text-slate-800 dark:text-slate-300">dcp/pro</span>
+            <span class="bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-md text-xs font-mono text-slate-800 dark:text-slate-300">dcp/deep-research</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quickstart Code Switcher -->
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{t('docs.quickstart.title')}</h2>
+        <p class="text-slate-600 dark:text-slate-400 mb-6">{t('docs.quickstart.desc')}</p>
+
+        <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-[#0d1117] shadow-lg">
+          <!-- Tab Headers -->
+          <div class="flex border-b border-slate-800 bg-slate-950/80 px-2 pt-2 gap-1 overflow-x-auto">
+            <button class="tab-btn active px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent" data-target="python">Python</button>
+            <button class="tab-btn px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent" data-target="ts">TypeScript</button>
+            <button class="tab-btn px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent" data-target="go">Go</button>
+            <button class="tab-btn px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent" data-target="curl">cURL</button>
+          </div>
+
+          <!-- Code Panes -->
+          <div class="p-4 md:p-6 overflow-x-auto">
+            <div id="pane-python" class="code-pane block group relative">
+              <button class="copy-btn absolute top-0 right-0 p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition opacity-0 group-hover:opacity-100">
+                <Icon name="lucide:copy" class="w-4 h-4 copy-icon" />
+                <Icon name="lucide:check" class="w-4 h-4 check-icon hidden text-emerald-400" />
+              </button>
+              <pre><code class="language-python !bg-transparent !p-0">{codeExamples.python}</code></pre>
+            </div>
+            
+            <div id="pane-ts" class="code-pane hidden group relative">
+              <button class="copy-btn absolute top-0 right-0 p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition opacity-0 group-hover:opacity-100">
+                <Icon name="lucide:copy" class="w-4 h-4 copy-icon" />
+                <Icon name="lucide:check" class="w-4 h-4 check-icon hidden text-emerald-400" />
+              </button>
+              <pre><code class="language-typescript !bg-transparent !p-0">{codeExamples.ts}</code></pre>
+            </div>
+            
+            <div id="pane-go" class="code-pane hidden group relative">
+              <button class="copy-btn absolute top-0 right-0 p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition opacity-0 group-hover:opacity-100">
+                <Icon name="lucide:copy" class="w-4 h-4 copy-icon" />
+                <Icon name="lucide:check" class="w-4 h-4 check-icon hidden text-emerald-400" />
+              </button>
+              <pre><code class="language-go !bg-transparent !p-0">{codeExamples.go}</code></pre>
+            </div>
+            
+            <div id="pane-curl" class="code-pane hidden group relative">
+              <button class="copy-btn absolute top-0 right-0 p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition opacity-0 group-hover:opacity-100">
+                <Icon name="lucide:copy" class="w-4 h-4 copy-icon" />
+                <Icon name="lucide:check" class="w-4 h-4 check-icon hidden text-emerald-400" />
+              </button>
+              <pre><code class="language-bash !bg-transparent !p-0">{codeExamples.curl}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .tab-btn.active {
+    color: white;
+    border-bottom-color: #6366f1;
+    background-color: rgba(30, 41, 59, 0.5);
+  }
+</style>
+
+<script>
+  import hljs from 'highlight.js';
+  import 'highlight.js/styles/github-dark.css';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize Syntax Highlighting
+    hljs.highlightAll();
+
+    // 2. Handle Tab Switching
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.code-pane');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        panes.forEach(p => {
+          p.classList.remove('block');
+          p.classList.add('hidden');
+        });
+
+        tab.classList.add('active');
+        const targetId = tab.getAttribute('data-target');
+        const targetPane = document.getElementById(`pane-${targetId}`);
+        if (targetPane) {
+          targetPane.classList.remove('hidden');
+          targetPane.classList.add('block');
+        }
+      });
+    });
+
+    // 3. Handle Copy Button Logic
+    const copyBtns = document.querySelectorAll('.copy-btn');
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', async () => {
+        // Find the code block within the same parent
+        const codeElement = btn.parentElement?.querySelector('code');
+        if (!codeElement) return;
+
+        const codeText = codeElement.innerText;
+        await navigator.clipboard.writeText(codeText);
+
+        // Toggle Icons
+        const copyIcon = btn.querySelector('.copy-icon');
+        const checkIcon = btn.querySelector('.check-icon');
+
+        copyIcon?.classList.add('hidden');
+        checkIcon?.classList.remove('hidden');
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+          copyIcon?.classList.remove('hidden');
+          checkIcon?.classList.add('hidden');
+        }, 2000);
+      });
+    });
+  });
+</script>

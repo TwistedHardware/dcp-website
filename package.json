@@ -12,16 +12,19 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@lucide/astro": "^1.41.0",
+    "@astrojs/svelte": "^9.0.1",
+    "@lucide/astro": "^1.42.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.2.10",
     "astro-icon": "^1.2.0",
+    "highlight.js": "^11.12.0",
     "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
     "esbuild": true
   },
   "devDependencies": {
-    "@iconify-json/logos": "^1.2.13"
+    "@iconify-json/logos": "^1.2.14",
+    "@iconify-json/lucide": "^1.2.130"
   }
 }

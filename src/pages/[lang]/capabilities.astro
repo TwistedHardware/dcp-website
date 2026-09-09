@@ -1,0 +1,168 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'ar' } }
+  ];
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title={`DCP Cloud | ${t('nav.capabilities')}`}>
+  <Header />
+  
+  <main class="min-h-screen bg-slate-50 dark:bg-slate-950 pt-20 pb-24">
+    <!-- Hero Section -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-24">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
+        {t('cap.hero.title')}
+      </h1>
+      <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400">
+        {t('cap.hero.subtitle')}
+      </p>
+    </section>
+
+    <!-- The Model Fleet -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-8 text-center">{t('cap.models.title')}</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Fast -->
+        <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 bg-sky-500/10 rounded-xl flex items-center justify-center mb-6">
+            <Icon name="lucide:zap" class="w-6 h-6 text-sky-500" />
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white font-mono mb-3">{t('cap.fast.title')}</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+            {t('cap.fast.desc')}
+          </p>
+        </div>
+
+        <!-- Pro -->
+        <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-indigo-500/30 dark:border-indigo-500/30 shadow-md relative">
+          <div class="absolute -top-3 right-8 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            Standard
+          </div>
+          <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-6">
+            <Icon name="lucide:brain" class="w-6 h-6 text-indigo-500" />
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white font-mono mb-3">{t('cap.pro.title')}</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+            {t('cap.pro.desc')}
+          </p>
+          <div class="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-lg p-3 text-xs text-indigo-700 dark:text-indigo-300 flex items-start gap-2">
+            <Icon name="lucide:info" class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{t('cap.pro.degrade')}</span>
+          </div>
+        </div>
+
+        <!-- Deep Research -->
+        <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
+            <Icon name="lucide:microscope" class="w-6 h-6 text-purple-500" />
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white font-mono mb-3">{t('cap.research.title')}</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+            {t('cap.research.desc')}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delivery Interfaces -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-8 text-center">{t('cap.interfaces.title')}</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Workspace -->
+        <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 text-start flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <Icon name="lucide:layout-template" class="w-6 h-6 text-indigo-400" />
+              <h3 class="text-xl font-bold text-white">{t('cap.ws.title')}</h3>
+            </div>
+            <p class="text-slate-400 text-sm mb-6">{t('cap.ws.desc')}</p>
+            <ul class="space-y-3">
+              <li class="flex items-center gap-3 text-sm text-slate-300">
+                <Icon name="lucide:check-circle-2" class="w-4 h-4 text-emerald-400" />
+                {t('cap.ws.feat1')}
+              </li>
+              <li class="flex items-center gap-3 text-sm text-slate-300">
+                <Icon name="lucide:check-circle-2" class="w-4 h-4 text-emerald-400" />
+                {t('cap.ws.feat2')}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- API -->
+        <div class="bg-slate-50 dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 text-start flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <Icon name="lucide:terminal" class="w-6 h-6 text-sky-500" />
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white">{t('cap.api.title')}</h3>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mb-6">{t('cap.api.desc')}</p>
+            <ul class="space-y-3">
+              <li class="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300">
+                <Icon name="lucide:check-circle-2" class="w-4 h-4 text-emerald-500" />
+                {t('cap.api.feat1')}
+              </li>
+              <li class="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300">
+                <Icon name="lucide:check-circle-2" class="w-4 h-4 text-emerald-500" />
+                {t('cap.api.feat2')}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Managed Jupyter -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+      <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-3xl p-8 md:p-12 border border-slate-800 text-center shadow-xl">
+        <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
+          <Icon name="lucide:book-open" class="w-8 h-8 text-white" />
+        </div>
+        <h2 class="text-3xl font-bold text-white mb-4">{t('cap.jupyter.title')}</h2>
+        <p class="text-lg text-indigo-200 max-w-3xl mx-auto leading-relaxed">
+          {t('cap.jupyter.subtitle')}
+        </p>
+      </div>
+    </section>
+
+    <!-- Enterprise Guarantees -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-8 text-center">{t('cap.guarantees.title')}</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div>
+          <Icon name="lucide:map-pin" class="w-8 h-8 mx-auto text-emerald-500 mb-4" />
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">{t('cap.g1.title')}</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">{t('cap.g1.desc')}</p>
+        </div>
+        <div>
+          <Icon name="lucide:shield-check" class="w-8 h-8 mx-auto text-indigo-500 mb-4" />
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">{t('cap.g2.title')}</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">{t('cap.g2.desc')}</p>
+        </div>
+        <div>
+          <Icon name="lucide:server" class="w-8 h-8 mx-auto text-sky-500 mb-4" />
+          <h3 class="font-bold text-slate-900 dark:text-white mb-2">{t('cap.g3.title')}</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">{t('cap.g3.desc')}</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  
+  <Footer />
+</Layout>

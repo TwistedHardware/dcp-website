@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -7,24 +8,30 @@ const t = useTranslations(lang);
 const capabilities = [
   {
     id: 'fast',
-    icon: '⚡',
-    title: t('cap.fast.title'),
-    desc: t('cap.fast.desc'),
-    badge: t('cap.fast.badge')
+    icon: 'lucide:zap',
+    iconBg: 'bg-sky-500/10 dark:bg-sky-500/20',
+    iconColor: 'text-sky-600 dark:text-sky-400',
+    title: t('home.fast.title'),
+    desc: t('home.fast.desc'),
+    badge: t('home.fast.badge')
   },
   {
     id: 'pro',
-    icon: '🧠',
-    title: t('cap.pro.title'),
-    desc: t('cap.pro.desc'),
-    badge: t('cap.pro.badge')
+    icon: 'lucide:brain',
+    iconBg: 'bg-indigo-500/10 dark:bg-indigo-500/20',
+    iconColor: 'text-indigo-600 dark:text-indigo-400',
+    title: t('home.pro.title'),
+    desc: t('home.pro.desc'),
+    badge: t('home.pro.badge')
   },
   {
     id: 'deep_research',
-    icon: '📚',
-    title: t('cap.deep.title'),
-    desc: t('cap.deep.desc'),
-    badge: t('cap.deep.badge')
+    icon: 'lucide:microscope',
+    iconBg: 'bg-purple-500/10 dark:bg-purple-500/20',
+    iconColor: 'text-purple-600 dark:text-purple-400',
+    title: t('home.deep.title'),
+    desc: t('home.deep.desc'),
+    badge: t('home.deep.badge')
   }
 ];
 ---
@@ -33,24 +40,28 @@ const capabilities = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-        {t('cap.section_title')}
+        {t('home.section_title')} 
       </h2>
       <p class="mt-4 max-w-2xl text-lg text-slate-600 dark:text-slate-400 mx-auto">
-        {t('cap.section_subtitle')}
+        {t('home.section_subtitle')}
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-start">
       {capabilities.map(cap => (
         <div class="relative flex flex-col p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-3xl">{cap.icon}</span>
-            <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-700 px-2.5 py-0.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
+          <div class="flex items-start justify-between mb-6">
+            <div class={`w-12 h-12 rounded-xl flex items-center justify-center ${cap.iconBg}`}>
+              <Icon name={cap.icon} class={`w-6 h-6 ${cap.iconColor}`} />
+            </div>
+            
+            <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs font-semibold text-slate-800 dark:text-slate-200">
               {cap.badge}
             </span>
           </div>
-          <h3 class="text-xl font-semibold text-slate-900 dark:text-white mb-2">{cap.title}</h3>
-          <p class="text-slate-600 dark:text-slate-400 flex-1">{cap.desc}</p>
+          
+          <h3 class="text-xl font-semibold text-slate-900 dark:text-white font-mono mb-2">{cap.title}</h3>
+          <p class="text-slate-600 dark:text-slate-400 flex-1 leading-relaxed">{cap.desc}</p>
         </div>
       ))}
     </div>

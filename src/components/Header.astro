@@ -17,15 +17,18 @@ const t = useTranslations(lang);
       </a>
 
       <!-- Center Desktop Navigation -->
-      <nav class="hidden md:flex items-center gap-8">
-        <a href={`/${lang}#capabilities`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+      <nav class="hidden md:flex items-center gap-6 lg:gap-8">
+        <a href={`/${lang}/capabilities`} class="text-sm font-medium text-slate-300 hover:text-white transition">
           {t('nav.capabilities')}
         </a>
-        <a href={`/${lang}#security`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+        <a href={`/${lang}/security`} class="text-sm font-medium text-slate-300 hover:text-white transition">
           {t('nav.security')}
         </a>
-        <a href={`/${lang}#pricing`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+        <a href={`/${lang}/pricing`} class="text-sm font-medium text-slate-300 hover:text-white transition">
           {t('nav.pricing')}
+        </a>
+        <a href={`/${lang}/enterprise`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+          {t('nav.enterprise')}
         </a>
         <a href={`/${lang}/docs`} class="text-sm font-medium text-slate-300 hover:text-white transition">
           {t('nav.docs')}

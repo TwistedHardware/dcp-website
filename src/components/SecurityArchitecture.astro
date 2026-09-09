@@ -7,24 +7,24 @@ const t = useTranslations(lang);
 const securityPillars = [
   {
     step: '01',
-    title: t('sec.passkey.title'),
-    desc: t('sec.passkey.desc'),
+    title: t('home.passkey.title'),
+    desc: t('home.passkey.desc'),
   },
   {
     step: '02',
-    title: t('sec.envelope.title'),
-    desc: t('sec.envelope.desc'),
+    title: t('home.envelope.title'),
+    desc: t('home.envelope.desc'),
   },
   {
     step: '03',
-    title: t('sec.zk.title'),
-    desc: t('sec.zk.desc'),
+    title: t('home.zk.title'),
+    desc: t('home.zk.desc'),
   },
   {
     step: '04',
-    title: t('sec.tee.title'),
-    desc: t('sec.tee.desc'),
-    tag: t('sec.tee.tag'),
+    title: t('home.tee.title'),
+    desc: t('home.tee.desc'),
+    tag: t('home.tee.tag'),
   },
 ];
 ---
@@ -33,13 +33,13 @@ const securityPillars = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <span class="text-indigo-400 text-sm font-semibold tracking-wide uppercase">
-        {t('sec.eyebrow')}
+        {t('home.eyebrow')}
       </span>
       <h2 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-        {t('sec.title')}
+        {t('home.title')}
       </h2>
       <p class="mt-4 max-w-2xl text-lg text-slate-400 mx-auto">
-        {t('sec.subtitle')}
+        {t('home.subtitle')}
       </p>
     </div>
 
@@ -61,7 +61,7 @@ const securityPillars = [
     </div>
 
     <!-- Terminal-like technical callout -->
-    <div class="mt-12 rounded-2xl bg-slate-950 border border-slate-800 p-6 max-w-4xl mx-auto">
+    <div class="mt-12 rounded-2xl bg-slate-950 border border-slate-800 p-6 max-w-4xl mx-auto" dir="ltr">
       <div class="flex items-center gap-2 mb-4 pb-3 border-b border-slate-800 text-xs text-slate-500 font-mono">
         <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
         <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
