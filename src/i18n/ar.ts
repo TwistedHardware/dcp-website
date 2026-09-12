@@ -75,6 +75,7 @@ export const ar = {
   'auth.signInToggle': 'تسجيل الدخول',
   'auth.sessionExpired': 'انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى.',
   'auth.cancel': 'إلغاء',
+  'auth.workspace': 'مساحة العمل',
 
   // Navigation
   'nav.login': 'تسجيل الدخول',
@@ -233,4 +234,14 @@ export const ar = {
   
   'docs.quickstart.title': 'أمثلة البدء السريع',
   'docs.quickstart.desc': 'اختر لغة البرمجة المفضلة لديك أدناه لمعرفة كيفية الاتصال باستخدام مكتبات OpenAI القياسية.',
+
+  'chat.backHome': 'العودة للوحة القيادة',
+  'chat.headerTitle': 'مساحة العمل الآمنة',
+  'chat.cacheStatus': 'السياق المحلي مشفر',
+  'chat.reset': 'مسح الجلسة',
+  'chat.welcomeTitle': 'بيئة التنفيذ الآمنة',
+  'chat.welcomeDesc': 'جلستك مشفرة بالكامل من الطرفين ومقترنة بجهازك. يتم تنفيذ جميع المهام في بيئات معزولة.',
+  'chat.placeholder': 'أدخل أمراً أو استعلم عن البيانات...',
+  'chat.shiftEnter': 'اضغط Shift + Enter لسطر جديد',
+  'chat.tokenContext': 'جلسة المعرفة الصفرية نشطة',
 };

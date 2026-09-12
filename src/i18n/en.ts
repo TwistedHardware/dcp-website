@@ -75,6 +75,7 @@ export const en = {
   'auth.signInToggle': 'Sign In',
   'auth.sessionExpired': 'Session expired. Please sign in again.',
   'auth.cancel': 'Cancel',
+  'auth.workspace': 'Workspace',
 
   // Navigation
   'nav.login': 'Sign In',
@@ -233,4 +234,14 @@ export const en = {
   
   'docs.quickstart.title': 'Quickstart Examples',
   'docs.quickstart.desc': 'Select your preferred language below to see how to connect using standard OpenAI libraries.',
+
+  'chat.backHome': 'Back to Dashboard',
+  'chat.headerTitle': 'Secure Workspace',
+  'chat.cacheStatus': 'Local Context Encrypted',
+  'chat.reset': 'Purge Session',
+  'chat.welcomeTitle': 'Secure Execution Environment',
+  'chat.welcomeDesc': 'Your session is hardware-tethered and end-to-end encrypted. All tool executions run in isolated containers.',
+  'chat.placeholder': 'Initiate command or query data...',
+  'chat.shiftEnter': 'Shift + Enter for new line',
+  'chat.tokenContext': 'ZKS Session Active',
 };

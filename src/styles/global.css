@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @font-face {
 	font-family: 'SaudiRiyalSymbol';
@@ -73,10 +74,15 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+	font-family: 'Inter', sans-serif;
 }
 
 /* Explicit Arabic style when <html dir="rtl"> is active */
 :lang(ar) {
-  font-family: 'Tajawal', sans-serif;
+	font-family: 'Tajawal', sans-serif;
+}
+
+.prose code.hljs {
+  background: transparent;
+  padding: 0;
 }

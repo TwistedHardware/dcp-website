@@ -1,6 +1,6 @@
 ---
-import { getLangFromUrl, languages } from '../i18n/utils';
-import '../styles/global.css';
+import { getLangFromUrl, languages } from "../i18n/utils";
+import "../styles/global.css";
 
 interface Props {
   title: string;
@@ -18,21 +18,36 @@ const direction = languages[lang].dir;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-		<script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+      integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+      crossorigin="anonymous"
+    />
     <title>{title}</title>
-    
+
     <!-- Meta tags for Zero-Knowledge Enterprise AI positioning -->
-    <meta name="description" content="DCP Cloud: Zero-Knowledge Enterprise AI & Managed Compute. Secure, private, and localized in KSA." />
+    <meta
+      name="description"
+      content="DCP Cloud: Zero-Knowledge Enterprise AI & Managed Compute. Secure, private, and localized in KSA."
+    />
   </head>
-  <body class="bg-slate-50 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50">
+  <body
+    class="bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-50"
+  >
     <slot />
-		<script is:inline>
-			// Run Lucide icon replacement once the page loads
-			window.addEventListener('DOMContentLoaded', () => {
-			if (typeof lucide !== 'undefined') {
-				lucide.createIcons();
-			}
-			});
-		</script>
+    <script is:inline>
+      // Run Lucide icon replacement once the page loads
+      window.addEventListener("DOMContentLoaded", () => {
+        if (typeof lucide !== "undefined") {
+          lucide.createIcons();
+        }
+      });
+    </script>
   </body>
 </html>

@@ -29,7 +29,7 @@ const securityPillars = [
 ];
 ---
 
-<section class="py-24 bg-slate-900 text-white relative overflow-hidden border-t border-slate-800">
+<section class="py-24 bg-zinc-900 text-white relative overflow-hidden border-t border-zinc-800">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <span class="text-indigo-400 text-sm font-semibold tracking-wide uppercase">
@@ -38,14 +38,14 @@ const securityPillars = [
       <h2 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
         {t('home.title')}
       </h2>
-      <p class="mt-4 max-w-2xl text-lg text-slate-400 mx-auto">
+      <p class="mt-4 max-w-2xl text-lg text-zinc-400 mx-auto">
         {t('home.subtitle')}
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-start">
       {securityPillars.map((pillar) => (
-        <div class="relative flex flex-col p-6 rounded-2xl bg-slate-800/60 border border-slate-700/60 backdrop-blur-sm">
+        <div class="relative flex flex-col p-6 rounded-2xl bg-zinc-800/60 border border-zinc-700/60 backdrop-blur-sm">
           <div class="flex items-center justify-between mb-4">
             <span class="text-2xl font-black text-indigo-400">{pillar.step}</span>
             {pillar.tag && (
@@ -55,20 +55,20 @@ const securityPillars = [
             )}
           </div>
           <h3 class="text-lg font-semibold text-white mb-2">{pillar.title}</h3>
-          <p class="text-sm text-slate-400 leading-relaxed flex-1">{pillar.desc}</p>
+          <p class="text-sm text-zinc-400 leading-relaxed flex-1">{pillar.desc}</p>
         </div>
       ))}
     </div>
 
     <!-- Terminal-like technical callout -->
-    <div class="mt-12 rounded-2xl bg-slate-950 border border-slate-800 p-6 max-w-4xl mx-auto" dir="ltr">
-      <div class="flex items-center gap-2 mb-4 pb-3 border-b border-slate-800 text-xs text-slate-500 font-mono">
+    <div class="mt-12 rounded-2xl bg-zinc-950 border border-zinc-800 p-6 max-w-4xl mx-auto" dir="ltr">
+      <div class="flex items-center gap-2 mb-4 pb-3 border-b border-zinc-800 text-xs text-zinc-500 font-mono">
         <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
         <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
         <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
         <span class="ms-2">client-side-handshake.ts</span>
       </div>
-      <pre class="font-mono text-xs sm:text-sm text-slate-300 overflow-x-auto leading-relaxed">
+      <pre class="font-mono text-xs sm:text-sm text-zinc-300 overflow-x-auto leading-relaxed">
 <code>{`// 1. Session AES key derived via WebAuthn PRF
 const sessionKey = await crypto.subtle.generateKey(
 	{ name: "AES-GCM", length: 256 },

@@ -20,13 +20,13 @@ const t = useTranslations(lang);
 <Layout title={`DCP Cloud | ${t('nav.pricing')}`}>
   <Header />
   
-  <main class="min-h-screen bg-slate-50 dark:bg-slate-950 pt-20 pb-24">
+  <main class="min-h-screen bg-zinc-50 dark:bg-zinc-950 pt-20 pb-24">
     <!-- Hero Section -->
     <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20">
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6">
         {t('price.hero.title')}
       </h1>
-      <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400">
+      <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400">
         {t('price.hero.subtitle')}
       </p>
     </section>
@@ -36,75 +36,75 @@ const t = useTranslations(lang);
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
         
         <!-- Starter Tier -->
-        <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 shadow-sm">
-          <h4 class="text-lg font-semibold text-slate-900 dark:text-white">{t('price.starter.title')}</h4>
-          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 min-h-[40px]">{t('price.starter.desc')}</p>
+        <div class="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 shadow-sm">
+          <h4 class="text-lg font-semibold text-zinc-900 dark:text-white">{t('price.starter.title')}</h4>
+          <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400 min-h-[40px]">{t('price.starter.desc')}</p>
           <p class="mt-6 flex items-baseline gap-x-1">
-            <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">75 <SaudiRiyal class="text-[0.8em] font-normal"/></span>
-            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('price.month')}</span>
+            <span class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">75 <SaudiRiyal class="text-[0.8em] font-normal"/></span>
+            <span class="text-sm font-semibold leading-6 text-zinc-500 dark:text-zinc-400">/ {t('price.month')}</span>
           </p>
-          <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+          <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
             <li class="flex gap-x-3 items-center">
-              <Icon name="lucide:check" class="w-4 h-4 text-slate-400" /> {t('price.starter.feat1')}
+              <Icon name="lucide:check" class="w-4 h-4 text-zinc-400" /> {t('price.starter.feat1')}
             </li>
             <li class="flex gap-x-3 items-center">
-              <Icon name="lucide:check" class="w-4 h-4 text-slate-400" /> {t('price.starter.feat2')}
+              <Icon name="lucide:check" class="w-4 h-4 text-zinc-400" /> {t('price.starter.feat2')}
             </li>
             <li class="flex gap-x-3 items-center">
-              <Icon name="lucide:check" class="w-4 h-4 text-slate-400" /> {t('price.starter.feat3')}
+              <Icon name="lucide:check" class="w-4 h-4 text-zinc-400" /> {t('price.starter.feat3')}
             </li>
-            <li class="flex gap-x-3 items-center text-slate-400 dark:text-slate-500">
-              <Icon name="lucide:x" class="w-4 h-4 text-slate-300 dark:text-slate-600" /> {t('price.starter.feat4')}
+            <li class="flex gap-x-3 items-center text-zinc-400 dark:text-zinc-500">
+              <Icon name="lucide:x" class="w-4 h-4 text-zinc-300 dark:text-zinc-600" /> {t('price.starter.feat4')}
             </li>
           </ul>
         </div>
 
         <!-- Professional Tier (Recommended - User's Custom Card) -->
-        <div class="rounded-2xl border-2 border-indigo-500 bg-white dark:bg-slate-800 p-8 shadow-md relative md:scale-105 z-10">
-          <span class="absolute top-0 ltr:left-8 rtl:right-8 -translate-y-1/2 bg-indigo-500 text-white px-3 py-0.5 rounded-full text-xs font-semibold tracking-wide">
+        <div class="rounded-2xl border-2 border-indigo-500 bg-white dark:bg-zinc-800 p-8 shadow-md relative md:scale-105 z-10">
+          <span class="absolute top-0 ltr:left-8 rtl:right-8 -tranzinc-y-1/2 bg-indigo-500 text-white px-3 py-0.5 rounded-full text-xs font-semibold tracking-wide">
             {t('price.recommended')}
           </span>
-          <h4 class="text-lg font-semibold text-slate-900 dark:text-white">{t('price.pro.title')}</h4>
-          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 min-h-[40px]">{t('price.pro.desc')}</p>
+          <h4 class="text-lg font-semibold text-zinc-900 dark:text-white">{t('price.pro.title')}</h4>
+          <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400 min-h-[40px]">{t('price.pro.desc')}</p>
           <p class="mt-6 flex items-baseline gap-x-1">
-            <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">100 <SaudiRiyal class="text-[0.8em] font-normal"/></span>
-            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('price.month')}</span>
+            <span class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">100 <SaudiRiyal class="text-[0.8em] font-normal"/></span>
+            <span class="text-sm font-semibold leading-6 text-zinc-500 dark:text-zinc-400">/ {t('price.month')}</span>
           </p>
-          <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+          <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
             <li class="flex gap-x-3 items-center">
               <Icon name="lucide:check" class="w-4 h-4 text-indigo-500 font-bold" /> {t('price.starter.feat1')}
             </li>
             <li class="flex gap-x-3 items-center">
               <Icon name="lucide:check" class="w-4 h-4 text-indigo-500 font-bold" /> {t('price.pro.feat1')}
             </li>
-            <li class="flex gap-x-3 items-center font-semibold text-slate-900 dark:text-white">
+            <li class="flex gap-x-3 items-center font-semibold text-zinc-900 dark:text-white">
               <Icon name="lucide:check" class="w-4 h-4 text-indigo-500 font-bold" /> {t('price.pro.feat2')}
             </li>
             <li class="flex gap-x-3 items-center">
               <Icon name="lucide:check" class="w-4 h-4 text-indigo-500 font-bold" /> {t('price.pro.feat3')}
             </li>
-            <li class="flex gap-x-3 items-center font-semibold text-slate-900 dark:text-white">
+            <li class="flex gap-x-3 items-center font-semibold text-zinc-900 dark:text-white">
               <Icon name="lucide:check" class="w-4 h-4 text-indigo-500 font-bold" /> {t('price.pro.feat4')}
             </li>
           </ul>
         </div>
 
         <!-- Ultra Tier -->
-        <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 shadow-sm">
-          <h4 class="text-lg font-semibold text-slate-900 dark:text-white">{t('price.ultra.title')}</h4>
-          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 min-h-[40px]">{t('price.ultra.desc')}</p>
+        <div class="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 shadow-sm">
+          <h4 class="text-lg font-semibold text-zinc-900 dark:text-white">{t('price.ultra.title')}</h4>
+          <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400 min-h-[40px]">{t('price.ultra.desc')}</p>
           <p class="mt-6 flex items-baseline gap-x-1">
-            <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">500 <SaudiRiyal class="text-[0.8em] font-normal"/></span>
-            <span class="text-sm font-semibold leading-6 text-slate-500 dark:text-slate-400">/ {t('price.month')}</span>
+            <span class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">500 <SaudiRiyal class="text-[0.8em] font-normal"/></span>
+            <span class="text-sm font-semibold leading-6 text-zinc-500 dark:text-zinc-400">/ {t('price.month')}</span>
           </p>
-          <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+          <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
             <li class="flex gap-x-3 items-center">
               <Icon name="lucide:check" class="w-4 h-4 text-purple-500" /> {t('price.ultra.feat1')}
             </li>
             <li class="flex gap-x-3 items-center">
               <Icon name="lucide:check" class="w-4 h-4 text-purple-500" /> {t('price.pro.feat2')}
             </li>
-            <li class="flex gap-x-3 items-center font-semibold text-slate-900 dark:text-white">
+            <li class="flex gap-x-3 items-center font-semibold text-zinc-900 dark:text-white">
               <Icon name="lucide:check" class="w-4 h-4 text-purple-500" /> {t('price.ultra.feat2')}
             </li>
           </ul>
@@ -115,19 +115,19 @@ const t = useTranslations(lang);
 
     <!-- Corporate Teams Banner -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-      <div class="bg-slate-900 rounded-3xl p-8 md:p-10 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-8 shadow-lg relative overflow-hidden">
+      <div class="bg-zinc-900 rounded-3xl p-8 md:p-10 border border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-8 shadow-lg relative overflow-hidden">
         <!-- Background subtle glow -->
         <div class="absolute inset-0 bg-gradient-to-r from-sky-500/5 to-indigo-500/5 pointer-events-none"></div>
         
         <div class="flex-1 relative z-10">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-semibold mb-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-xs font-semibold mb-4">
             <Icon name="lucide:users" class="w-4 h-4" />
             {t('price.teams.min_seats')}
           </div>
           <h3 class="text-2xl font-bold text-white mb-2">{t('price.teams.title')}</h3>
-          <p class="text-slate-400 mb-6 max-w-2xl">{t('price.teams.desc')}</p>
+          <p class="text-zinc-400 mb-6 max-w-2xl">{t('price.teams.desc')}</p>
           
-          <ul class="flex flex-col sm:flex-row gap-4 sm:gap-8 text-sm text-slate-300">
+          <ul class="flex flex-col sm:flex-row gap-4 sm:gap-8 text-sm text-zinc-300">
             <li class="flex items-center gap-2">
               <Icon name="lucide:shield-check" class="w-4 h-4 text-sky-400" /> {t('price.teams.feat1')}
             </li>
@@ -141,7 +141,7 @@ const t = useTranslations(lang);
         </div>
         
         <div class="relative z-10 w-full md:w-auto">
-          <a href={`/${lang}/enterprise`} class="block w-full text-center bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 rounded-xl font-semibold transition shadow-sm">
+          <a href={`/${lang}/enterprise`} class="block w-full text-center bg-white text-zinc-900 hover:bg-zinc-100 px-8 py-4 rounded-xl font-semibold transition shadow-sm">
             {t('price.contact_sales')}
           </a>
         </div>
@@ -151,55 +151,55 @@ const t = useTranslations(lang);
     <!-- Drop-in API Pricing -->
     <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
       <div class="text-center mb-10">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{t('price.api.title')}</h2>
-        <p class="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl mx-auto">{t('price.api.subtitle')}</p>
+        <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">{t('price.api.title')}</h2>
+        <p class="text-zinc-600 dark:text-zinc-400 mt-2 max-w-2xl mx-auto">{t('price.api.subtitle')}</p>
       </div>
 
       <!-- Unified Base Price Banner -->
       <div class="mb-8 flex justify-center">
         <div class="inline-flex items-center gap-4 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/30 rounded-2xl px-6 py-4 shadow-sm">
           <Icon name="lucide:coins" class="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-          <span class="text-lg font-medium text-slate-700 dark:text-slate-300">
+          <span class="text-lg font-medium text-zinc-700 dark:text-zinc-300">
             {t('price.api.base')}:
           </span>
-          <span class="text-2xl font-bold text-slate-900 dark:text-white">
+          <span class="text-2xl font-bold text-zinc-900 dark:text-white">
             150 <SaudiRiyal class="text-[0.8em] font-normal text-indigo-600 dark:text-indigo-400" /> 
-            <span class="text-sm font-medium text-slate-500 dark:text-slate-400 ml-1">/ 1M Tokens</span>
+            <span class="text-sm font-medium text-zinc-500 dark:text-zinc-400 ml-1">/ 1M Tokens</span>
           </span>
         </div>
       </div>
 
       <!-- Weighted Multiplier Table -->
-      <div class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+      <div class="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
         <table class="w-full text-left text-sm whitespace-nowrap">
-          <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+          <thead class="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800">
             <tr>
-              <th scope="col" class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Model</th>
-              <th scope="col" class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{t('price.api.weight_in')}</th>
-              <th scope="col" class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{t('price.api.weight_out')}</th>
+              <th scope="col" class="px-6 py-4 font-semibold text-zinc-900 dark:text-white">Model</th>
+              <th scope="col" class="px-6 py-4 font-semibold text-zinc-900 dark:text-white">{t('price.api.weight_in')}</th>
+              <th scope="col" class="px-6 py-4 font-semibold text-zinc-900 dark:text-white">{t('price.api.weight_out')}</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-600 dark:text-slate-400">
-            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/20 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900 dark:text-white">dcp/fast</td>
+          <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-zinc-900 dark:text-white">dcp/fast</td>
               <td class="px-6 py-4">0.2x</td>
-              <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">0.6x</td>
+              <td class="px-6 py-4 font-semibold text-zinc-900 dark:text-white">0.6x</td>
             </tr>
-            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/20 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900 dark:text-white">dcp/pro</td>
+            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-zinc-900 dark:text-white">dcp/pro</td>
               <td class="px-6 py-4">1.0x</td>
-              <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">3.0x</td>
+              <td class="px-6 py-4 font-semibold text-zinc-900 dark:text-white">3.0x</td>
             </tr>
-            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/20 transition-colors">
-              <td class="px-6 py-4 font-mono font-medium text-slate-900 dark:text-white">dcp/deep-research</td>
+            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+              <td class="px-6 py-4 font-mono font-medium text-zinc-900 dark:text-white">dcp/deep-research</td>
               <td class="px-6 py-4">1.2x</td>
-              <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">3.6x</td>
+              <td class="px-6 py-4 font-semibold text-zinc-900 dark:text-white">3.6x</td>
             </tr>
           </tbody>
         </table>
       </div>
       
-      <p class="text-center text-sm text-slate-500 mt-4">
+      <p class="text-center text-sm text-zinc-500 mt-4">
         {t('price.api.note')}
       </p>
     </section>

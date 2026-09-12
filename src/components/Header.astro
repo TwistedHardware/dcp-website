@@ -5,7 +5,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<header class="sticky top-0 z-40 w-full backdrop-blur-lg bg-slate-900/80 border-b border-slate-800">
+<header class="sticky top-0 z-40 w-full backdrop-blur-lg bg-zinc-900/80 border-b border-zinc-800">
   <div class="flex items-center justify-between h-16">
       
       <!-- Logo -->
@@ -18,19 +18,19 @@ const t = useTranslations(lang);
 
       <!-- Center Desktop Navigation -->
       <nav class="hidden md:flex items-center gap-6 lg:gap-8">
-        <a href={`/${lang}/capabilities`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+        <a href={`/${lang}/capabilities`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
           {t('nav.capabilities')}
         </a>
-        <a href={`/${lang}/security`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+        <a href={`/${lang}/security`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
           {t('nav.security')}
         </a>
-        <a href={`/${lang}/pricing`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+        <a href={`/${lang}/pricing`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
           {t('nav.pricing')}
         </a>
-        <a href={`/${lang}/enterprise`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+        <a href={`/${lang}/enterprise`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
           {t('nav.enterprise')}
         </a>
-        <a href={`/${lang}/docs`} class="text-sm font-medium text-slate-300 hover:text-white transition">
+        <a href={`/${lang}/docs`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
           {t('nav.docs')}
         </a>
       </nav>
@@ -43,22 +43,22 @@ const t = useTranslations(lang);
           href={lang === 'en' ? '/ar' : '/en'} 
           lang={lang === 'en' ? 'ar' : 'en'}
           dir={lang === 'en' ? 'rtl' : 'ltr'}
-          class="text-sm font-medium text-slate-300 hover:text-white transition px-2 py-1"
+          class="text-sm font-medium text-zinc-300 hover:text-white transition px-2 py-1"
         >
           {lang === 'en' ? 'العربية' : 'English'}
         </a>
 
         <!-- Divider -->
-        <div class="w-px h-5 bg-slate-700 hidden sm:block"></div>
+        <div class="w-px h-5 bg-zinc-700 hidden sm:block"></div>
 
         <!-- Logged Out State -->
-        <button id="login-btn" class="text-sm font-semibold text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-2 rounded-lg transition">
+        <button id="login-btn" class="text-sm font-semibold text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 px-4 py-2 rounded-lg transition">
           {t('nav.login')}
         </button>
 
         <!-- Logged In State (Hidden by default, revealed by JS) -->
         <div id="logged-in-actions" class="hidden items-center gap-2 sm:gap-3">
-          <button id="logout-btn" class="text-sm font-medium text-slate-400 hover:text-slate-200 transition px-2 py-2">
+          <button id="logout-btn" class="text-sm font-medium text-zinc-400 hover:text-zinc-200 transition px-2 py-2">
             {t('nav.logout')}
           </button>
           <a href={`/${lang}/chat`} class="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg transition shadow-lg shadow-indigo-500/20">

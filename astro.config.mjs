@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import svelte from '@astrojs/svelte';
 import icon from 'astro-icon';
+import typography from '@tailwindcss/typography';
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,7 +15,7 @@ export default defineConfig({
     enabled: false
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), typography],
     server: {
       hmr: false,
       ws: false,

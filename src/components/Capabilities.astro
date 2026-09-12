@@ -36,32 +36,32 @@ const capabilities = [
 ];
 ---
 
-<section class="py-24 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+<section class="py-24 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+      <h2 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
         {t('home.section_title')} 
       </h2>
-      <p class="mt-4 max-w-2xl text-lg text-slate-600 dark:text-slate-400 mx-auto">
+      <p class="mt-4 max-w-2xl text-lg text-zinc-600 dark:text-zinc-400 mx-auto">
         {t('home.section_subtitle')}
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-start">
       {capabilities.map(cap => (
-        <div class="relative flex flex-col p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+        <div class="relative flex flex-col p-8 rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow">
           <div class="flex items-start justify-between mb-6">
             <div class={`w-12 h-12 rounded-xl flex items-center justify-center ${cap.iconBg}`}>
               <Icon name={cap.icon} class={`w-6 h-6 ${cap.iconColor}`} />
             </div>
             
-            <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs font-semibold text-slate-800 dark:text-slate-200">
+            <span class="inline-flex items-center rounded-full bg-zinc-100 dark:bg-zinc-700 px-3 py-1 text-xs font-semibold text-zinc-800 dark:text-zinc-200">
               {cap.badge}
             </span>
           </div>
           
-          <h3 class="text-xl font-semibold text-slate-900 dark:text-white font-mono mb-2">{cap.title}</h3>
-          <p class="text-slate-600 dark:text-slate-400 flex-1 leading-relaxed">{cap.desc}</p>
+          <h3 class="text-xl font-semibold text-zinc-900 dark:text-white font-mono mb-2">{cap.title}</h3>
+          <p class="text-zinc-600 dark:text-zinc-400 flex-1 leading-relaxed">{cap.desc}</p>
         </div>
       ))}
     </div>

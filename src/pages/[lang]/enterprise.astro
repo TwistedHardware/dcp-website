@@ -19,13 +19,13 @@ const t = useTranslations(lang);
 <Layout title={`DCP Cloud | ${t('nav.enterprise')}`}>
   <Header />
   
-  <main class="min-h-screen bg-slate-50 dark:bg-slate-950 pt-20 pb-24">
+  <main class="min-h-screen bg-zinc-50 dark:bg-zinc-950 pt-20 pb-24">
     <!-- Hero Section -->
     <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-24">
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6">
         {t('ent.hero.title')}
       </h1>
-      <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400">
+      <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400">
         {t('ent.hero.subtitle')}
       </p>
     </section>
@@ -33,39 +33,39 @@ const t = useTranslations(lang);
     <!-- Custom Solutions Grid -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
       <div class="text-center mb-12">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{t('ent.sol.title')}</h2>
+        <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">{t('ent.sol.title')}</h2>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Agentic Workflows -->
-        <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition">
           <div class="w-12 h-12 bg-sky-500/10 rounded-xl flex items-center justify-center mb-6">
             <Icon name="lucide:bot" class="w-6 h-6 text-sky-500" />
           </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">{t('ent.sol.agents.title')}</h3>
-          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+          <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">{t('ent.sol.agents.title')}</h3>
+          <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
             {t('ent.sol.agents.desc')}
           </p>
         </div>
 
         <!-- Private Data -->
-        <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition">
           <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-6">
             <Icon name="lucide:database" class="w-6 h-6 text-indigo-500" />
           </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">{t('ent.sol.data.title')}</h3>
-          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+          <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">{t('ent.sol.data.title')}</h3>
+          <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
             {t('ent.sol.data.desc')}
           </p>
         </div>
 
         <!-- Custom Models -->
-        <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition">
           <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
             <Icon name="lucide:box" class="w-6 h-6 text-purple-500" />
           </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">{t('ent.sol.models.title')}</h3>
-          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+          <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">{t('ent.sol.models.title')}</h3>
+          <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
             {t('ent.sol.models.desc')}
           </p>
         </div>
@@ -77,7 +77,7 @@ const t = useTranslations(lang);
       <div class="flex flex-col gap-8">
         
         <!-- ZKS Solved -->
-        <div class="bg-slate-900 p-8 md:p-12 rounded-3xl border border-slate-800 shadow-lg flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-hidden">
+        <div class="bg-zinc-900 p-8 md:p-12 rounded-3xl border border-zinc-800 shadow-lg flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-hidden">
           <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none"></div>
           <div class="shrink-0 relative z-10">
             <div class="w-16 h-16 bg-emerald-500/20 rounded-2xl flex items-center justify-center">
@@ -86,7 +86,7 @@ const t = useTranslations(lang);
           </div>
           <div class="relative z-10">
             <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">{t('ent.zks.title')}</h3>
-            <p class="text-slate-400 text-lg leading-relaxed">
+            <p class="text-zinc-400 text-lg leading-relaxed">
               {t('ent.zks.desc')}
             </p>
           </div>
@@ -100,8 +100,8 @@ const t = useTranslations(lang);
             </div>
           </div>
           <div class="relative z-10">
-            <h3 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">{t('ent.compute.title')}</h3>
-            <p class="text-slate-700 dark:text-slate-400 text-lg leading-relaxed">
+            <h3 class="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white mb-4">{t('ent.compute.title')}</h3>
+            <p class="text-zinc-700 dark:text-zinc-400 text-lg leading-relaxed">
               {t('ent.compute.desc')}
             </p>
           </div>
@@ -112,32 +112,32 @@ const t = useTranslations(lang);
 
     <!-- Contact Form Section -->
     <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div class="bg-white dark:bg-zinc-900 p-8 md:p-10 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
         <div class="text-center mb-8">
-          <Icon name="lucide:mail" class="w-8 h-8 text-slate-900 dark:text-white mx-auto mb-4" />
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{t('ent.form.title')}</h2>
+          <Icon name="lucide:mail" class="w-8 h-8 text-zinc-900 dark:text-white mx-auto mb-4" />
+          <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">{t('ent.form.title')}</h2>
         </div>
         
         <form class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">{t('ent.form.name')}</label>
-              <input type="text" id="name" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none" required />
+              <label for="name" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">{t('ent.form.name')}</label>
+              <input type="text" id="name" class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none" required />
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">{t('ent.form.email')}</label>
-              <input type="email" id="email" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none" required />
+              <label for="email" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">{t('ent.form.email')}</label>
+              <input type="email" id="email" class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none" required />
             </div>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label for="company" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">{t('ent.form.company')}</label>
-              <input type="text" id="company" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none" required />
+              <label for="company" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">{t('ent.form.company')}</label>
+              <input type="text" id="company" class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none" required />
             </div>
             <div>
-              <label for="interest" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">{t('ent.form.interest')}</label>
-              <select id="interest" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none appearance-none">
+              <label for="interest" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">{t('ent.form.interest')}</label>
+              <select id="interest" class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none appearance-none">
                 <option>{t('ent.form.opt_agents')}</option>
                 <option>{t('ent.form.opt_data')}</option>
                 <option>{t('ent.form.opt_compute')}</option>
