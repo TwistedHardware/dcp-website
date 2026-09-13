@@ -15,7 +15,7 @@ export default defineConfig({
     enabled: false
   },
   vite: {
-    plugins: [tailwindcss(), typography],
+    plugins: [tailwindcss()],
     server: {
       hmr: false,
       ws: false,
