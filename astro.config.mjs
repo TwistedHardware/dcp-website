@@ -23,6 +23,6 @@ export default defineConfig({
   },
   server: {
     host: true, // required to listen on 0.0.0.0 for external/proxy traffic
-    allowedHosts: ['ln.tejory.io'], // or true to allow all
+    allowedHosts: ['ln.tejory.io', 'dcp.tc-sa.com', 'dcp.sa'], // or true to allow all
   },
 });
