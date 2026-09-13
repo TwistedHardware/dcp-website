@@ -96,7 +96,7 @@
     const publicKey = localStorage.getItem("public_key");
 
     try {
-      const response = await fetch("https://ln.tejory.io/api/v1/chat/completions", {
+      const response = await fetch("https://api.dcp.tc-sa.com/api/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
