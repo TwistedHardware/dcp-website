@@ -279,6 +279,7 @@ const t = useTranslations(lang);
 
         const finishRes = await fetch(`${BASE_URL}/api/signup/finish?session_token=${data.sessionToken}`, {
           method: "POST",
+					credentials: 'include',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         });
@@ -319,6 +320,7 @@ const t = useTranslations(lang);
 
         const finishRes = await fetch(`${BASE_URL}/api/login/finish?session_token=${data.sessionToken}`, {
           method: "POST",
+					credentials: 'include',
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         });

@@ -19,7 +19,7 @@ const codeExamples = {
   python: `from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.dcp.cloud/v1",
+    base_url="https://api.dcp.sa/v1",
     api_key="dcp_your_api_key_here"
 )
 
@@ -35,7 +35,7 @@ print(response.choices[0].message.content)`,
   ts: `import OpenAI from 'openai';
 
 const openai = new OpenAI({
-    baseURL: 'https://api.dcp.cloud/v1',
+    baseURL: 'https://api.dcp.sa/v1',
     apiKey: 'dcp_your_api_key_here'
 });
 
@@ -58,7 +58,7 @@ import (
 
 func main() {
     config := openai.DefaultConfig("dcp_your_api_key_here")
-    config.BaseURL = "https://api.dcp.cloud/v1"
+    config.BaseURL = "https://api.dcp.sa/v1"
     client := openai.NewClientWithConfig(config)
 
     resp, _ := client.CreateChatCompletion(
@@ -73,7 +73,7 @@ func main() {
     fmt.Println(resp.Choices[0].Message.Content)
 }`,
 
-  curl: `curl https://api.dcp.cloud/v1/chat/completions \\
+  curl: `curl https://api.dcp.sa/v1/chat/completions \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer dcp_your_api_key_here" \\
   -d '{
@@ -107,7 +107,7 @@ func main() {
           <h2 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">{t('docs.endpoint.title')}</h2>
           <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">{t('docs.endpoint.desc')}</p>
           <code class="block bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-xl text-sm font-mono text-indigo-600 dark:text-indigo-400 border border-zinc-200 dark:border-zinc-800">
-            https://api.dcp.cloud/v1
+            https://api.dcp.sa/v1
           </code>
         </div>
         
