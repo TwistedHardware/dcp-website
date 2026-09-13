@@ -4,15 +4,16 @@ import "../styles/global.css";
 
 interface Props {
   title: string;
+  lang?: keyof typeof languages;
 }
 
-const { title } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
-const direction = languages[lang].dir;
+const { title, lang } = Astro.props;
+const currentLang = lang || getLangFromUrl(Astro.url);
+const direction = languages[currentLang].dir;
 ---
 
 <!doctype html>
-<html lang={lang} dir={direction} class="scroll-smooth">
+<html lang={currentLang} dir={direction} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
