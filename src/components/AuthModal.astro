@@ -68,42 +68,42 @@ const t = useTranslations(lang);
   txtHasAccount: t('auth.hasAccount'),
   txtToggleSignUp: t('auth.signUpToggle'),
   txtToggleSignIn: t('auth.signInToggle'),
-  txtSessionExpired: t('auth.sessionExpired'),
-  txtWorkspace: t('auth.workspace') || 'Workspace' // Fallback just in case
+  txtSessionExpired: t('auth.sessionExpired')
 }}>
   const initAuthModal = () => {
-    console.log("1");
+    const BASE_URL = "https://api.dcp.tc-sa.com";
 
-    const BASE_URL = "https://api.dcp.tc-sa.com"; 
-    
-    // --- Check Auth State for Workspace Button ---
-    const token = localStorage.getItem('token');
-    const expiry = localStorage.getItem('token_expiry');
-    // Check if token exists and expiry is in the future (assuming Unix timestamp in seconds)
-    const isLoggedIn = token && expiry && (parseInt(expiry) > Math.floor(Date.now() / 1000));
+    // --- Auth state ---
+    const isLoggedIn = () => {
+      const token = localStorage.getItem('token');
+      const expiry = parseInt(localStorage.getItem('token_expiry'), 10);
+      return !!(token && expiry && !isNaN(expiry) && expiry > Math.floor(Date.now() / 1000));
+    };
 
-    const loginBtns = document.querySelectorAll('#login-btn');
-    
-    if (isLoggedIn) {
-      // User is logged in: Morph the Login button(s) into Workspace button(s)
-      loginBtns.forEach(btn => {
-        btn.textContent = txtWorkspace;
-        btn.id = 'workspace-btn'; // Remove 'login-btn' so the modal listener ignores it
-        
-        // If it's an anchor tag, just update the href
-        if (btn.tagName === 'A') {
-          btn.href = `/${lang}/chat`;
-        } 
-        
-        // Add click listener to route to workspace
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          window.location.href = `/${lang}/chat`;
-        });
-      });
+    // --- Sync header UI (login button vs logged-in actions) ---
+    function syncHeaderAuth() {
+      const loginBtn = document.getElementById('login-btn');
+      const loggedInActions = document.getElementById('logged-in-actions');
+      if (!loginBtn || !loggedInActions) return;
+
+      if (isLoggedIn()) {
+        loginBtn.classList.add('hidden');
+        loggedInActions.classList.remove('hidden');
+        loggedInActions.classList.add('flex');
+      } else {
+        loginBtn.classList.remove('hidden');
+        loggedInActions.classList.add('hidden');
+        loggedInActions.classList.remove('flex');
+      }
     }
 
-    // UI Elements
+    // Run now, on DOM ready, and after Astro transitions
+    syncHeaderAuth();
+    document.addEventListener('DOMContentLoaded', syncHeaderAuth);
+    document.addEventListener('astro:page-load', syncHeaderAuth);
+    document.addEventListener('astro:after-swap', syncHeaderAuth);
+
+    // --- UI Elements ---
     const modal = document.getElementById('auth-modal');
     const closeBtn = document.getElementById('close-modal');
     const passkeyBtn = document.getElementById('passkey-btn');
@@ -119,7 +119,7 @@ const t = useTranslations(lang);
     const modalSubtitle = document.getElementById('modal-subtitle');
 
     // Modes: 'login', 'signup_step1', 'signup_step2'
-    let currentMode = localStorage.getItem('dcp_known_user') ? 'login' : 'signup_step1'; 
+    let currentMode = localStorage.getItem('dcp_known_user') ? 'login' : 'signup_step1';
     let ssoSessionToken = null;
 
     // --- UI State Helpers ---
@@ -127,53 +127,40 @@ const t = useTranslations(lang);
 
     function updateModalUIForMode() {
       hideStatus();
-      
+
       if (currentMode === 'login') {
         modalTitle.innerText = txtTitleLogin;
         modalSubtitle.innerText = txtSubLogin;
         passkeyText.innerText = txtLogin;
         togglePrefix.innerText = txtNoAccount;
         authToggleBtn.innerText = txtToggleSignUp;
-        
+
         signupStep1Section.classList.add('hidden');
         passkeyBtn.classList.remove('hidden');
         passkeyBtn.classList.add('flex');
         toggleContainer.classList.remove('hidden');
-        
+
       } else if (currentMode === 'signup_step1') {
         modalTitle.innerText = txtTitleSignup;
         modalSubtitle.innerText = txtSubSignup;
         togglePrefix.innerText = txtHasAccount;
         authToggleBtn.innerText = txtToggleSignIn;
-        
+
         signupStep1Section.classList.remove('hidden');
         passkeyBtn.classList.add('hidden');
         passkeyBtn.classList.remove('flex');
         toggleContainer.classList.remove('hidden');
-        
+
       } else if (currentMode === 'signup_step2') {
         modalTitle.innerText = txtTitleStep2;
         modalSubtitle.innerText = txtSubStep2;
         passkeyText.innerText = txtSignup;
-        
+
         signupStep1Section.classList.add('hidden');
         passkeyBtn.classList.remove('hidden');
         passkeyBtn.classList.add('flex');
         toggleContainer.classList.add('hidden');
       }
-    }
-
-    // --- Check for SSO Callback ---
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('setup_passkey') === 'true') {
-      ssoSessionToken = urlParams.get('session_token');
-      currentMode = 'signup_step2';
-      updateModalUIForMode();
-      openModal();
-      
-      window.history.replaceState({}, document.title, window.location.pathname);
-    } else {
-      updateModalUIForMode();
     }
 
     // --- Modal Controls ---
@@ -193,21 +180,34 @@ const t = useTranslations(lang);
       }
     }
 
-    // Listen to all clicks on the document to capture dynamically rendered buttons
+    // --- SSO Callback (open modal on signup_step2) ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('setup_passkey') === 'true') {
+      ssoSessionToken = urlParams.get('session_token');
+      currentMode = 'signup_step2';
+      updateModalUIForMode();
+      openModal();
+
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+      updateModalUIForMode();
+    }
+
+    // Delegate click on the login button (survives re-renders)
     document.addEventListener('click', (e) => {
-      // If the clicked element (or its parent) has the id 'login-btn', open modal
       if (e.target.closest('#login-btn')) {
         e.preventDefault();
         openModal();
       }
     });
-    
+
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    
+
     if (modal) {
       modal.addEventListener('click', (e) => {
         const rect = modal.getBoundingClientRect();
-        if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
+        if (e.clientX < rect.left || e.clientX > rect.right ||
+            e.clientY < rect.top  || e.clientY > rect.bottom) {
           closeModal();
         }
       });
@@ -252,7 +252,7 @@ const t = useTranslations(lang);
 
     async function performSignup() {
       try {
-        const endpoint = ssoSessionToken 
+        const endpoint = ssoSessionToken
           ? `${BASE_URL}/api/signup/start?session_token=${ssoSessionToken}`
           : `${BASE_URL}/api/signup/start`;
 
@@ -282,10 +282,10 @@ const t = useTranslations(lang);
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         });
-        
+
         if (!finishRes.ok) throw new Error(await finishRes.text());
         const res = await finishRes.json();
-        
+
         handleSuccess(res.token, res.expiry, res.publicKey, "Registration successful!");
       } catch (err) {
         console.error(err);
@@ -322,10 +322,10 @@ const t = useTranslations(lang);
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         });
-        
+
         if (!finishRes.ok) throw new Error(await finishRes.text());
         const res = await finishRes.json();
-        
+
         handleSuccess(res.token, res.expiry, res.publicKey, "Login successful!");
       } catch (err) {
         console.error(err);
@@ -337,11 +337,13 @@ const t = useTranslations(lang);
       localStorage.setItem("token", token);
       localStorage.setItem("token_expiry", expiry);
       localStorage.setItem("public_key", publicKey);
-      
       localStorage.setItem("dcp_known_user", "true");
-      
+
       showStatus(msg, false);
-      
+
+      // Update header immediately (no page reload)
+      syncHeaderAuth();
+
       setTimeout(() => {
         window.location.href = `/${lang}/chat`;
       }, 800);
