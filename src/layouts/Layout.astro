@@ -1,4 +1,5 @@
 ---
+import AuthModal from "../components/AuthModal.astro";
 import { getLangFromUrl, languages } from "../i18n/utils";
 import "../styles/global.css";
 
@@ -50,5 +51,6 @@ const direction = languages[currentLang].dir;
         }
       });
     </script>
+		<AuthModal />
   </body>
 </html>
