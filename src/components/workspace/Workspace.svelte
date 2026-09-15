@@ -55,10 +55,10 @@
 		currentSessionId = crypto.randomUUID();
 	}
 
-	function handleSelectSession(event: CustomEvent<{ id: string }>) {
-		isSecretMode = false;
-		currentSessionId = event.detail.id;
-	}
+	function handleSelectSession({ id }: { id: string }) {
+    isSecretMode = false;
+    currentSessionId = id;
+  }
 </script>
 
 <div
@@ -68,11 +68,11 @@
 	<Sidebar
 		{sessions}
 		{isSecretMode}
-		bind:isOpen={isSidebarOpen}
-		on:newSession={handleNewSession}
-		on:startSecret={handleStartSecret}
-		on:selectSession={handleSelectSession}
-		on:openSettings={() => (isSettingsOpen = true)}
+		isOpen={true}
+		onNewSession={handleNewSession}
+		onStartSecret={handleStartSecret}
+		onSelectSession={handleSelectSession}
+		onOpenSettings={() => (isSettingsOpen = true)}
 	/>
 
 	<!-- Right Execution Canvas Area -->
@@ -95,5 +95,5 @@
 
 <!-- Integration & API Key Vault Modal -->
 {#if isSettingsOpen}
-	<SettingsModal on:close={() => (isSettingsOpen = false)} />
+  <SettingsModal {lang} onclose={() => (isSettingsOpen = false)} />
 {/if}

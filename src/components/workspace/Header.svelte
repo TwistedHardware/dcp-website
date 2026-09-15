@@ -14,7 +14,11 @@
 	} = $props();
 
 	$effect(() => {
-		window.lucide?.createIcons();
+		// Track the state that changes which icons render
+		void isSecretMode;
+		void isSidebarOpen;
+		// Re-run Lucide after Svelte flushes the DOM
+		queueMicrotask(() => window.lucide?.createIcons());
 	});
 </script>
 
