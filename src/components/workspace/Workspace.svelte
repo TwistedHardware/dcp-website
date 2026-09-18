@@ -68,7 +68,7 @@
 	<Sidebar
 		{sessions}
 		{isSecretMode}
-		isOpen={true}
+		isOpen={isSidebarOpen}
 		onNewSession={handleNewSession}
 		onStartSecret={handleStartSecret}
 		onSelectSession={handleSelectSession}

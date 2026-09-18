@@ -180,15 +180,25 @@ const t = useTranslations(lang);
       }
     }
 
-    // --- SSO Callback (open modal on signup_step2) ---
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('setup_passkey') === 'true') {
-      ssoSessionToken = urlParams.get('session_token');
+		// --- SSO Callback (open modal on signup_step2 via URL hash fragment) ---
+    const hashString = window.location.hash.startsWith('#')
+      ? window.location.hash.substring(1)
+      : window.location.hash;
+
+    const hashParams = new URLSearchParams(hashString);
+
+    if (hashParams.get('setup_passkey') === 'true') {
+      ssoSessionToken = hashParams.get('session_token');
       currentMode = 'signup_step2';
       updateModalUIForMode();
       openModal();
 
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // Clean the hash fragment from the address bar without reloading the page
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname + window.location.search
+      );
     } else {
       updateModalUIForMode();
     }

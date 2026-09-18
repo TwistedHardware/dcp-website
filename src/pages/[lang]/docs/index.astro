@@ -41,7 +41,7 @@ const openai = new OpenAI({
 
 const response = await openai.chat.completions.create({
     model: 'dcp/pro',
-    messages=[
+    messages: [
 			{"role": "user", "content": "Tell me a knock-knock joke about vibe coding."}
 		]
 });
@@ -78,7 +78,7 @@ func main() {
   -H "Authorization: Bearer dcp_your_api_key_here" \\
   -d '{
     "model": "dcp/pro",
-    "messages":[
+    "messages": [
 			{"role": "user", "content": "Tell me a knock-knock joke about vibe coding."}
 		]
   }'`
