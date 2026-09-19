@@ -50,16 +50,17 @@
 <!-- Sidebar Container -->
 <aside
   class={`
-    fixed inset-y-0 start-0 z-40 flex flex-col bg-zinc-950 border-e border-zinc-800/80 transition-all duration-300 ease-in-out shrink-0
-    md:relative md:z-20
+    fixed inset-y-0 start-0 z-40 flex flex-col bg-zinc-950 border-e border-zinc-800/80 overflow-hidden shrink-0
+    w-72 transition-transform duration-300 ease-in-out
+    md:fixed-none md:relative md:z-20 md:translate-x-0 md:transition-[width]
     ${
       isOpen
-        ? "w-72 translate-x-0 shadow-2xl md:shadow-none"
-        : "w-0 -translate-x-full md:w-0 md:-translate-x-full border-e-0 overflow-hidden"
+        ? "translate-x-0 shadow-2xl md:shadow-none md:w-72"
+        : "-translate-x-full md:w-0 md:border-e-0"
     }
   `}
 >
-  <div class="p-4 flex flex-col h-full w-72">
+  <div class="p-4 flex flex-col h-full w-72 shrink-0">
     <!-- Brand / Logo Area + Mobile Close Button -->
     <div class="flex items-center justify-between mb-8 px-2 mt-2">
       <div class="flex items-center gap-3">
