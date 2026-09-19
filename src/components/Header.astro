@@ -69,3 +69,32 @@ const t = useTranslations(lang);
       </div>
     </div>
 </header>
+
+<script>
+  function setupAuth() {
+    const logoutBtn = document.getElementById('logout-btn');
+    const loginBtn = document.getElementById('login-btn');
+    const loggedInActions = document.getElementById('logged-in-actions');
+
+    // Optional: Sync UI visibility based on token presence
+    const token = localStorage.getItem('token');
+    if (token && loggedInActions && loginBtn) {
+      loggedInActions.classList.remove('hidden');
+      loggedInActions.classList.add('flex');
+      loginBtn.classList.add('hidden');
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('public_key');
+        localStorage.removeItem('token');
+        localStorage.removeItem('token_expiry');
+        window.location.reload();
+      });
+    }
+  }
+
+  // Runs on initial load and handles Astro View Transitions if enabled
+  setupAuth();
+  document.addEventListener('astro:page-load', setupAuth);
+</script>
