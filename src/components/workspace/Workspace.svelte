@@ -8,7 +8,7 @@
 	export let lang: string = "en";
 	export let i18n: Record<string, string> = {};
 
-	let isSidebarOpen = true;
+	let isSidebarOpen = false;
 	let isSecretMode = false;
 	let isSettingsOpen = false;
 
@@ -25,24 +25,29 @@
 	];
 
 	onMount(() => {
-		// Client-side auth guard
-		const token = localStorage.getItem("token");
-		const expiry = localStorage.getItem("token_expiry");
+    // 1. Check screen width: open on desktop, keep closed on mobile
+    if (window.innerWidth >= 768) {
+      isSidebarOpen = true;
+    }
 
-		const isExpired = () => {
-			if (!token || !expiry) return true;
-			const expiryTime = !isNaN(Number(expiry))
-				? String(expiry).length === 10
-					? Number(expiry) * 1000
-					: Number(expiry)
-				: new Date(expiry).getTime();
-			return Date.now() > expiryTime;
-		};
+    // Auth guard...
+    const token = localStorage.getItem("token");
+    const expiry = localStorage.getItem("token_expiry");
 
-		if (isExpired()) {
-			window.location.href = `/${lang}/`;
-		}
-	});
+    const isExpired = () => {
+      if (!token || !expiry) return true;
+      const expiryTime = !isNaN(Number(expiry))
+        ? String(expiry).length === 10
+          ? Number(expiry) * 1000
+          : Number(expiry)
+        : new Date(expiry).getTime();
+      return Date.now() > expiryTime;
+    };
+
+    if (isExpired()) {
+      window.location.href = `/${lang}/`;
+    }
+  });
 
 	function handleNewSession() {
 		isSecretMode = false;
