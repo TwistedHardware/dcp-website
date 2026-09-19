@@ -14,11 +14,7 @@
   } = $props();
 
   function handleBack() {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = `/${lang}`;
-    }
+    window.location.href = `/${lang}`;
   }
 
   $effect(() => {
