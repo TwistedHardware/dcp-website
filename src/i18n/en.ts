@@ -166,14 +166,14 @@ export const en = {
   'price.starter.feat3': 'Zero-Knowledge Workspace',
   'price.starter.feat4': 'No API access',
   
-  'price.pro.title': 'Professional',
+  'price.pro.title': 'Premium',
   'price.pro.desc': 'The complete toolkit for power users, analysts, and researchers.',
   'price.pro.feat1': '2X dcp/pro quota',
   'price.pro.feat2': 'dcp/deep-research access',
   'price.pro.feat3': 'Drop-in API access',
   'price.pro.feat4': '10h/week of CPU/GPU time (Jupyter)',
   
-  'price.ultra.title': 'Ultra',
+  'price.ultra.title': 'Advanced',
   'price.ultra.desc': 'Massive capacity for heavy institutional workloads.',
   'price.ultra.feat1': '10X dcp/pro quota',
   'price.ultra.feat2': 'Highest priority compute',

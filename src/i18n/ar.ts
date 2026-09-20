@@ -166,14 +166,14 @@ export const ar = {
   'price.starter.feat3': 'مساحة عمل مشفرة بالكامل',
   'price.starter.feat4': 'لا تشمل الوصول للـ API',
   
-  'price.pro.title': 'الاحترافية (Professional)',
+  'price.pro.title': 'الاحترافية (Premium)',
   'price.pro.desc': 'مجموعة الأدوات المتكاملة للمستخدمين المتقدمين والمحللين والباحثين.',
   'price.pro.feat1': 'حصة مضاعفة (2X) لنموذج dcp/pro',
   'price.pro.feat2': 'وصول لنموذج البحث العميق dcp/deep-research',
   'price.pro.feat3': 'وصول لواجهة برمجة التطبيقات (API)',
   'price.pro.feat4': '10 ساعات/أسبوع من وقت معالجة CPU/GPU (Jupyter)',
   
-  'price.ultra.title': 'الفائقة (Ultra)',
+  'price.ultra.title': 'الفائقة (Advanced)',
   'price.ultra.desc': 'سعة هائلة لأعباء العمل المؤسسية الثقيلة.',
   'price.ultra.feat1': 'حصة ضخمة (10X) لنموذج dcp/pro',
   'price.ultra.feat2': 'أولوية قصوى لمعالجة البيانات',
