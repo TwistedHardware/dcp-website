@@ -1,7 +1,7 @@
 <script lang="ts">
-  // Svelte 5: bindable isOpen so closing the backdrop/close-button syncs upstream
   let {
     sessions = [],
+    activeSessionId = "",
     isSecretMode = false,
     isOpen = $bindable(true),
     onNewSession,
@@ -9,7 +9,14 @@
     onSelectSession,
     onOpenSettings
   }: {
-    sessions?: Array<{ id: string; title: string; timestamp: string }>;
+    sessions?: Array<{
+      sessionId: string;
+      title: string;
+      createdAt?: string;
+      lastUpdate?: string;
+      isGeneratingTitle?: boolean;
+    }>;
+    activeSessionId?: string;
     isSecretMode?: boolean;
     isOpen?: boolean;
     onNewSession?: () => void;
@@ -18,7 +25,23 @@
     onOpenSettings?: () => void;
   } = $props();
 
-  // Handle session selection and auto-close sidebar on mobile
+  function formatTime(isoStr?: string): string {
+    if (!isoStr) return "";
+    const d = new Date(isoStr);
+    const now = new Date();
+    const diffMs = now.getTime() - d.getTime();
+    const diffMin = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMin / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMin < 1) return "Just now";
+    if (diffMin < 60) return `${diffMin}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays === 1) return "Yesterday";
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return d.toLocaleDateString([], { month: "short", day: "numeric" });
+  }
+
   function handleSessionClick(id: string) {
     onSelectSession?.({ id });
     if (typeof window !== "undefined" && window.innerWidth < 768) {
@@ -61,7 +84,7 @@
   `}
 >
   <div class="p-4 flex flex-col h-full w-72 shrink-0">
-    <!-- Brand / Logo Area + Mobile Close Button -->
+    <!-- Brand / Logo Area -->
     <div class="flex items-center justify-between mb-8 px-2 mt-2">
       <div class="flex items-center gap-3">
         <div class="h-8 w-8 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 p-[1px]">
@@ -72,7 +95,6 @@
         <span class="font-semibold text-zinc-100 tracking-tight">DCP Cloud</span>
       </div>
 
-      <!-- Mobile-only explicit close button -->
       <button
         type="button"
         onclick={() => (isOpen = false)}
@@ -90,7 +112,7 @@
         onclick={() => onNewSession?.()}
         class={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all text-sm font-medium ${
           !isSecretMode
-            ? "bg-zinc-800/50 border-zinc-700 text-zinc-100"
+            ? "bg-zinc-800/50 border-zinc-700 text-zinc-100 hover:bg-zinc-800"
             : "bg-transparent border-transparent text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200"
         }`}
       >
@@ -98,7 +120,6 @@
         New Workspace
       </button>
 
-      <!-- The ZKS Ignition Button -->
       <button
         type="button"
         onclick={() => onStartSecret?.()}
@@ -139,25 +160,44 @@
             History Vault Locked.<br/>ZKS Session Active.
           </p>
         </div>
+      {:else if sessions.length === 0}
+        <p class="px-3 text-xs text-zinc-600 mt-2">No recent workspaces</p>
       {:else}
         <div class="space-y-1">
-          {#each sessions as session (session.id)}
+          {#each sessions as session (session.sessionId)}
+            {@const isSelected = session.sessionId === activeSessionId}
             <button
               type="button"
-              onclick={() => handleSessionClick(session.id)}
-              class="w-full flex flex-col items-start px-3 py-2 rounded-lg hover:bg-zinc-800/50 transition-colors text-start group"
+              onclick={() => handleSessionClick(session.sessionId)}
+              class={`w-full flex flex-col items-start px-3 py-2 rounded-lg transition-colors text-start group ${
+                isSelected
+                  ? "bg-zinc-800/90 border border-zinc-700/60"
+                  : "hover:bg-zinc-800/40 border border-transparent"
+              }`}
             >
-              <span class="text-sm text-zinc-300 font-medium truncate w-full group-hover:text-zinc-100 transition-colors">
-                {session.title}
+              {#if session.isGeneratingTitle}
+                <!-- Shimmer placeholder animation -->
+                <div class="flex items-center gap-2 w-full py-1">
+                  <div class="h-2.5 w-2.5 rounded-full border-2 border-sky-400 border-t-transparent animate-spin shrink-0"></div>
+                  <div class="h-3 w-3/4 rounded bg-zinc-800 animate-pulse"></div>
+                </div>
+              {:else}
+                <span class={`text-sm font-medium truncate w-full transition-colors ${
+                  isSelected ? "text-zinc-100" : "text-zinc-300 group-hover:text-zinc-100"
+                }`}>
+                  {session.title || "New Workspace"}
+                </span>
+              {/if}
+              <span class="text-[10px] text-zinc-500 mt-0.5">
+                {formatTime(session.lastUpdate || session.createdAt)}
               </span>
-              <span class="text-[10px] text-zinc-500">{session.timestamp}</span>
             </button>
           {/each}
         </div>
       {/if}
     </div>
 
-    <!-- Footer: Settings & Profile -->
+    <!-- Footer -->
     <div class="pt-4 border-t border-zinc-800/80 mt-auto">
       <button
         type="button"

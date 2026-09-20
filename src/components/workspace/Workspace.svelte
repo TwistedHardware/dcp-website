@@ -1,36 +1,37 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import Sidebar from "./Sidebar.svelte";
-	import Header from "./Header.svelte";
-	import ChatCanvas from "./ChatCanvas.svelte";
-	import SettingsModal from "./SettingsModal.svelte";
+  import { onMount } from "svelte";
+  import Sidebar from "./Sidebar.svelte";
+  import Header from "./Header.svelte";
+  import ChatCanvas from "./ChatCanvas.svelte";
+  import SettingsModal from "./SettingsModal.svelte";
 
-	export let lang: string = "en";
-	export let i18n: Record<string, string> = {};
+  export let lang: string = "en";
+  export let i18n: Record<string, string> = {};
 
-	let isSidebarOpen = false;
-	let isSecretMode = false;
-	let isSettingsOpen = false;
+  let isSidebarOpen = false;
+  let isSecretMode = false;
+  let isSettingsOpen = false;
 
-	// Session state
-	let currentSessionId: string = crypto.randomUUID();
-	let sessions = [
-		{ id: "s-101", title: "ZATCA Compliance Pipeline", timestamp: "10m ago" },
-		{ id: "s-102", title: "Audit Log Reconciliation", timestamp: "2h ago" },
-		{
-			id: "s-103",
-			title: "Huawei CANN Kernel Benchmarks",
-			timestamp: "Yesterday",
-		},
-	];
+  // Session model contract matching backend ChatSession
+  interface ChatSessionItem {
+    sessionId: string;
+    title: string;
+    createdAt?: string;
+    lastUpdate?: string;
+    isGeneratingTitle?: boolean;
+  }
 
-	onMount(() => {
-    // 1. Check screen width: open on desktop, keep closed on mobile
+  // Session state
+  let currentSessionId: string = crypto.randomUUID();
+  let sessions: ChatSessionItem[] = [];
+
+  onMount(async () => {
+    // 1. Screen check
     if (window.innerWidth >= 768) {
       isSidebarOpen = true;
     }
 
-    // Auth guard...
+    // 2. Auth guard
     const token = localStorage.getItem("token");
     const expiry = localStorage.getItem("token_expiry");
 
@@ -46,56 +47,129 @@
 
     if (isExpired()) {
       window.location.href = `/${lang}/`;
+      return;
     }
+
+    // 3. Load initial sessions from backend
+    await fetchSessions();
   });
 
-	function handleNewSession() {
-		isSecretMode = false;
-		currentSessionId = crypto.randomUUID();
-		console.log("New session with id", currentSessionId);
-	}
+  async function fetchSessions() {
+    const token = localStorage.getItem("token");
+    const subject = localStorage.getItem("subject");
 
-	function handleStartSecret() {
-		isSecretMode = true;
-		currentSessionId = crypto.randomUUID();
-	}
+    try {
+      const res = await fetch("https://api.dcp.tc-sa.com/api/v1/sessions", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "x-subject": subject || "",
+        },
+      });
 
-	function handleSelectSession({ id }: { id: string }) {
+      if (res.status === 401) {
+        window.location.href = `/${lang}/`;
+        return;
+      }
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+      if (data.status === "ok" && Array.isArray(data.result)) {
+        // Filter out secret sessions from sidebar history
+        sessions = data.result.filter((s: any) => !s.isSecret);
+      }
+    } catch (err) {
+      console.error("Failed to load session list:", err);
+    }
+  }
+
+  function handleNewSession() {
+    isSecretMode = false;
+    currentSessionId = crypto.randomUUID();
+  }
+
+  function handleStartSecret() {
+    isSecretMode = true;
+    currentSessionId = crypto.randomUUID();
+  }
+
+  function handleSelectSession({ id }: { id: string }) {
+    if (currentSessionId === id) return;
     isSecretMode = false;
     currentSessionId = id;
   }
+
+  // 1. Triggered on first user message: prepend session with loading state
+  function handleChatStarted({ sessionId }: { sessionId: string }) {
+    if (isSecretMode) return;
+
+    const exists = sessions.some((s) => s.sessionId === sessionId);
+    if (!exists) {
+      const now = new Date().toISOString();
+      const placeholder: ChatSessionItem = {
+        sessionId,
+        title: "",
+        createdAt: now,
+        lastUpdate: now,
+        isGeneratingTitle: true,
+      };
+      sessions = [placeholder, ...sessions];
+    }
+  }
+
+  // 2. Triggered on SSE { type: "title" }: replace animation with title
+  function handleTitleReceived({ sessionId, title }: { sessionId: string; title: string }) {
+    sessions = sessions.map((s) => {
+      if (s.sessionId === sessionId) {
+        return {
+          ...s,
+          title,
+          isGeneratingTitle: false,
+          lastUpdate: new Date().toISOString(),
+        };
+      }
+      return s;
+    });
+  }
 </script>
 
-<div
-	class="flex h-screen w-full bg-zinc-950 text-zinc-100 overflow-hidden font-sans"
->
-	<!-- Left Control Sidebar -->
-	<Sidebar
-		{sessions}
-		{isSecretMode}
-		isOpen={isSidebarOpen}
-		onNewSession={handleNewSession}
-		onStartSecret={handleStartSecret}
-		onSelectSession={handleSelectSession}
-		onOpenSettings={() => (isSettingsOpen = true)}
-	/>
+<div class="flex h-screen w-full bg-zinc-950 text-zinc-100 overflow-hidden font-sans">
+  <!-- Left Control Sidebar -->
+  <Sidebar
+    {sessions}
+    activeSessionId={currentSessionId}
+    {isSecretMode}
+    bind:isOpen={isSidebarOpen}
+    onNewSession={handleNewSession}
+    onStartSecret={handleStartSecret}
+    onSelectSession={handleSelectSession}
+    onOpenSettings={() => (isSettingsOpen = true)}
+  />
 
-	<!-- Right Execution Canvas Area -->
-	<div class="flex flex-col flex-1 h-full min-w-0 bg-zinc-900/40 relative">
-		<!-- Top Bar -->
-		<Header
-			{lang}
-			{i18n}
-			{isSecretMode}
-			bind:isSidebarOpen
-			onresetSession={handleNewSession}
-		/>
+  <!-- Right Execution Canvas Area -->
+  <div class="flex flex-col flex-1 h-full min-w-0 bg-zinc-900/40 relative">
+    <!-- Top Bar -->
+    <Header
+      {lang}
+      {i18n}
+      {isSecretMode}
+      bind:isSidebarOpen
+      onresetSession={handleNewSession}
+    />
 
-		<!-- Main Interactive Area -->
-		{#key currentSessionId}
-			<ChatCanvas {lang} {i18n} {isSecretMode} sessionId={currentSessionId} />
-		{/key}
-	</div>
+    <!-- Main Interactive Area: remounts cleanly on session switch -->
+    {#key currentSessionId}
+      <ChatCanvas
+        {lang}
+        {i18n}
+        {isSecretMode}
+        sessionId={currentSessionId}
+        onChatStarted={handleChatStarted}
+        onTitleReceived={handleTitleReceived}
+      />
+    {/key}
+  </div>
 </div>
 
 <!-- Integration & API Key Vault Modal -->

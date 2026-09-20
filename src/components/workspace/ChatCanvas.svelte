@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick } from "svelte";
+  import { tick, onMount } from "svelte";
   import InputArea from "./InputArea.svelte";
   import MessageRow from "./MessageRow.svelte";
 
@@ -8,21 +8,24 @@
     i18n = {},
     isSecretMode = false,
     sessionId,
+    onChatStarted,
+    onTitleReceived,
   }: {
     lang?: string;
     i18n?: Record<string, string>;
     isSecretMode?: boolean;
     sessionId: string;
+    onChatStarted?: (payload: { sessionId: string }) => void;
+    onTitleReceived?: (payload: { sessionId: string; title: string }) => void;
   } = $props();
 
   let messages = $state<any[]>([]);
   let isStreaming = $state(false);
+  let isLoadingHistory = $state(false);
   let scrollContainer: HTMLElement | undefined = $state();
 
   let shouldStickToBottom = $state(true);
   let scrollQueued = false;
-
-  // Remember the last user prompt so retry can re-run it
   let lastUserText = $state<string | null>(null);
 
   function handleScroll() {
@@ -42,19 +45,78 @@
     });
   }
 
-  // Refresh Lucide icons after any DOM change that could add them
+  // Load message history for the current session
+  onMount(async () => {
+    if (!sessionId || isSecretMode) return;
+    await loadHistory();
+  });
+
+  async function loadHistory() {
+    isLoadingHistory = true;
+    const token = localStorage.getItem("token");
+    const subject = localStorage.getItem("subject");
+
+    try {
+      const response = await fetch("https://api.dcp.tc-sa.com/api/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          "x-subject": subject || "",
+        },
+        body: JSON.stringify({
+          sessionId,
+          limit: 50,
+        }),
+      });
+
+      if (response.status === 401) {
+        window.location.href = `/${lang}/`;
+        return;
+      }
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      const data = await response.json();
+      if (data.status === "ok" && Array.isArray(data.result)) {
+        // Transform DB ChatMessage into frontend blocks
+        messages = data.result
+          .filter((m: any) => m.role === "user" || m.role === "assistant")
+          .map((m: any) => ({
+            role: m.role,
+            blocks: [{ type: "text", content: m.content || "" }],
+            suggestions: [],
+            status: "done",
+          }));
+
+        await tick();
+        if (scrollContainer) {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load message history:", err);
+    } finally {
+      isLoadingHistory = false;
+    }
+  }
+
   $effect(() => {
     messages.length;
     messages.forEach((m) => {
-      m.blocks.length;
+      m.blocks?.length;
       m.suggestions?.length;
     });
     tick().then(() => window.lucide?.createIcons());
   });
 
-  // Public entry point — from the input
   async function sendMessage(text: string) {
-    if (!text) return;
+    if (!text || isStreaming) return;
+
+    // First message in a new session: add placeholder to sidebar
+    if (messages.length === 0) {
+      onChatStarted?.({ sessionId });
+    }
 
     messages.push({
       role: "user",
@@ -65,11 +127,9 @@
     await streamAssistantReply(text);
   }
 
-  // Public entry point — from the "Try again" button on an errored message
   async function retryLast() {
     if (!lastUserText) return;
 
-    // Remove the errored assistant message (the last one)
     const last = messages[messages.length - 1];
     if (last?.role === "assistant" && last?.status === "error") {
       messages.pop();
@@ -78,13 +138,11 @@
     await streamAssistantReply(lastUserText);
   }
 
-  // The workhorse — pushes the assistant message and consumes the SSE stream
   async function streamAssistantReply(text: string) {
-    // Push the assistant message we'll stream into
     const assistantMsg = {
       role: "assistant",
-      blocks: [],
-      suggestions: [],
+      blocks: [] as any[],
+      suggestions: [] as any[],
       status: "streaming" as "streaming" | "done" | "error",
     };
     messages.push(assistantMsg);
@@ -118,7 +176,6 @@
       let buffer = "";
       let currentEventType: string | null = null;
 
-      // The assistant message we're streaming into
       const msg = messages[messages.length - 1];
 
       while (true) {
@@ -151,6 +208,15 @@
               currentEventType = null;
 
               switch (eventType) {
+                case "title": {
+                  // Received SSE title event
+                  const titleText = parsed.content || parsed.title;
+                  if (titleText) {
+                    onTitleReceived?.({ sessionId, title: titleText });
+                  }
+                  break;
+                }
+
                 case "content": {
                   const lastBlock = msg.blocks[msg.blocks.length - 1];
                   if (lastBlock && lastBlock.type === "text") {
@@ -164,7 +230,6 @@
 
                 case "tool_notification": {
                   const id = parsed.content.id;
-                  // Guard against duplicate notifications
                   const exists = msg.blocks.find(
                     (b: any) => b.type === "tool" && b.id === id
                   );
@@ -216,7 +281,6 @@
                   break;
 
                 case "error": {
-                  // Mark any still-running tool calls as errored
                   for (const b of msg.blocks) {
                     if (b.type === "tool" && b.status === "running") {
                       b.status = "error";
@@ -224,7 +288,6 @@
                     }
                   }
 
-                  // Push a distinct error block
                   msg.blocks.push({
                     type: "error",
                     content: parsed.error || "Something went wrong.",
@@ -233,7 +296,7 @@
                   msg.status = "error";
                   scrollToBottom();
                   reader.cancel();
-                  return; // exit streamAssistantReply
+                  return;
                 }
               }
             } catch {
@@ -255,14 +318,8 @@
       isStreaming = false;
     }
   }
-
-  // Kept for compatibility with the suggestion-chip click handler
-  async function handleSubmit(text: string) {
-    await sendMessage(text);
-  }
 </script>
 
-<!-- The Main Chat Viewport -->
 <div class="flex flex-col flex-1 min-h-0">
   <main
     bind:this={scrollContainer}
@@ -270,7 +327,11 @@
     class="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 pt-6 pb-6 w-full flex flex-col items-center"
   >
     <div class="w-full max-w-3xl space-y-6">
-      {#if messages.length === 0}
+      {#if isLoadingHistory}
+        <div class="flex items-center justify-center py-20">
+          <div class="h-6 w-6 rounded-full border-2 border-sky-400 border-t-transparent animate-spin"></div>
+        </div>
+      {:else if messages.length === 0}
         <div class="text-center py-12 px-4 rounded-2xl bg-gradient-to-b from-zinc-900/40 to-zinc-900/0 border border-zinc-800/50 mt-6">
           <div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center mx-auto mb-4">
             <i data-lucide={isSecretMode ? "shield" : "sparkles"} class="w-6 h-6"></i>
@@ -284,19 +345,21 @@
         </div>
       {/if}
 
-      {#each messages as msg}
-        <MessageRow
-          {msg}
-          onsuggestionClick={(p) => sendMessage(p)}
-          onretry={retryLast}
-        />
-      {/each}
+      {#if !isLoadingHistory}
+        {#each messages as msg}
+          <MessageRow
+            {msg}
+            onsuggestionClick={(p) => sendMessage(p)}
+            onretry={retryLast}
+          />
+        {/each}
+      {/if}
     </div>
   </main>
 
   <div class="shrink-0 w-full">
     <InputArea
-      disabled={isStreaming}
+      disabled={isStreaming || isLoadingHistory}
       on:submit={(e) => sendMessage(e.detail.text)}
       placeholder={i18n.placeholder}
       shiftEnterText={i18n.shiftEnter}
