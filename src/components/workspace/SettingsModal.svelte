@@ -44,7 +44,7 @@
     return {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      "subject": subject,
+      "x-subject": subject,
     };
   }
 

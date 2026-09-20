@@ -101,7 +101,7 @@
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          "subject": subject || "",
+          "x-subject": subject || "",
         },
         body: JSON.stringify({ sessionId, model: "fast", message: text }),
       });
