@@ -93,7 +93,7 @@
     shouldStickToBottom = true;
 
     const token = localStorage.getItem("token");
-    const publicKey = localStorage.getItem("public_key");
+    const subject = localStorage.getItem("subject");
 
     try {
       const response = await fetch("https://api.dcp.tc-sa.com/api/v1/chat/completions", {
@@ -101,7 +101,7 @@
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          "x-publickey-hex": publicKey || "",
+          "subject": subject || "",
         },
         body: JSON.stringify({ sessionId, model: "fast", message: text }),
       });

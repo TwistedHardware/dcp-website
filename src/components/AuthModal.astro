@@ -296,7 +296,7 @@ const t = useTranslations(lang);
         if (!finishRes.ok) throw new Error(await finishRes.text());
         const res = await finishRes.json();
 
-        handleSuccess(res.token, res.expiry, res.publicKey, "Registration successful!");
+        handleSuccess(res.token, res.expiry, res.subject, "Registration successful!");
       } catch (err) {
         console.error(err);
         showStatus("Registration canceled or failed.", true);
@@ -336,17 +336,17 @@ const t = useTranslations(lang);
         if (!finishRes.ok) throw new Error(await finishRes.text());
         const res = await finishRes.json();
 
-        handleSuccess(res.token, res.expiry, res.publicKey, "Login successful!");
+        handleSuccess(res.token, res.expiry, res.subject, "Login successful!");
       } catch (err) {
         console.error(err);
         showStatus("Login canceled or failed.", true);
       }
     }
 
-    function handleSuccess(token, expiry, publicKey, msg) {
+    function handleSuccess(token, expiry, subject, msg) {
       localStorage.setItem("token", token);
       localStorage.setItem("token_expiry", expiry);
-      localStorage.setItem("public_key", publicKey);
+      localStorage.setItem("subject", subject);
       localStorage.setItem("dcp_known_user", "true");
 
       showStatus(msg, false);

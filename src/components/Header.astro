@@ -86,7 +86,7 @@ const t = useTranslations(lang);
 
     if (logoutBtn) {
       logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('public_key');
+        localStorage.removeItem('subject');
         localStorage.removeItem('token');
         localStorage.removeItem('token_expiry');
         window.location.reload();

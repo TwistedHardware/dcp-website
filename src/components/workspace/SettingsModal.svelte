@@ -40,11 +40,11 @@
   // --- Helpers ---
   function authHeaders(): HeadersInit {
     const token = localStorage.getItem("token") || "";
-    const publicKey = localStorage.getItem("public_key") || "";
+    const subject = localStorage.getItem("subject") || "";
     return {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      "x-publickey-hex": publicKey,
+      "subject": subject,
     };
   }
 
