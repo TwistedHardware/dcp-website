@@ -177,10 +177,14 @@
             >
               {#if session.isGeneratingTitle}
                 <!-- Shimmer placeholder animation -->
-                <div class="flex items-center gap-2 w-full py-1">
-                  <div class="h-2.5 w-2.5 rounded-full border-2 border-sky-400 border-t-transparent animate-spin shrink-0"></div>
-                  <div class="h-3 w-3/4 rounded bg-zinc-800 animate-pulse"></div>
-                </div>
+                <div class="flex items-center gap-1.5 py-0.5 text-zinc-400 text-xs">
+									<span class="text-zinc-500 font-medium">New conversation</span>
+									<span class="inline-flex items-center gap-1">
+										<span class="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce"></span>
+										<span class="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce [animation-delay:0.15s]"></span>
+										<span class="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-bounce [animation-delay:0.3s]"></span>
+									</span>
+								</div>
               {:else}
                 <span class={`text-sm font-medium truncate w-full transition-colors ${
                   isSelected ? "text-zinc-100" : "text-zinc-300 group-hover:text-zinc-100"
@@ -205,7 +209,7 @@
         class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition-colors"
       >
         <i data-lucide="settings-2" class="w-4 h-4"></i>
-        Integration Vault
+        Settings
       </button>
     </div>
   </div>
