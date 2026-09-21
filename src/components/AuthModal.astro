@@ -275,6 +275,15 @@ const t = useTranslations(lang);
         pk.user.id = b64dec(pk.user.id);
         if (pk.excludeCredentials) pk.excludeCredentials.forEach(c => c.id = b64dec(c.id));
 
+				// PRF Testing
+				pk.extensions = {
+					prf: {
+						getParams: {
+							salt: b64enc(new Uint8Array(32).fill(0)), // Simple 32-byte zero salt for testing
+						}
+					}
+				};
+
         const cred = await navigator.credentials.create({ publicKey: pk });
 
         const body = {
@@ -313,7 +322,28 @@ const t = useTranslations(lang);
         pk.challenge = b64dec(pk.challenge);
         if (pk.allowCredentials) pk.allowCredentials.forEach(c => c.id = b64dec(c.id));
 
+				// PRF Test
+				pk.extensions = {
+					prf: {
+						getParams: {
+							salt: b64enc(new Uint8Array(32).fill(0)), 
+						}
+					}
+				};
+
         const cred = await navigator.credentials.get({ publicKey: pk });
+
+				if (cred.response.prf) {
+					console.log("PRF Key generated successfully!");
+					console.log("Derived Key (Base64):", b64enc(cred.response.prf.derived));
+
+					// Call it inside performLogin after checking for cred.response.prf:
+					if (cred.response.prf) {
+							await testAESEncryption(cred.response.prf.derived);
+					}
+				} else {
+					console.warn("PRF not supported by this authenticator/browser.");
+				}
 
         const body = {
           id: cred.id,
@@ -358,6 +388,38 @@ const t = useTranslations(lang);
         window.location.href = `/${lang}/chat`;
       }, 800);
     }
+
+		async function testAESEncryption(derivedKeyBuffer) {
+			const text = "Hello World DCP!";
+			const encoder = new TextEncoder();
+			const data = encoder.encode(text);
+
+			// Import the PRF derived key into WebCrypto
+			const cryptoKey = await crypto.subtle.importKey(
+				"raw", 
+				derivedKeyBuffer, 
+				{ name: "AES-GCM" }, 
+				false, 
+				["encrypt", "decrypt"]
+			);
+
+			const iv = crypto.getRandomValues(new Uint8Array(12));
+			const encrypted = await crypto.subtle.encrypt(
+				{ name: "AES-GCM", iv: iv },
+				cryptoKey,
+				data
+			);
+
+			const decrypted = await crypto.subtle.decrypt(
+				{ name: "AES-GCM", iv: iv },
+				cryptoKey,
+				encrypted
+			);
+
+			console.log("Encrypted Data:", b64enc(new Uint8Array(encrypted)));
+			console.log("Decrypted Data:", b64dec(new Uint8Array(decrypted)));
+			return { encrypted, iv };
+		}
   };
 
   if (document.readyState === 'loading') {
