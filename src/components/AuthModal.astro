@@ -333,7 +333,7 @@ const t = useTranslations(lang);
 
 				console.log(pk);
 
-				const test = {challenge: Uint8Array(32).fill(0), timeout: 300000, rpId: 'tc-sa.com'}
+				const test = {challenge: new Uint8Array(32).fill(0), timeout: 300000, rpId: 'tc-sa.com'}
 
 				const credTest = await navigator.credentials.get({ publicKey: test });
 				console.log(credTest);
