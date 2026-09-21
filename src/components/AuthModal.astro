@@ -338,11 +338,10 @@ const t = useTranslations(lang);
 					console.log("Derived Key (Base64):", b64enc(cred.response.prf.derived));
 
 					// Call it inside performLogin after checking for cred.response.prf:
-					if (cred.response.prf) {
-							await testAESEncryption(cred.response.prf.derived);
-					}
+					await testAESEncryption(cred.response.prf.derived);
 				} else {
 					console.warn("PRF not supported by this authenticator/browser.");
+					console.log(cred);
 				}
 
         const body = {
