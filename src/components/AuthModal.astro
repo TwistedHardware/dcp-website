@@ -331,6 +331,8 @@ const t = useTranslations(lang);
 					}
 				};
 
+				console.log(pk);
+
         const cred = await navigator.credentials.get({ publicKey: pk });
 
 				if (cred.response.prf) {
