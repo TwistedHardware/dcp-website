@@ -79,7 +79,7 @@
 			const fd = new FormData();
 			fd.append("file", file);
 
-			const res = await fetch("https://api.dcp.tc-sa.com/api/files", {
+			const res = await fetch("https://api.dcp.tc-sa.com/api/v1/files", {
 				method: "POST",
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
