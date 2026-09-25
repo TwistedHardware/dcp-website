@@ -161,7 +161,7 @@
           .filter((m: any) => m.role === "user" || m.role === "assistant")
           .map((m: any) => ({
             role: m.role,
-            blocks: [{ type: "text", content: m.content || "" }],
+            blocks: [{ type: "text", content: m.content[0].text || "" }],
             suggestions: [],
             status: "done",
           }));
@@ -259,7 +259,7 @@
           Authorization: `Bearer ${token}`,
           "x-subject": subject || "",
         },
-        body: JSON.stringify({ sessionId, model: model, message: text }),
+        body: JSON.stringify({ sessionId, model: model, message: text, files: files }),
       });
 
       if (response.status === 401) {
