@@ -29,3 +29,19 @@ export function formatSessionTimestamp(dateStr: string): string {
   }
   return d.toLocaleDateString([], { month: "short", day: "numeric" });
 }
+
+export type ModelId = "fast" | "pro" | "deep-research";
+
+export type UploadedFile = {
+  id: string;
+  name: string;
+  mime: string;
+  size: number;
+  url?: string;
+  status: "uploading" | "done" | "error";
+  /** raw File kept around so retry can re-upload */
+  _file?: File;
+  /** local object URL for image preview, revoked on remove */
+  _previewUrl?: string;
+  error?: string;
+};

@@ -2,6 +2,7 @@
   import { tick, onMount } from "svelte";
   import InputArea from "./InputArea.svelte";
   import MessageRow from "./MessageRow.svelte";
+  import type { ModelId, UploadedFile } from "../../lib/types/chat";
 
   let {
     lang = "en",
@@ -26,7 +27,15 @@
 
   let shouldStickToBottom = $state(true);
   let scrollQueued = false;
-  let lastUserText = $state<string | null>(null);
+  // let lastUserText = $state<string | null>(null);
+	let lastUserTurn = $state<{
+		text: string;
+		model: ModelId;
+		files: UploadedFile[];
+	} | null>(null);
+
+	let model = $state<ModelId>("fast");
+  let uploadedFiles = $state<UploadedFile[]>([]);
 
   function handleScroll() {
     if (!scrollContainer) return;
@@ -44,6 +53,74 @@
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
     });
   }
+
+	function handleFileAdded(f: UploadedFile) {
+    const idx = uploadedFiles.findIndex((x) => x.id === f.id);
+    if (idx === -1) uploadedFiles.push(f);
+    else uploadedFiles[idx] = f;   // status update (done/error) uses same id
+  }
+
+  function handleFileRemoved(id: string) {
+    const target = uploadedFiles.find((f) => f.id === id);
+    if (target?._previewUrl) URL.revokeObjectURL(target._previewUrl);
+    uploadedFiles = uploadedFiles.filter((f) => f.id !== id);
+  }
+
+  function handleFileRetry(id: string) {
+		const target = uploadedFiles.find((f) => f.id === id);
+		if (!target?._file) return;
+		handleFileAdded({ ...target, status: "uploading", error: undefined });
+		void uploadFile(target._file, id);
+	}
+
+	// in parent
+	async function uploadFile(file: File, id: string) {
+		try {
+			const fd = new FormData();
+			fd.append("file", file);
+
+			const res = await fetch("https://api.dcp.tc-sa.com/api/files", {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					"x-subject": localStorage.getItem("subject") || "",
+					"x-sessionid": sessionId,
+				},
+				body: fd,
+			});
+
+			if (res.status === 401) {
+				window.location.href = `/${lang}/`;
+				return;
+			}
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+			const data = await res.json();
+			const result = data.result ?? {};
+
+			// Update the existing chip in place (same id)
+			handleFileAdded({
+				id,
+				name: file.name,
+				mime: file.type,
+				size: file.size,
+				status: "done",
+				url: result.url,
+				_file: file,
+				_previewUrl: uploadedFiles.find((f) => f.id === id)?._previewUrl,
+			});
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : "Upload failed";
+			const existing = uploadedFiles.find((f) => f.id === id);
+			handleFileAdded({
+				...(existing ?? {
+					id, name: file.name, mime: file.type, size: file.size,
+				}),
+				status: "error",
+				error: msg,
+			});
+		}
+	}
 
   // Load message history for the current session
   onMount(async () => {
@@ -110,35 +187,56 @@
     tick().then(() => window.lucide?.createIcons());
   });
 
-  async function sendMessage(text: string) {
-    if (!text || isStreaming) return;
+  async function sendMessage(payload: {
+    text: string;
+    model: ModelId;
+    sessionId: string;
+    files: UploadedFile[];
+  }) {
+    if (!payload.text || isStreaming) return;
 
-    // First message in a new session: add placeholder to sidebar
-    if (messages.length === 0) {
-      onChatStarted?.({ sessionId });
-    }
+    if (messages.length === 0) onChatStarted?.({ sessionId });
 
     messages.push({
       role: "user",
-      blocks: [{ type: "text", content: text }],
+      blocks: [{ type: "text", content: payload.text }],
     });
-    lastUserText = text;
+    lastUserTurn = {
+			text: payload.text,
+			model: payload.model,
+			files: payload.files,
+		};
 
-    await streamAssistantReply(text);
+    // Clear the composer's file list immediately (parent owns it).
+    // Revoke object URLs as we go.
+    for (const f of uploadedFiles) {
+      if (f._previewUrl) URL.revokeObjectURL(f._previewUrl);
+    }
+    uploadedFiles = [];
+
+    await streamAssistantReply(payload.text, payload.model, payload.files);
   }
 
   async function retryLast() {
-    if (!lastUserText) return;
+		if (!lastUserTurn) return;
 
-    const last = messages[messages.length - 1];
-    if (last?.role === "assistant" && last?.status === "error") {
-      messages.pop();
-    }
+		const last = messages[messages.length - 1];
+		if (last?.role === "assistant" && last?.status === "error") {
+			messages.pop();
+		}
 
-    await streamAssistantReply(lastUserText);
-  }
+		await streamAssistantReply(
+			lastUserTurn.text,
+			lastUserTurn.model,
+			lastUserTurn.files
+		);
+	}
 
-  async function streamAssistantReply(text: string) {
+   async function streamAssistantReply(
+    text: string,
+    model: ModelId,
+    files: UploadedFile[]
+  ) {
     const assistantMsg = {
       role: "assistant",
       blocks: [] as any[],
@@ -161,7 +259,7 @@
           Authorization: `Bearer ${token}`,
           "x-subject": subject || "",
         },
-        body: JSON.stringify({ sessionId, model: "fast", message: text }),
+        body: JSON.stringify({ sessionId, model: model, message: text }),
       });
 
       if (response.status === 401) {
@@ -346,24 +444,38 @@
       {/if}
 
       {#if !isLoadingHistory}
-        {#each messages as msg}
-          <MessageRow
-            {msg}
-            onsuggestionClick={(p) => sendMessage(p)}
-            onretry={retryLast}
-          />
-        {/each}
-      {/if}
+				{#each messages as msg}
+					<MessageRow
+						{msg}
+						onsuggestionClick={(p) =>
+							sendMessage({
+								text: p,
+								model,
+								sessionId,
+								files: [],
+							})}
+						onretry={retryLast}
+					/>
+				{/each}
+			{/if}
     </div>
   </main>
 
   <div class="shrink-0 w-full">
     <InputArea
       disabled={isStreaming || isLoadingHistory}
-      on:submit={(e) => sendMessage(e.detail.text)}
       placeholder={i18n.placeholder}
       shiftEnterText={i18n.shiftEnter}
       tokenContextText={isSecretMode ? "ZKS Active - Ephemeral Memory" : i18n.tokenContext}
+      sessionId={sessionId}
+      {model}
+      {uploadedFiles}
+      onsubmit={sendMessage}
+      onmodelchange={(m) => (model = m)}
+      onfileadded={handleFileAdded}
+      onfileremoved={handleFileRemoved}
+      onfileretry={handleFileRetry}
+			onUpload={uploadFile}
     />
   </div>
 </div>

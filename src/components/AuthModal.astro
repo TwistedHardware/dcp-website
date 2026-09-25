@@ -277,11 +277,7 @@ const t = useTranslations(lang);
 
 				// PRF Testing
 				pk.extensions = {
-					prf: {
-						getParams: {
-							salt: b64enc(new Uint8Array(32).fill(0)), // Simple 32-byte zero salt for testing
-						}
-					}
+					prf: {}
 				};
 
         const cred = await navigator.credentials.create({ publicKey: pk });
@@ -323,23 +319,9 @@ const t = useTranslations(lang);
         if (pk.allowCredentials) pk.allowCredentials.forEach(c => c.id = b64dec(c.id));
 
 				// PRF Test
-				// pk.extensions = {
-				// 	prf: {
-				// 		getParams: {
-				// 			salt: b64enc(new Uint8Array(32).fill(0)), 
-				// 		}
-				// 	}
-				// };
-
-				console.log(pk);
-
-				const test = {challenge: new Uint8Array(32).fill(0), timeout: 300000, rpId: 'tc-sa.com'}
-
-				const credTest = await navigator.credentials.get({ publicKey: test });
-				console.log(credTest);
-				console.log(credTest.response);
-				console.log(credTest.response.signature);
-				console.log(credTest.response.clientDataJSON);
+				pk.extensions = {
+					prf: {}
+				};
 
         const cred = await navigator.credentials.get({ publicKey: pk });
 
