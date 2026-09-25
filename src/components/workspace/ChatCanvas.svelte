@@ -54,11 +54,17 @@
     });
   }
 
-	function handleFileAdded(f: UploadedFile) {
-    const idx = uploadedFiles.findIndex((x) => x.id === f.id);
-    if (idx === -1) uploadedFiles.push(f);
-    else uploadedFiles[idx] = f;   // status update (done/error) uses same id
-  }
+	function handleFileAdded(f: UploadedFile, replaceId?: string) {
+		// If replacing a temp ID, look for replaceId; otherwise look for f.id
+		const lookupId = replaceId ?? f.id;
+		const idx = uploadedFiles.findIndex((x) => x.id === lookupId);
+
+		if (idx === -1) {
+			uploadedFiles.push(f);
+		} else {
+			uploadedFiles[idx] = f;
+		}
+	}
 
   function handleFileRemoved(id: string) {
     const target = uploadedFiles.find((f) => f.id === id);
@@ -74,7 +80,7 @@
 	}
 
 	// in parent
-	async function uploadFile(file: File, id: string) {
+	async function uploadFile(file: File, tempId: string) {
 		try {
 			const fd = new FormData();
 			fd.append("file", file);
@@ -98,23 +104,31 @@
 			const data = await res.json();
 			const result = data.result ?? {};
 
-			// Update the existing chip in place (same id)
-			handleFileAdded({
-				id,
-				name: file.name,
-				mime: file.type,
-				size: file.size,
-				status: "done",
-				url: result.url,
-				_file: file,
-				_previewUrl: uploadedFiles.find((f) => f.id === id)?._previewUrl,
-			});
+			const existing = uploadedFiles.find((f) => f.id === tempId);
+
+			// Update the item: use the server's ID, and replace the old tempId
+			handleFileAdded(
+				{
+					id: result.id, // Server UUID
+					name: result.name ?? file.name,
+					mime: result.mime ?? file.type,
+					size: result.size ?? file.size,
+					status: "done",
+					url: result.url,
+					_file: file,
+					_previewUrl: existing?._previewUrl,
+				},
+				tempId // Tell the handler which entry to overwrite
+			);
 		} catch (err) {
 			const msg = err instanceof Error ? err.message : "Upload failed";
-			const existing = uploadedFiles.find((f) => f.id === id);
+			const existing = uploadedFiles.find((f) => f.id === tempId);
 			handleFileAdded({
 				...(existing ?? {
-					id, name: file.name, mime: file.type, size: file.size,
+					id: tempId,
+					name: file.name,
+					mime: file.type,
+					size: file.size,
 				}),
 				status: "error",
 				error: msg,
