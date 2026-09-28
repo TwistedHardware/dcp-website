@@ -2,7 +2,7 @@
   import GlassBox from "./GlassBox.svelte";
   import ThinkingIndicator from "./ThinkingIndicator.svelte";
   import { renderWithHighlight } from "../../lib/highlight";
-  import { Copy, Check } from "lucide-svelte";
+  import { Copy, Check, AlertCircle, RotateCcw, Sparkles } from "lucide-svelte";
 
   let {
     msg,
@@ -97,7 +97,7 @@
           {:else if block.type === 'error'}
             <div class="col-span-2 rounded-lg border border-rose-500/30 bg-rose-500/5 px-3 py-2.5
                         flex items-start gap-2.5 text-sm">
-              <i data-lucide="alert-circle" class="w-4 h-4 text-rose-400 shrink-0 mt-0.5"></i>
+              <AlertCircle class="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
               <div class="flex-1 min-w-0">
                 <div class="text-rose-200">{block.content}</div>
                 {#if onretry}
@@ -106,7 +106,7 @@
                     class="mt-2 inline-flex items-center gap-1.5 text-xs
                            text-rose-300 hover:text-rose-100 transition"
                   >
-                    <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                    <RotateCcw class="w-3 h-3" />
                     <span>Try again</span>
                   </button>
                 {/if}
@@ -123,7 +123,7 @@
               onclick={() => onsuggestionClick?.(chip.prompt)}
               class="text-xs bg-zinc-800/80 hover:bg-sky-600/20 hover:border-sky-500/50 text-zinc-300 hover:text-sky-300 border border-zinc-700/60 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-sm text-left"
             >
-              <i data-lucide="sparkles" class="w-3 h-3 text-sky-400 shrink-0"></i>
+              <Sparkles class="w-3 h-3 text-sky-400 shrink-0" />
               <span>{chip.label}</span>
             </button>
           {/each}

@@ -96,7 +96,18 @@
 
   // --- Generate a new key ---
   async function handleGenerate() {
-    if (!newKeyName.trim() || isCreating) return;
+    const trimmedName = newKeyName.trim();
+    if (!trimmedName || isCreating) return;
+
+    // Duplicate Name Protection (Null-safe in case DB has keys without names)
+    const isDuplicate = apiKeys.some(
+      (key) => (key.name || "").trim().toLowerCase() === trimmedName.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      createError = "An API key with this name already exists.";
+      return;
+    }
 
     isCreating = true;
     createError = null;
@@ -105,7 +116,7 @@
       const res = await fetch(`${API_BASE}/api/create-api-key`, {
         method: "POST",
         headers: authHeaders(),
-        body: JSON.stringify({ name: newKeyName.trim() }),
+        body: JSON.stringify({ name: trimmedName }),
       });
 
       if (res.status === 401) return handleUnauthorized();
@@ -356,7 +367,8 @@
                   </td>
                 </tr>
               {:else}
-                {#each apiKeys as key (key.id)}
+                <!-- FIX: Appended index to Svelte key block to prevent crashes from duplicate backend IDs -->
+                {#each apiKeys as key, i (key.id + '-' + i)}
                   <tr class="hover:bg-zinc-900/30 transition-colors">
                     <td class="px-4 py-3 text-zinc-200 font-medium">
                       {key.name || "NA"}

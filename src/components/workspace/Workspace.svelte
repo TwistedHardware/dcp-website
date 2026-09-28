@@ -5,12 +5,17 @@
   import ChatCanvas from "./ChatCanvas.svelte";
   import SettingsModal from "./SettingsModal.svelte";
 
-  export let lang: string = "en";
-  export let i18n: Record<string, string> = {};
+  let {
+    lang = "en",
+    i18n = {}
+  }: {
+    lang?: string;
+    i18n?: Record<string, string>;
+  } = $props();
 
-  let isSidebarOpen = false;
-  let isSecretMode = false;
-  let isSettingsOpen = false;
+  let isSidebarOpen = $state(false);
+  let isSecretMode = $state(false);
+  let isSettingsOpen = $state(false);
 
   // Session model contract matching backend ChatSession
   interface ChatSessionItem {
@@ -22,8 +27,8 @@
   }
 
   // Session state
-  let currentSessionId: string = crypto.randomUUID();
-  let sessions: ChatSessionItem[] = [];
+  let currentSessionId = $state<string>(crypto.randomUUID());
+  let sessions = $state<ChatSessionItem[]>([]);
 
   onMount(async () => {
     // 1. Screen check
@@ -132,6 +137,18 @@
       return s;
     });
   }
+
+  $effect(() => {
+    // Whenever the session ID changes (like clicking Purge Session), 
+    // Svelte mounts a brand new ChatCanvas. We must re-run Lucide.
+    void currentSessionId;
+    
+    setTimeout(() => {
+      if (typeof window !== "undefined" && window.lucide) {
+        window.lucide.createIcons();
+      }
+    }, 10);
+  });
 </script>
 
 <div class="flex h-screen w-full bg-zinc-950 text-zinc-100 overflow-hidden font-sans">

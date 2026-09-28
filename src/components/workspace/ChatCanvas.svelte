@@ -3,6 +3,7 @@
   import InputArea from "./InputArea.svelte";
   import MessageRow from "./MessageRow.svelte";
   import type { ModelId, UploadedFile } from "../../lib/types/chat";
+	import { Shield, Sparkles } from "lucide-svelte";
 
   let {
     lang = "en",
@@ -446,7 +447,11 @@
       {:else if messages.length === 0}
         <div class="text-center py-12 px-4 rounded-2xl bg-gradient-to-b from-zinc-900/40 to-zinc-900/0 border border-zinc-800/50 mt-6">
           <div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center mx-auto mb-4">
-            <i data-lucide={isSecretMode ? "shield" : "sparkles"} class="w-6 h-6"></i>
+            {#if isSecretMode}
+              <Shield class="w-6 h-6" />
+            {:else}
+              <Sparkles class="w-6 h-6" />
+            {/if}
           </div>
           <h3 class="text-base font-medium text-zinc-200">
             {isSecretMode ? "Zero-Knowledge Mode" : (i18n.welcomeTitle || "Secure Execution Environment")}
