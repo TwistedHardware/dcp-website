@@ -86,14 +86,16 @@
   <div class="p-4 flex flex-col h-full w-72 shrink-0">
     <!-- Brand / Logo Area -->
     <div class="flex items-center justify-between mb-8 px-2 mt-2">
-      <div class="flex items-center gap-3">
-        <div class="h-8 w-8 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 p-[1px]">
-          <div class="h-full w-full bg-zinc-950 rounded-[11px] flex items-center justify-center">
-            <i data-lucide="cpu" class="w-4 h-4 text-sky-400"></i>
-          </div>
-        </div>
-        <span class="font-semibold text-zinc-100 tracking-tight">DCP Cloud</span>
-      </div>
+			<a href="/">
+				<div class="flex items-center gap-3">
+					<div class="h-8 w-8 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 p-[1px]">
+						<div class="h-full w-full bg-zinc-950 rounded-[11px] flex items-center justify-center">
+							<i data-lucide="cpu" class="w-4 h-4 text-sky-400"></i>
+						</div>
+					</div>
+					<span class="font-semibold text-zinc-100 tracking-tight">DCP Cloud</span>
+				</div>
+			</a>
 
       <button
         type="button"

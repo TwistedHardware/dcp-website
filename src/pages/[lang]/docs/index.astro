@@ -24,7 +24,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="dcp/pro",
+    model="dcp/fast",
     messages=[
 			{"role": "user", "content": "Tell me a knock-knock joke about vibe coding."}
 		]
@@ -40,7 +40,7 @@ const openai = new OpenAI({
 });
 
 const response = await openai.chat.completions.create({
-    model: 'dcp/pro',
+    model: 'dcp/fast',
     messages: [
 			{"role": "user", "content": "Tell me a knock-knock joke about vibe coding."}
 		]
@@ -64,7 +64,7 @@ func main() {
     resp, _ := client.CreateChatCompletion(
         context.Background(),
         openai.ChatCompletionRequest{
-            Model: "dcp/pro",
+            Model: "dcp/fast",
             Messages: []openai.ChatCompletionMessage{
                 {Role: "user", Content: "Tell me a knock-knock joke about vibe coding."},
             },
@@ -77,7 +77,7 @@ func main() {
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer dcp_your_api_key_here" \\
   -d '{
-    "model": "dcp/pro",
+    "model": "dcp/fast",
     "messages": [
 			{"role": "user", "content": "Tell me a knock-knock joke about vibe coding."}
 		]
