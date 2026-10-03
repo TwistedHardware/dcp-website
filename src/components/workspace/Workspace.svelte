@@ -4,6 +4,7 @@
   import Header from "./Header.svelte";
   import ChatCanvas from "./ChatCanvas.svelte";
   import SettingsModal from "./SettingsModal.svelte";
+  import MaaSPage from "./maas/MaaSPage.svelte"; 
 
   let {
     lang = "en",
@@ -16,8 +17,9 @@
   let isSidebarOpen = $state(false);
   let isSecretMode = $state(false);
   let isSettingsOpen = $state(false);
+  
+  let activeView = $state<'chat' | 'maas'>('chat');
 
-  // Session model contract matching backend ChatSession
   interface ChatSessionItem {
     sessionId: string;
     title: string;
@@ -26,17 +28,14 @@
     isGeneratingTitle?: boolean;
   }
 
-  // Session state
   let currentSessionId = $state<string>(crypto.randomUUID());
   let sessions = $state<ChatSessionItem[]>([]);
 
   onMount(async () => {
-    // 1. Screen check
     if (window.innerWidth >= 768) {
       isSidebarOpen = true;
     }
 
-    // 2. Auth guard
     const token = localStorage.getItem("token");
     const expiry = localStorage.getItem("token_expiry");
 
@@ -55,7 +54,6 @@
       return;
     }
 
-    // 3. Load initial sessions from backend
     await fetchSessions();
   });
 
@@ -81,7 +79,6 @@
 
       const data = await res.json();
       if (data.status === "ok" && Array.isArray(data.result)) {
-        // Filter out secret sessions from sidebar history
         sessions = data.result.filter((s: any) => !s.isSecret);
       }
     } catch (err) {
@@ -90,22 +87,28 @@
   }
 
   function handleNewSession() {
+    activeView = 'chat';
     isSecretMode = false;
     currentSessionId = crypto.randomUUID();
   }
 
   function handleStartSecret() {
+    activeView = 'chat'; 
     isSecretMode = true;
     currentSessionId = crypto.randomUUID();
   }
 
   function handleSelectSession({ id }: { id: string }) {
     if (currentSessionId === id) return;
+    activeView = 'chat';
     isSecretMode = false;
     currentSessionId = id;
   }
 
-  // 1. Triggered on first user message: prepend session with loading state
+  function handleNavigateToMaaS() {
+    activeView = 'maas';
+  }
+
   function handleChatStarted({ sessionId }: { sessionId: string }) {
     if (isSecretMode) return;
 
@@ -123,7 +126,6 @@
     }
   }
 
-  // 2. Triggered on SSE { type: "title" }: replace animation with title
   function handleTitleReceived({ sessionId, title }: { sessionId: string; title: string }) {
     sessions = sessions.map((s) => {
       if (s.sessionId === sessionId) {
@@ -139,9 +141,8 @@
   }
 
   $effect(() => {
-    // Whenever the session ID changes (like clicking Purge Session), 
-    // Svelte mounts a brand new ChatCanvas. We must re-run Lucide.
     void currentSessionId;
+    void activeView; 
     
     setTimeout(() => {
       if (typeof window !== "undefined" && window.lucide) {
@@ -162,34 +163,45 @@
     onStartSecret={handleStartSecret}
     onSelectSession={handleSelectSession}
     onOpenSettings={() => (isSettingsOpen = true)}
+    onNavigateToMaaS={handleNavigateToMaaS} 
   />
 
   <!-- Right Execution Canvas Area -->
-  <div class="flex flex-col flex-1 h-full min-w-0 bg-zinc-900/40 relative">
-    <!-- Top Bar -->
+  <div class="flex flex-col flex-1 h-full min-w-0 bg-zinc-900/40 relative overflow-hidden">
+    
+    <!-- Top Bar is now unconditionally rendered -->
     <Header
-      {lang}
-      {i18n}
-      {isSecretMode}
-      bind:isSidebarOpen
-      onresetSession={handleNewSession}
-    />
+			{lang}
+			{i18n}
+			{isSecretMode}
+			bind:isSidebarOpen
+			{activeView} 
+			onresetSession={handleNewSession}
+		/>
 
-    <!-- Main Interactive Area: remounts cleanly on session switch -->
-    {#key currentSessionId}
-      <ChatCanvas
-        {lang}
-        {i18n}
-        {isSecretMode}
-        sessionId={currentSessionId}
-        onChatStarted={handleChatStarted}
-        onTitleReceived={handleTitleReceived}
-      />
-    {/key}
+    <!-- Dynamic Content Area -->
+    <div class="flex flex-col flex-1 min-h-0 relative">
+      {#if activeView === 'chat'}
+        {#key currentSessionId}
+          <ChatCanvas
+            {lang}
+            {i18n}
+            {isSecretMode}
+            sessionId={currentSessionId}
+            onChatStarted={handleChatStarted}
+            onTitleReceived={handleTitleReceived}
+          />
+        {/key}
+      {:else}
+        <!-- Added a wrapper with overflow-y-auto to handle scrolling for the MaaS page -->
+        <div class="flex-1 overflow-y-auto w-full h-full">
+          <MaaSPage />
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
 
-<!-- Integration & API Key Vault Modal -->
 {#if isSettingsOpen}
   <SettingsModal {lang} onclose={() => (isSettingsOpen = false)} />
 {/if}

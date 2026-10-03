@@ -7,7 +7,8 @@
     onNewSession,
     onStartSecret,
     onSelectSession,
-    onOpenSettings
+    onOpenSettings,
+    onNavigateToMaaS // Added this prop
   }: {
     sessions?: Array<{
       sessionId: string;
@@ -23,6 +24,7 @@
     onStartSecret?: () => void;
     onSelectSession?: (payload: { id: string }) => void;
     onOpenSettings?: () => void;
+    onNavigateToMaaS?: () => void; // Added type definition here
   } = $props();
 
   function formatTime(isoStr?: string): string {
@@ -88,12 +90,8 @@
     <div class="flex items-center justify-between mb-8 px-2 mt-2">
 			<a href="/">
 				<div class="flex items-center gap-3">
-					<div class="h-8 w-8 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 p-[1px]">
-						<div class="h-full w-full bg-zinc-950 rounded-[11px] flex items-center justify-center">
-							<i data-lucide="cpu" class="w-4 h-4 text-sky-400"></i>
-						</div>
-					</div>
-					<span class="font-semibold text-zinc-100 tracking-tight">DCP Cloud</span>
+					<img src="/logo-white.png" class="w-16" alt="DCP">
+					<span class="self-start -mt-1 font-semibold text-zinc-100 text-2xl font-mono tracking-tight">Workspace</span>
 				</div>
 			</a>
 
@@ -143,12 +141,13 @@
     <div class="mb-8">
       <h3 class="px-3 text-[10px] font-semibold text-zinc-500 tracking-widest uppercase mb-2">Compute</h3>
       <button 
-        type="button"
-        class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-zinc-400 hover:text-sky-400 hover:bg-sky-500/10 transition-colors"
-      >
-        <i data-lucide="terminal-square" class="w-4 h-4"></i>
-        Launch Jupyter Node
-      </button>
+				type="button"
+				onclick={() => onNavigateToMaaS?.()} 
+				class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-zinc-400 hover:text-sky-400 hover:bg-sky-500/10 transition-colors"
+			>
+				<i data-lucide="terminal-square" class="w-4 h-4"></i>
+				MaaS
+			</button>
     </div>
 
     <!-- Session History -->
