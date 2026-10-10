@@ -5,6 +5,7 @@
   import ChatCanvas from "./ChatCanvas.svelte";
   import SettingsModal from "./SettingsModal.svelte";
   import MaaSPage from "./maas/MaaSPage.svelte"; 
+    import SettingsPage from "./settings/SettingsPage.svelte";
 
   let {
     lang = "en",
@@ -18,7 +19,7 @@
   let isSecretMode = $state(false);
   let isSettingsOpen = $state(false);
   
-  let activeView = $state<'chat' | 'maas'>('chat');
+  let activeView = $state<'chat' | 'maas' | 'settings'>('chat');
 
   interface ChatSessionItem {
     sessionId: string;
@@ -140,6 +141,25 @@
     });
   }
 
+	let pageTitle = $derived.by(() => {
+    switch (activeView) {
+      case 'maas':
+        return 'MaaS';
+      case 'chat':
+        return isSecretMode ? 'Secret Chat' : 'Secure Chat';
+      case 'settings':
+        return 'Settings';
+      // case 'billing':
+      //   return 'Billing & Usage';
+      default:
+        return 'Workspace';
+    }
+  });
+
+	function handleNavigateToSettings() {
+    activeView = 'settings';
+  }
+
   $effect(() => {
     void currentSessionId;
     void activeView; 
@@ -162,7 +182,7 @@
     onNewSession={handleNewSession}
     onStartSecret={handleStartSecret}
     onSelectSession={handleSelectSession}
-    onOpenSettings={() => (isSettingsOpen = true)}
+    onNavigateToSettings={handleNavigateToSettings}
     onNavigateToMaaS={handleNavigateToMaaS} 
   />
 
@@ -172,11 +192,10 @@
     <!-- Top Bar is now unconditionally rendered -->
     <Header
 			{lang}
-			{i18n}
-			{isSecretMode}
 			bind:isSidebarOpen
-			{activeView} 
-			onresetSession={handleNewSession}
+			{pageTitle}
+			subscriptionPlan="FREE - Beta"
+			balance="1,000.00"
 		/>
 
     <!-- Dynamic Content Area -->
@@ -192,7 +211,11 @@
             onTitleReceived={handleTitleReceived}
           />
         {/key}
-      {:else}
+			{:else if activeView === 'settings'}
+				<div class="flex-1 overflow-y-auto w-full h-full">
+					<SettingsPage />
+				</div>
+      {:else if activeView === 'maas'}
         <!-- Added a wrapper with overflow-y-auto to handle scrolling for the MaaS page -->
         <div class="flex-1 overflow-y-auto w-full h-full">
           <MaaSPage />

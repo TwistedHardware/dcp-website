@@ -7,7 +7,7 @@
     onNewSession,
     onStartSecret,
     onSelectSession,
-    onOpenSettings,
+    onNavigateToSettings,
     onNavigateToMaaS // Added this prop
   }: {
     sessions?: Array<{
@@ -23,7 +23,7 @@
     onNewSession?: () => void;
     onStartSecret?: () => void;
     onSelectSession?: (payload: { id: string }) => void;
-    onOpenSettings?: () => void;
+    onNavigateToSettings?: () => void;
     onNavigateToMaaS?: () => void; // Added type definition here
   } = $props();
 
@@ -206,7 +206,7 @@
     <div class="pt-4 border-t border-zinc-800/80 mt-auto">
       <button
         type="button"
-        onclick={() => onOpenSettings?.()}
+        onclick={() => onNavigateToSettings?.()}
         class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition-colors"
       >
         <i data-lucide="settings-2" class="w-4 h-4"></i>

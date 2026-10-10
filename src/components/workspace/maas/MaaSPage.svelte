@@ -2,19 +2,43 @@
   import { onMount } from 'svelte';
   import ModelHub from './ModelHub.svelte';
 
-  // Types for the state
-  interface Model {
+  const API_BASE = "https://api.dcp.tc-sa.com";
+
+  // --- API shape (matches the backend MaaSTemplate JSON) ---
+  type ApiTemplate = {
+    _id: string;
     name: string;
-    companyLogo?: string;
-    pricePerHour: number;
-    type: 'text-to-text' | 'image-to-text' | 'text-to-image' | 'audio-to-text' | 'image-text-to-text';
-    params: string;
-    downloads: string;
-    releaseDate: string;
-    description: string;
-    isPrivate?: boolean;
-		vRam: number;
-  }
+    modelName: string;
+    modelType: string;
+    modelParams: number;
+    modelDownloads: number;
+    modelLastUpdate: string; // RFC3339
+    modelDescription: string;
+    huggingFaceURL: string;
+    iconURL: string;
+    vRAM: number;
+    pricePerHour: number; // halalas/hour
+    ownerId: string; // "" => public
+    available: boolean;
+  };
+
+  // --- View shape (what ModelHub and the markup already use) ---
+  interface Model {
+		id: string;
+		name: string;
+		companyLogo?: string;
+		pricePerHour: number;
+		type: 'text-to-text' | 'image-to-text' | 'text-to-image' | 'audio-to-text' | 'image-text-to-text';
+		params: string;
+		downloads: string;        // formatted, for display
+		downloadsRaw: number;     // raw count, for sorting
+		releaseDate: string;
+		description: string;
+		isPrivate?: boolean;
+		available: boolean;
+		vRAM: number;
+		huggingFaceURL: string;
+	}
 
   interface ActiveInstance {
     id: string;
@@ -24,20 +48,93 @@
     startTime: string;
   }
 
-  // Fixed Mock Data with working placeholder images
-  let publicModels = $state<Model[]>([
-    { name: 'GLM-5.3-Flash', companyLogo: 'https://cdn-avatars.huggingface.co/v1/production/uploads/62dc173789b4cf157d36ebee/i_pxzM2ZDo3Ub-BEgIkE9.png', vRam: 512, pricePerHour: 102.40, type: 'image-text-to-text', params: '321B', downloads: '5.27M', releaseDate: '2024-08-05', description: 'GLM-5.3-Flash is a native multimodal MoE model (320B total/18B active) using hybrid sparse-linear attention to deliver frontier-level coding and agentic performance at a tenth of the cost.' },
-    { name: 'Qwen/Qwen3.8-27B', companyLogo: 'https://cdn-avatars.huggingface.co/v1/production/uploads/6215ca5692c0ecfba9186921/hrRM50-6XcdWgg2AKpENG.jpeg', vRam: 96, pricePerHour: 19.20, type: 'image-text-to-text', params: '27B', downloads: '6.93M', releaseDate: '2026-08-14', description: 'Built on Qwen3.5, Qwen3.8-27B is a deployment-friendly vision-language model with flexible thinking control, delivering major gains in coding, research, and reliable multi-step agentic tasks. Running os 256K token context window.' },
-    { name: 'Qwen-Image-2.1', companyLogo: 'https://cdn-avatars.huggingface.co/v1/production/uploads/6215ca5692c0ecfba9186921/hrRM50-6XcdWgg2AKpENG.jpeg', vRam: 48, pricePerHour: 9.60, type: 'text-to-image', params: '7B', downloads: '81.7K', releaseDate: '2026-09-29', description: 'Qwen-Image-2.1 is an open-source, 7B-parameter unified model for text-to-image generation and image editing. Built on 32 Single-Stream DiT layers, it balances high-quality visual generation, efficiency, and versatility.' },
-  ]);
+  // --- Formatters (compact display for params/downloads) ---
+  function formatParams(n: number): string {
+    if (n >= 1e12) return (n / 1e12).toFixed(1).replace(/\.0$/, "") + "T";
+    if (n >= 1e9)  return (n / 1e9).toFixed(1).replace(/\.0$/, "") + "B";
+    if (n >= 1e6)  return (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+    return String(n);
+  }
 
-  let myModels = $state<Model[]>([
-    { name: 'Custom-FineTune-V1', vRam: 40, pricePerHour: 0.25, type: 'text-to-text', params: '7B', downloads: '0', releaseDate: '2026-09-01', description: 'My private domain-specific fine-tune.' },
-  ]);
+  function formatDownloads(n: number): string {
+    if (n >= 1e6) return (n / 1e6).toFixed(2).replace(/\.?0+$/, "") + "M";
+    if (n >= 1e3) return (n / 1e3).toFixed(1).replace(/\.?0+$/, "") + "K";
+    return String(n);
+  }
+
+  function toModel(t: ApiTemplate): Model {
+		return {
+			id: t._id,
+			name: t.name,
+			companyLogo: t.iconURL,
+			pricePerHour: t.pricePerHour / 100,
+			type: t.modelType as Model['type'],
+			params: formatParams(t.modelParams),
+			downloads: formatDownloads(t.modelDownloads),
+			downloadsRaw: t.modelDownloads,
+			releaseDate: t.modelLastUpdate.split("T")[0],
+			description: t.modelDescription,
+			isPrivate: t.ownerId !== "",
+			available: t.available,
+			vRAM: t.vRAM,
+			huggingFaceURL: t.huggingFaceURL,
+		};
+	}
+
+  // --- State ---
+  let templates = $state<ApiTemplate[]>([]);
+  let isLoading = $state(true);
+  let loadError = $state<string | null>(null);
+
+  let publicModels = $derived(
+    templates.filter((t) => t.ownerId === "").map(toModel)
+  );
+  let myModels = $derived(
+    templates.filter((t) => t.ownerId !== "").map(toModel)
+  );
 
   let activeInstances = $state<ActiveInstance[]>([
-    { id: 'inst-1', modelName: 'Llama-3-8B', vRamUsage: 16, status: 'running', startTime: '2026-10-02T20:00:00Z' },
+    // { id: 'inst-1', modelName: 'Llama-3-8B', vRamUsage: 16, status: 'running', startTime: '2026-10-02T20:00:00Z' },
   ]);
+
+  // --- Fetch ---
+  function authHeaders(): HeadersInit {
+    const token = localStorage.getItem("token") || "";
+    const subject = localStorage.getItem("subject") || "";
+    return {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "x-subject": subject,
+    };
+  }
+
+  async function loadTemplates() {
+    isLoading = true;
+    loadError = null;
+    try {
+      const res = await fetch(`${API_BASE}/api/maas/templates`, {
+        method: "GET",
+        headers: authHeaders(),
+      });
+      if (res.status === 401) {
+        // TODO: centralize logout
+        console.warn("[maas] unauthorized");
+        return;
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (data.status !== "ok") throw new Error(data.error || "Failed to load templates");
+      templates = (data.templates ?? []) as ApiTemplate[];
+    } catch (err) {
+      loadError = err instanceof Error ? err.message : String(err);
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  onMount(() => {
+    loadTemplates();
+  });
 
   function handleDeploy(name: string) {
     console.log(`Deploying ${name}...`);
@@ -46,12 +143,6 @@
   function terminateInstance(id: string) {
     activeInstances = activeInstances.filter(inst => inst.id !== id);
   }
-
-  onMount(() => {
-    if (typeof window !== 'undefined' && window.lucide) {
-      window.lucide.createIcons();
-    }
-  });
 </script>
 
 <div class="min-h-screen bg-zinc-950 text-zinc-100 p-6 lg:p-10 space-y-12">
@@ -167,17 +258,34 @@
 
   <!-- Discovery Hub Zone -->
   <section class="max-w-6xl mx-auto space-y-4 pb-20">
-    <div class="flex items-center justify-between border-b border-zinc-800 pb-2">
-      <h3 class="text-sm font-semibold text-zinc-500 uppercase tracking-widest">Model Discovery Hub</h3>
-      <a href="https://huggingface.co" target="_blank" class="text-xs text-sky-400 hover:text-sky-300 hover:underline flex items-center gap-1.5 transition-colors">
-        Browse HuggingFace <i data-lucide="external-link" class="w-3 h-3"></i>
-      </a>
-    </div>
-    
-    <ModelHub 
-      {publicModels} 
-      {myModels} 
-      onDeploy={handleDeploy} 
-    />
-  </section>
+		<div class="flex items-center justify-between border-b border-zinc-800 pb-2">
+			<h3 class="text-sm font-semibold text-zinc-500 uppercase tracking-widest">Model Discovery Hub</h3>
+			<a href="https://huggingface.co" target="_blank" class="text-xs text-sky-400 hover:text-sky-300 hover:underline flex items-center gap-1.5 transition-colors">
+				Browse HuggingFace <i data-lucide="external-link" class="w-3 h-3"></i>
+			</a>
+		</div>
+
+		{#if isLoading}
+			<div class="py-20 flex flex-col items-center justify-center text-zinc-500">
+				<i data-lucide="loader-2" class="w-6 h-6 animate-spin mb-3"></i>
+				<p class="text-sm">Loading templates...</p>
+			</div>
+		{:else if loadError}
+			<div class="py-10 text-center text-rose-400 text-sm bg-rose-500/10 rounded-xl border border-rose-500/20">
+				<p>Failed to load templates: {loadError}</p>
+				<button
+					onclick={loadTemplates}
+					class="mt-3 px-3 py-1.5 text-xs font-medium rounded-md bg-rose-500/20 hover:bg-rose-500/30 transition-colors"
+				>
+					Retry
+				</button>
+			</div>
+		{:else}
+			<ModelHub
+				{publicModels}
+				{myModels}
+				onDeploy={handleDeploy}
+			/>
+		{/if}
+	</section>
 </div>

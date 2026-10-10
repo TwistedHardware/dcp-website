@@ -2,18 +2,22 @@
   import { onMount } from 'svelte';
   import ModelCard from './ModelCard.svelte';
 
-  interface Model {
-    name: string;
-    companyLogo?: string;
-    pricePerHour: number;
-    type: 'text-to-text' | 'image-to-text' | 'text-to-image' | 'audio-to-text' | 'image-text-to-text';
-    params: string;
-    downloads: string;
-    releaseDate: string;
-    description: string;
-    isPrivate?: boolean;
-		vRam: number;
-  }
+	interface Model {
+		id: string;
+		name: string;
+		companyLogo?: string;
+		pricePerHour: number;
+		type: 'text-to-text' | 'image-to-text' | 'text-to-image' | 'audio-to-text' | 'image-text-to-text';
+		params: string;
+		downloads: string;        // formatted, for display
+		downloadsRaw: number;     // raw count, for sorting
+		releaseDate: string;
+		description: string;
+		isPrivate?: boolean;
+		available: boolean;
+		vRAM: number;
+		huggingFaceURL: string;
+	}
 
   let { 
     publicModels = [], 
@@ -28,30 +32,57 @@
   let activeTab = $state('public');
   let searchQuery = $state('');
   let selectedType = $state('all');
-  let sortBy = $state('popularity');
+  let sortBy = $state('default');
 
   // Derived state for filtered models
-  let filteredModels = $derived(() => {
-    const list = activeTab === 'public' ? publicModels : myModels;
-    
-    return list
+	let filteredModels = $derived.by(() => {
+		const list = activeTab === 'public' ? publicModels : myModels;
+		return list
       .filter(m => 
         (m.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
          m.description.toLowerCase().includes(searchQuery.toLowerCase())) &&
         (selectedType === 'all' || m.type === selectedType)
       )
       .sort((a, b) => {
-        if (sortBy === 'cost') return a.pricePerHour - b.pricePerHour;
-        if (sortBy === 'date') return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
-        return 0; 
-      });
-  });
+				if (sortBy === 'cost') return a.pricePerHour - b.pricePerHour;
+				if (sortBy === 'date') return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
+				if (sortBy === 'popularity') return b.downloadsRaw - a.downloadsRaw;
+				return 0; // 'default' — preserve API order
+			});
+
+	});
+
+  // let filteredModels = $derived(() => {
+  //   const list = activeTab === 'public' ? publicModels : myModels;
+    
+  //   return list
+  //     .filter(m => 
+  //       (m.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  //        m.description.toLowerCase().includes(searchQuery.toLowerCase())) &&
+  //       (selectedType === 'all' || m.type === selectedType)
+  //     )
+  //     .sort((a, b) => {
+  //       if (sortBy === 'cost') return a.pricePerHour - b.pricePerHour;
+  //       if (sortBy === 'date') return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
+  //       return 0; 
+  //     });
+  // });
 
   onMount(() => {
-    if (typeof window !== 'undefined' && window.lucide) {
-      window.lucide.createIcons();
-    }
-  });
+		if (typeof window !== 'undefined' && window.lucide) {
+			window.lucide.createIcons();
+		}
+	});
+
+	$effect(() => {
+		// Re-run icon replacement when the filtered list changes,
+		// since the empty-state icon is conditionally rendered.
+		void filteredModels.length;
+		void activeTab;
+		if (typeof window !== 'undefined' && window.lucide) {
+			queueMicrotask(() => window.lucide?.createIcons());
+		}
+	});
 </script>
 
 <div class="flex flex-col gap-6">
@@ -95,29 +126,32 @@
         <option value="text-to-text">Text-to-Text</option>
         <option value="image-to-text">Image-to-Text</option>
         <option value="text-to-image">Text-to-Image</option>
+				<option value="image-text-to-text">Image-Text-to-Text</option>
+				<option value="audio-to-text">Audio-to-Text</option>
       </select>
 
       <!-- Sort Dropdown -->
-      <select 
-        bind:value={sortBy}
-        class="bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-400 focus:outline-none"
-      >
-        <option value="popularity">Popularity</option>
-        <option value="cost">Cheapest</option>
-        <option value="date">Newest</option>
-      </select>
+      <select
+				bind:value={sortBy}
+				class="bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-400 focus:outline-none"
+			>
+				<option value="default">Default</option>
+				<option value="popularity">Most Downloaded</option>
+				<option value="cost">Cheapest</option>
+				<option value="date">Newest</option>
+			</select>
     </div>
   </div>
 
   <!-- Grid of Model Cards -->
-  {#if filteredModels().length === 0}
+  {#if filteredModels.length === 0}
     <div class="py-20 text-center">
       <i data-lucide="database" class="w-12 h-12 text-zinc-800 mx-auto mb-4"></i>
       <p class="text-zinc-500 text-sm">No models found matching your criteria.</p>
     </div>
   {:else}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {#each filteredModels() as model}
+      {#each filteredModels as model}
         <ModelCard {model} onDeploy={onDeploy} />
       {/each}
     </div>
