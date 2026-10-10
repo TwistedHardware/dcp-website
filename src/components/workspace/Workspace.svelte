@@ -195,7 +195,6 @@
 			bind:isSidebarOpen
 			{pageTitle}
 			subscriptionPlan="FREE - Beta"
-			balance="1,000.00"
 		/>
 
     <!-- Dynamic Content Area -->
