@@ -289,6 +289,18 @@ const t = useTranslations(lang);
 
         const cred = await navigator.credentials.create({ publicKey: pk });
 
+				if (cred.response.prf) {
+					console.log("PRF Key generated successfully!");
+					console.log("Derived Key (Base64):", b64enc(cred.response.prf.derived));
+
+					// Call it inside performLogin after checking for cred.response.prf:
+					await testAESEncryption(cred.response.prf.derived);
+				} else {
+					console.warn("PRF not supported by this authenticator/browser.");
+					console.log(cred);
+					console.log(cred.response);
+				}
+
         const body = {
           id: cred.id,
           rawId: b64enc(cred.rawId),
