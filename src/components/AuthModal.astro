@@ -275,16 +275,9 @@ const t = useTranslations(lang);
         pk.user.id = b64dec(pk.user.id);
         if (pk.excludeCredentials) pk.excludeCredentials.forEach(c => c.id = b64dec(c.id));
 
-				const dummySalt = new Uint8Array(32);
-
 				// PRF Testing
 				pk.extensions = {
-					prf: {
-						enable: true,
-						eval: {
-							first: dummySalt
-						}
-					}
+					prf: {}
 				};
 
         const cred = await navigator.credentials.create({ publicKey: pk });
@@ -325,10 +318,15 @@ const t = useTranslations(lang);
         pk.challenge = b64dec(pk.challenge);
         if (pk.allowCredentials) pk.allowCredentials.forEach(c => c.id = b64dec(c.id));
 
-				// PRF Test
+				const dummySalt = new Uint8Array(32);
+
+				// PRF Testing
 				pk.extensions = {
 					prf: {
-						enable: true
+						enable: true,
+						eval: {
+							first: dummySalt
+						}
 					}
 				};
 
