@@ -416,30 +416,36 @@ const t = useTranslations(lang);
 			const encoder = new TextEncoder();
 			const data = encoder.encode(text);
 
-			// Import the PRF derived key into WebCrypto
 			const cryptoKey = await crypto.subtle.importKey(
-				"raw", 
-				derivedKeyBuffer, 
-				{ name: "AES-GCM" }, 
-				false, 
+				"raw",
+				derivedKeyBuffer,
+				{ name: "AES-GCM" },
+				false,
 				["encrypt", "decrypt"]
 			);
 
 			const iv = crypto.getRandomValues(new Uint8Array(12));
 			const encrypted = await crypto.subtle.encrypt(
-				{ name: "AES-GCM", iv: iv },
+				{ name: "AES-GCM", iv },
 				cryptoKey,
 				data
 			);
 
 			const decrypted = await crypto.subtle.decrypt(
-				{ name: "AES-GCM", iv: iv },
+				{ name: "AES-GCM", iv },
 				cryptoKey,
 				encrypted
 			);
 
-			console.log("Encrypted Data:", b64enc(new Uint8Array(encrypted)));
-			console.log("Decrypted Data:", b64dec(new Uint8Array(decrypted)));
+			console.log("Encrypted Data (b64):", b64enc(new Uint8Array(encrypted)));
+			console.log("Decrypted Data:", new TextDecoder().decode(decrypted));
+
+			// Sanity check
+			console.assert(
+				new TextDecoder().decode(decrypted) === text,
+				"Round-trip failed!"
+			);
+
 			return { encrypted, iv };
 		}
   };
