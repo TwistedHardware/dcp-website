@@ -277,7 +277,9 @@ const t = useTranslations(lang);
 
 				// PRF Testing
 				pk.extensions = {
-					prf: {}
+					prf: {
+						enable: true
+					}
 				};
 
         const cred = await navigator.credentials.create({ publicKey: pk });
@@ -320,7 +322,9 @@ const t = useTranslations(lang);
 
 				// PRF Test
 				pk.extensions = {
-					prf: {}
+					prf: {
+						enable: true
+					}
 				};
 
         const cred = await navigator.credentials.get({ publicKey: pk });

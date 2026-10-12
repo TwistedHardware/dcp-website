@@ -5,15 +5,12 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<header class="sticky top-0 z-40 w-full backdrop-blur-lg bg-zinc-900/80 border-b border-zinc-800">
+<header class="sticky px-4 top-0 z-40 w-full backdrop-blur-lg bg-zinc-900/80 border-b border-zinc-800">
   <div class="flex items-center justify-between h-16">
       
       <!-- Logo -->
       <a href={`/${lang}`} class="flex items-center gap-2">
-        <div class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
-          <span class="text-white font-bold text-xl leading-none">D</span>
-        </div>
-        <span class="text-white font-bold text-xl tracking-tight hidden sm:block">DCP Cloud</span>
+				<img class="h-9" src="/logo-white.png" alt="DCP">
       </a>
 
       <!-- Center Desktop Navigation -->
