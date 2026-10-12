@@ -280,7 +280,6 @@ const t = useTranslations(lang);
 				// PRF Testing
 				pk.extensions = {
 					prf: {
-						enable: true,
 						eval: {
 							first: dummySalt
 						}
@@ -289,16 +288,19 @@ const t = useTranslations(lang);
 
         const cred = await navigator.credentials.create({ publicKey: pk });
 
-				if (cred.response.prf) {
-					console.log("PRF Key generated successfully!");
-					console.log("Derived Key (Base64):", b64enc(cred.response.prf.derived));
+				const prfResults = cred.getClientExtensionResults().prf;
+				console.log("PRF results:", prfResults);
 
-					// Call it inside performLogin after checking for cred.response.prf:
-					await testAESEncryption(cred.response.prf.derived);
+				if (prfResults?.enabled) {
+					console.log("PRF is enabled on this credential.");
+				}
+
+				if (prfResults?.results?.first) {
+					const derivedKey = prfResults.results.first; // ArrayBuffer
+					console.log("Derived Key (Base64):", b64enc(derivedKey));
+					await testAESEncryption(derivedKey);
 				} else {
-					console.warn("PRF not supported by this authenticator/browser.");
-					console.log(cred);
-					console.log(cred.response);
+					console.warn("PRF eval returned no result. enabled =", prfResults?.enabled);
 				}
 
         const body = {
@@ -342,7 +344,6 @@ const t = useTranslations(lang);
 				// PRF Testing
 				pk.extensions = {
 					prf: {
-						enable: true,
 						eval: {
 							first: dummySalt
 						}
@@ -351,16 +352,19 @@ const t = useTranslations(lang);
 
         const cred = await navigator.credentials.get({ publicKey: pk });
 
-				if (cred.response.prf) {
-					console.log("PRF Key generated successfully!");
-					console.log("Derived Key (Base64):", b64enc(cred.response.prf.derived));
+				const prfResults = cred.getClientExtensionResults().prf;
+				console.log("PRF results:", prfResults);
 
-					// Call it inside performLogin after checking for cred.response.prf:
-					await testAESEncryption(cred.response.prf.derived);
+				if (prfResults?.enabled) {
+					console.log("PRF is enabled on this credential.");
+				}
+
+				if (prfResults?.results?.first) {
+					const derivedKey = prfResults.results.first; // ArrayBuffer
+					console.log("Derived Key (Base64):", b64enc(derivedKey));
+					await testAESEncryption(derivedKey);
 				} else {
-					console.warn("PRF not supported by this authenticator/browser.");
-					console.log(cred);
-					console.log(cred.response);
+					console.warn("PRF eval returned no result. enabled =", prfResults?.enabled);
 				}
 
         const body = {
