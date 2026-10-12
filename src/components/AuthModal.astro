@@ -275,10 +275,15 @@ const t = useTranslations(lang);
         pk.user.id = b64dec(pk.user.id);
         if (pk.excludeCredentials) pk.excludeCredentials.forEach(c => c.id = b64dec(c.id));
 
+				const dummySalt = new Uint8Array(32);
+
 				// PRF Testing
 				pk.extensions = {
 					prf: {
-						enable: true
+						enable: true,
+						eval: {
+							first: dummySalt
+						}
 					}
 				};
 
