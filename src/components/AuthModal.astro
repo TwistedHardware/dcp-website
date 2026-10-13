@@ -341,7 +341,7 @@ const t = useTranslations(lang);
         pk.challenge = b64dec(pk.challenge);
         if (pk.allowCredentials) pk.allowCredentials.forEach(c => c.id = b64dec(c.id));
 
-				console.log(`pk: ${pk}`);
+				console.log(pk);
 
 				const dummySalt = new Uint8Array(32);
 
