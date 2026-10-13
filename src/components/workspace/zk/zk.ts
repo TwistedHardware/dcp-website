@@ -70,8 +70,10 @@ export async function initializeMasterKey(): Promise<MasterKeyBytes> {
     publicKey: {
       challenge: crypto.getRandomValues(new Uint8Array(32)),
       allowCredentials: [{ id: b64dec(credentialId), type: "public-key" }],
-      userVerification: "required",
+      // userVerification: "required",
       extensions: { prf: { eval: { first: FIXED_PRF_SALT } } },
+			rpId: "tc-sa.com",
+			timeout: 300000
     },
   })) as PublicKeyCredential | null;
 

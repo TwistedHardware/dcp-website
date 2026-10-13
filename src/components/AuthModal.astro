@@ -356,6 +356,8 @@ const t = useTranslations(lang);
 
         const cred = await navigator.credentials.get({ publicKey: pk });
 
+				console.log(cred);
+
 				localStorage.setItem("dcp_credential_id", cred.id);
 
 				const prfResults = cred.getClientExtensionResults().prf;
