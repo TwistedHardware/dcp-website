@@ -288,6 +288,8 @@ const t = useTranslations(lang);
 
         const cred = await navigator.credentials.create({ publicKey: pk });
 
+				localStorage.setItem("dcp_credential_id", cred.id);
+
 				const prfResults = cred.getClientExtensionResults().prf;
 				console.log("PRF results:", prfResults);
 
@@ -351,6 +353,8 @@ const t = useTranslations(lang);
 				};
 
         const cred = await navigator.credentials.get({ publicKey: pk });
+
+				localStorage.setItem("dcp_credential_id", cred.id);
 
 				const prfResults = cred.getClientExtensionResults().prf;
 				console.log("PRF results:", prfResults);

@@ -5,7 +5,8 @@
   import ChatCanvas from "./ChatCanvas.svelte";
   import SettingsModal from "./SettingsModal.svelte";
   import MaaSPage from "./maas/MaaSPage.svelte"; 
-    import SettingsPage from "./settings/SettingsPage.svelte";
+  import SettingsPage from "./settings/SettingsPage.svelte";
+	import { requireMasterKey } from "./zk/zk";
 
   let {
     lang = "en",
@@ -52,6 +53,14 @@
 
     if (isExpired()) {
       window.location.href = `/${lang}/`;
+      return;
+    }
+
+		try {
+      await requireMasterKey();
+    } catch (err) {
+      console.error("PRF unlock failed:", err);
+      // Optional: show a UI to retry, or redirect to login
       return;
     }
 

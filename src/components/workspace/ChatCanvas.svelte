@@ -4,6 +4,13 @@
   import MessageRow from "./MessageRow.svelte";
   import type { ModelId, UploadedFile } from "../../lib/types/chat";
 	import { Shield, Sparkles } from "lucide-svelte";
+	import {
+    encryptMessage,
+    decryptMessage,
+    asSessionId,
+    type EncryptedPayload,
+		wrapKeyForServer
+  } from "./zk/zk";
 
   let {
     lang = "en",
@@ -208,6 +215,11 @@
     sessionId: string;
     files: UploadedFile[];
   }) {
+		let enc = await encryptMessage(asSessionId(sessionId), payload.text);
+		let dec = await decryptMessage(asSessionId(sessionId), enc);
+
+		console.log(`Decrypted message: ${dec}`);
+
     if (!payload.text || isStreaming) return;
 
     if (messages.length === 0) onChatStarted?.({ sessionId });

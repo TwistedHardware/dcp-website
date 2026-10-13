@@ -1,5 +1,6 @@
 <script lang="ts">
   import SaudiRiyal from './SaudiRiyal.svelte';
+	import { clearMasterKey } from "./zk/zk";
 
   const API_BASE = "https://api.dcp.tc-sa.com";
 
@@ -65,6 +66,8 @@
     localStorage.removeItem("token");
     localStorage.removeItem("token_expiry");
     localStorage.removeItem("subject");
+		localStorage.removeItem("dcp_credential_id");
+		clearMasterKey();
     window.location.href = `/${lang}/`;
   }
 
