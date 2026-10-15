@@ -1,3 +1,5 @@
+import { secp256k1 } from '@noble/curves/secp256k1';
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
@@ -7,8 +9,8 @@ const MASTER_KEY_INFO = "dcp-master-key-v1";
 const SESSION_KEY_INFO = "chat-session-aes-v1";
 const MASTER_KEY_LENGTH_BITS = 256;
 const AES_KEY_LENGTH_BITS = 256;
-const ECDH_CURVE = "P-256" as const;
 const WRAP_INFO = "dcp-key-wrap-v1";
+export const SERVER_PUBLIC_KEY = "BJ3W/8+i4bwS+ZhIiYBXR6A5r6CSCc80bLZURAxHJFzyG40y6YSefOwpOKBJwRVv12xjW+NHIe3/GHZnj4FBYzs=";
 
 export const FIXED_PRF_SALT: Uint8Array<ArrayBuffer> =
   new TextEncoder().encode("dcp-prf-master-v1");
@@ -281,30 +283,20 @@ export async function wrapKeyForServer(
   serverPublicKeyB64: string,
   keyToWrap: Uint8Array<ArrayBuffer>,
 ): Promise<WrappedKeyPayload> {
-  // 1. Import the server's public key
-  const serverPubKey = await crypto.subtle.importKey(
-    "raw",
-    b64dec(serverPublicKeyB64),
-    { name: "ECDH", namedCurve: ECDH_CURVE },
-    false,
-    [],
-  );
+  // 1. Decode the server's public key
+  const serverPubBytes = b64dec(serverPublicKeyB64); // 33 or 65 bytes
 
-  // 2. Generate an ephemeral keypair for this wrap operation
-  const ephemeral = await crypto.subtle.generateKey(
-    { name: "ECDH", namedCurve: ECDH_CURVE },
-    true, // extractable so we can export the public key
-    ["deriveBits"],
-  );
+  // 2. Generate a fresh ephemeral secp256k1 keypair per wrap
+  const ephemeralPriv = secp256k1.utils.randomSecretKey();
+  const ephemeralPub = secp256k1.getPublicKey(ephemeralPriv, true); // compressed, 33 bytes
 
-  // 3. ECDH: derive shared secret between ephemeral private + server public
-  const sharedSecret = await crypto.subtle.deriveBits(
-    { name: "ECDH", public: serverPubKey },
-    ephemeral.privateKey,
-    256, // P-256 → 32 bytes
-  );
+  // 3. ECDH: shared secret bytes
+  //    getSharedSecret returns the 33-byte compressed point;
+  //    the x-coordinate is bytes 1..33 — that's what you feed to HKDF.
+  const sharedPoint = secp256k1.getSharedSecret(ephemeralPriv, serverPubBytes, true);
+  const sharedSecret = sharedPoint.slice(1); // 32 bytes (x-coordinate)
 
-  // 4. HKDF the shared secret into an AES-GCM key-encryption key (KEK)
+  // 4. HKDF shared secret -> AES-GCM KEK
   const kekIkm = await crypto.subtle.importKey(
     "raw",
     sharedSecret,
@@ -316,9 +308,9 @@ export async function wrapKeyForServer(
   const kek = await crypto.subtle.deriveKey(
     {
       name: "HKDF",
-      hash: HKDF_HASH,
+      hash: "SHA-256",
       salt: new Uint8Array(0),
-      info: textEncoder.encode(WRAP_INFO),
+      info: new TextEncoder().encode(WRAP_INFO),
     },
     kekIkm,
     { name: "AES-GCM", length: 256 },
@@ -326,19 +318,16 @@ export async function wrapKeyForServer(
     ["encrypt"],
   );
 
-  // 5. Wrap the AES key with AES-GCM
-  const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH));
+  // 5. Wrap the key
+  const iv = crypto.getRandomValues(new Uint8Array(12));
   const wrapped = await crypto.subtle.encrypt(
     { name: "AES-GCM", iv },
     kek,
     keyToWrap,
   );
 
-  // 6. Export the ephemeral public key (raw uncompressed, 65 bytes)
-  const epkRaw = await crypto.subtle.exportKey("raw", ephemeral.publicKey);
-
   return {
-    epk: b64enc(epkRaw),
+    epk: b64enc(ephemeralPub),
     iv: b64enc(iv),
     wrapped: b64enc(new Uint8Array(wrapped)),
   };

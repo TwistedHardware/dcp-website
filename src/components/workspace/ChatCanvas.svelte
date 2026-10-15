@@ -9,8 +9,10 @@
     decryptMessage,
     asSessionId,
     type EncryptedPayload,
-		wrapKeyForServer
+		wrapKeyForServer,
+		getSessionKey
   } from "./zk/zk";
+	import { getServerPublicKey } from "./zk/serverKey";
 
   let {
     lang = "en",
@@ -215,11 +217,6 @@
     sessionId: string;
     files: UploadedFile[];
   }) {
-		let enc = await encryptMessage(asSessionId(sessionId), payload.text);
-		let dec = await decryptMessage(asSessionId(sessionId), enc);
-
-		console.log(`Decrypted message: ${dec}`);
-
     if (!payload.text || isStreaming) return;
 
     if (messages.length === 0) onChatStarted?.({ sessionId });
@@ -278,6 +275,16 @@
     const token = localStorage.getItem("token");
     const subject = localStorage.getItem("subject");
 
+		// get the encryption key
+		const sid = asSessionId(sessionId);
+		const aesKey = await getSessionKey(sid);
+		const rawKey = new Uint8Array(await crypto.subtle.exportKey("raw", aesKey));
+		const serverPub = await getServerPublicKey();
+		const wrappedKey = await wrapKeyForServer(serverPub, rawKey as Uint8Array<ArrayBuffer>);
+		
+		// encrypt the message
+		const encrypted = await encryptMessage(sid, text);
+
     try {
       const response = await fetch("https://api.dcp.tc-sa.com/api/v1/chat/completions", {
         method: "POST",
@@ -286,7 +293,14 @@
           Authorization: `Bearer ${token}`,
           "x-subject": subject || "",
         },
-        body: JSON.stringify({ sessionId, model: model, message: text, files: files }),
+        body: JSON.stringify({
+					sessionId: sessionId,
+					model: model,
+					message: text,
+					encMessage: encrypted,
+					key: wrappedKey,
+					files: files
+				}),
       });
 
       if (response.status === 401) {
