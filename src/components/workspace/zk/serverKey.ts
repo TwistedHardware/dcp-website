@@ -26,7 +26,7 @@ export function getServerPublicKey(): Promise<string> {
  */
 async function loadServerPublicKey(): Promise<string> {
   // Today: hardcoded constant.
-	// 9mbAwtl9mwX6TLslgGcJ7PXDSNK6AEH8OA7q8Jr/M8pj
+	// BBKmMFcIQPebMgbekgODfGjbp8OBPMYabVTN6R0J+A/2ZsDC2X2bBfpMuyWAZwns9cNI0roAQfw4Durwmv8zymM=
 	// 0412a630570840f79b3206de9203837c68dba7c3813cc61a6d54cde91d09f80ff666c0c2d97d9b05fa4cbb25806709ecf5c348d2ba0041fc380eeaf09aff33ca63
 	// 0312a630570840f79b3206de9203837c68dba7c3813cc61a6d54cde91d09f80ff6
   return "AxKmMFcIQPebMgbekgODfGjbp8OBPMYabVTN6R0J+A/2";

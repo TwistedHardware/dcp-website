@@ -284,21 +284,16 @@ export async function decryptMessage(
  */
 export async function wrapKeyForServer(
   serverPublicKeyB64: string,
-  keyToWrap: Uint8Array<ArrayBuffer>, // the 32-byte AES key
+  keyToWrap: Uint8Array<ArrayBuffer>,
 ): Promise<string> {
-  const serverPubBytes = b64dec(serverPublicKeyB64); // 65 bytes uncompressed
+  const serverPubBytes = b64dec(serverPublicKeyB64); // 65 bytes, uncompressed
 
-  // 1. Ephemeral secp256k1 keypair — UNCOMPRESSED to match Go's layout
   const ephemeralPriv = secp256k1.utils.randomSecretKey();
-  const ephemeralPub = secp256k1.getPublicKey(ephemeralPriv, false); // 65 bytes
+  const ephemeralPub = secp256k1.getPublicKey(ephemeralPriv, false); // 65 bytes ← was true
 
-  // 2. ECDH → 32 bytes. This IS the AES key for the envelope.
-  //    Whatever Decapsulate does on the Go side, getSharedSecret does here.
-  //    Must match: same curve point, same output extraction (x-only).
   const sharedPoint = secp256k1.getSharedSecret(ephemeralPriv, serverPubBytes, false);
   const sharedSecret = sharedPoint.slice(1, 33); // x-only, 32 bytes
 
-  // 3. Import as AES-GCM key
   const aesKey = await crypto.subtle.importKey(
     "raw",
     sharedSecret,
@@ -307,17 +302,15 @@ export async function wrapKeyForServer(
     ["encrypt"],
   );
 
-  // 4. 16-byte nonce (Go uses cipher.NewGCMWithNonceSize(block, 16))
-  const nonce = crypto.getRandomValues(new Uint8Array(16));
+  const nonce = crypto.getRandomValues(new Uint8Array(16)); // ← was 12
 
-  // 5. Encrypt. WebCrypto returns ct || tag; Go wants them split.
   const ctAndTag = new Uint8Array(
     await crypto.subtle.encrypt({ name: "AES-GCM", iv: nonce }, aesKey, keyToWrap),
   );
   const ct = ctAndTag.slice(0, ctAndTag.length - 16);
   const tag = ctAndTag.slice(ctAndTag.length - 16);
 
-  // 6. Assemble: pubkey(65) || nonce(16) || tag(16) || ct
+  // Layout: pubkey(65) || nonce(16) || tag(16) || ct
   const envelope = new Uint8Array(65 + 16 + 16 + ct.length);
   envelope.set(ephemeralPub, 0);
   envelope.set(nonce, 65);
