@@ -10,7 +10,6 @@ const SESSION_KEY_INFO = "chat-session-aes-v1";
 const MASTER_KEY_LENGTH_BITS = 256;
 const AES_KEY_LENGTH_BITS = 256;
 const WRAP_INFO = "dcp-key-wrap-v1";
-export const SERVER_PUBLIC_KEY = "BJ3W/8+i4bwS+ZhIiYBXR6A5r6CSCc80bLZURAxHJFzyG40y6YSefOwpOKBJwRVv12xjW+NHIe3/GHZnj4FBYzs=";
 
 export const FIXED_PRF_SALT: Uint8Array<ArrayBuffer> =
   new TextEncoder().encode("dcp-prf-master-v1");
