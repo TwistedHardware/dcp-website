@@ -295,7 +295,7 @@
         body: JSON.stringify({
 					sessionId: sessionId,
 					model: model,
-					message: text,
+					// message: text,
 					encMessage: encrypted,
 					key: wrappedKey,
 					files: files
