@@ -231,37 +231,41 @@ export function clearSessionKeys(): void {
 //
 const IV_LENGTH = 12; // 96 bits, standard for AES-GCM
 
-export interface EncryptedPayload {
-  iv: string;         // base64url
-  ciphertext: string; // base64url
-}
-
 export async function encryptMessage(
   sessionId: SessionId,
   plaintext: string,
-): Promise<EncryptedPayload> {
+): Promise<string> {
   const key = await getSessionKey(sessionId);
   const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH));
-  const ciphertext = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
-    key,
-    new TextEncoder().encode(plaintext),
+  const ct = new Uint8Array(
+    await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv },
+      key,
+      new TextEncoder().encode(plaintext),
+    ),
   );
-  return {
-    iv: b64enc(iv),
-    ciphertext: b64enc(new Uint8Array(ciphertext)),
-  };
+
+  // Flatten: iv || ct (WebCrypto already appends the 16-byte tag to ct)
+  const envelope = new Uint8Array(IV_LENGTH + ct.length);
+  envelope.set(iv, 0);
+  envelope.set(ct, IV_LENGTH);
+
+  return b64enc(envelope);
 }
 
 export async function decryptMessage(
   sessionId: SessionId,
-  payload: EncryptedPayload,
+  envelopeB64: string,
 ): Promise<string> {
+  const envelope = b64dec(envelopeB64);
+  const iv = envelope.slice(0, IV_LENGTH);
+  const ct = envelope.slice(IV_LENGTH);
+
   const key = await getSessionKey(sessionId);
   const plaintext = await crypto.subtle.decrypt(
-    { name: "AES-GCM", iv: b64dec(payload.iv) },
+    { name: "AES-GCM", iv },
     key,
-    b64dec(payload.ciphertext),
+    ct,
   );
   return new TextDecoder().decode(plaintext);
 }
@@ -280,54 +284,45 @@ export async function decryptMessage(
  */
 export async function wrapKeyForServer(
   serverPublicKeyB64: string,
-  keyToWrap: Uint8Array<ArrayBuffer>,
-): Promise<WrappedKeyPayload> {
-  // 1. Decode the server's public key
-  const serverPubBytes = b64dec(serverPublicKeyB64); // 33 or 65 bytes
+  keyToWrap: Uint8Array<ArrayBuffer>, // the 32-byte AES key
+): Promise<string> {
+  const serverPubBytes = b64dec(serverPublicKeyB64); // 65 bytes uncompressed
 
-  // 2. Generate a fresh ephemeral secp256k1 keypair per wrap
+  // 1. Ephemeral secp256k1 keypair — UNCOMPRESSED to match Go's layout
   const ephemeralPriv = secp256k1.utils.randomSecretKey();
-  const ephemeralPub = secp256k1.getPublicKey(ephemeralPriv, true); // compressed, 33 bytes
+  const ephemeralPub = secp256k1.getPublicKey(ephemeralPriv, false); // 65 bytes
 
-  // 3. ECDH: shared secret bytes
-  //    getSharedSecret returns the 33-byte compressed point;
-  //    the x-coordinate is bytes 1..33 — that's what you feed to HKDF.
-  const sharedPoint = secp256k1.getSharedSecret(ephemeralPriv, serverPubBytes, true);
-  const sharedSecret = sharedPoint.slice(1); // 32 bytes (x-coordinate)
+  // 2. ECDH → 32 bytes. This IS the AES key for the envelope.
+  //    Whatever Decapsulate does on the Go side, getSharedSecret does here.
+  //    Must match: same curve point, same output extraction (x-only).
+  const sharedPoint = secp256k1.getSharedSecret(ephemeralPriv, serverPubBytes, false);
+  const sharedSecret = sharedPoint.slice(1, 33); // x-only, 32 bytes
 
-  // 4. HKDF shared secret -> AES-GCM KEK
-  const kekIkm = await crypto.subtle.importKey(
+  // 3. Import as AES-GCM key
+  const aesKey = await crypto.subtle.importKey(
     "raw",
     sharedSecret,
-    "HKDF",
-    false,
-    ["deriveKey"],
-  );
-
-  const kek = await crypto.subtle.deriveKey(
-    {
-      name: "HKDF",
-      hash: "SHA-256",
-      salt: new Uint8Array(0),
-      info: new TextEncoder().encode(WRAP_INFO),
-    },
-    kekIkm,
-    { name: "AES-GCM", length: 256 },
+    { name: "AES-GCM" },
     false,
     ["encrypt"],
   );
 
-  // 5. Wrap the key
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-  const wrapped = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
-    kek,
-    keyToWrap,
-  );
+  // 4. 16-byte nonce (Go uses cipher.NewGCMWithNonceSize(block, 16))
+  const nonce = crypto.getRandomValues(new Uint8Array(16));
 
-  return {
-    epk: b64enc(ephemeralPub),
-    iv: b64enc(iv),
-    wrapped: b64enc(new Uint8Array(wrapped)),
-  };
+  // 5. Encrypt. WebCrypto returns ct || tag; Go wants them split.
+  const ctAndTag = new Uint8Array(
+    await crypto.subtle.encrypt({ name: "AES-GCM", iv: nonce }, aesKey, keyToWrap),
+  );
+  const ct = ctAndTag.slice(0, ctAndTag.length - 16);
+  const tag = ctAndTag.slice(ctAndTag.length - 16);
+
+  // 6. Assemble: pubkey(65) || nonce(16) || tag(16) || ct
+  const envelope = new Uint8Array(65 + 16 + 16 + ct.length);
+  envelope.set(ephemeralPub, 0);
+  envelope.set(nonce, 65);
+  envelope.set(tag, 81);
+  envelope.set(ct, 97);
+
+  return b64enc(envelope);
 }

@@ -8,7 +8,6 @@
     encryptMessage,
     decryptMessage,
     asSessionId,
-    type EncryptedPayload,
 		wrapKeyForServer,
 		getSessionKey
   } from "./zk/zk";
@@ -280,7 +279,7 @@
 		const aesKey = await getSessionKey(sid);
 		const rawKey = new Uint8Array(await crypto.subtle.exportKey("raw", aesKey));
 		const serverPub = await getServerPublicKey();
-		const wrappedKey = await wrapKeyForServer(serverPub, rawKey as Uint8Array<ArrayBuffer>);
+		const wrappedKey = await wrapKeyForServer(serverPub, rawKey);
 		
 		// encrypt the message
 		const encrypted = await encryptMessage(sid, text);
