@@ -1,4 +1,5 @@
 import { secp256k1 } from '@noble/curves/secp256k1.js';
+import { sha256 } from "@noble/hashes/sha2.js";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -288,29 +289,69 @@ export async function wrapKeyForServer(
 ): Promise<string> {
   const serverPubBytes = b64dec(serverPublicKeyB64); // 65 bytes, uncompressed
 
+  // 1. Ephemeral keypair — UNCOMPRESSED to match Go's k.Bytes(false)
   const ephemeralPriv = secp256k1.utils.randomSecretKey();
-  const ephemeralPub = secp256k1.getPublicKey(ephemeralPriv, false); // 65 bytes ← was true
+  const ephemeralPub = secp256k1.getPublicKey(ephemeralPriv, false); // 65 bytes
 
+  // 2. Full shared point, uncompressed (65 bytes: 0x04 || sx || sy)
   const sharedPoint = secp256k1.getSharedSecret(ephemeralPriv, serverPubBytes, false);
-  const sharedSecret = sharedPoint.slice(1, 33); // x-only, 32 bytes
+  const sx = sharedPoint.slice(1, 33);   // 32 bytes
+  const sy = sharedPoint.slice(33, 65);  // 32 bytes
 
+  // 3. Rebuild Go's `secret` buffer: ephemeralPub || 0x04 || sx || sy
+  //    = 65 + 1 + 32 + 32 = 130 bytes
+  const secret = new Uint8Array(65 + 1 + 32 + 32);
+  secret.set(ephemeralPub, 0);
+  secret[65] = 0x04;
+  secret.set(sx, 66);
+  secret.set(sy, 98);
+
+  // 4. HKDF-SHA256 with empty salt + empty info, 32-byte output (matches Go's kdf)
+  const ikm = await crypto.subtle.importKey(
+    "raw",
+    secret,
+    "HKDF",
+    false,
+    ["deriveBits"],
+  );
+
+  const aesKeyBytes = new Uint8Array(
+    await crypto.subtle.deriveBits(
+      {
+        name: "HKDF",
+        hash: "SHA-256",
+        salt: new Uint8Array(0),  // matches Go's nil salt
+        info: new Uint8Array(0),  // matches Go's nil info
+      },
+      ikm,
+      256,                         // 32 bytes
+    ),
+  ) as Uint8Array<ArrayBuffer>;
+
+  // 5. Import as AES-GCM key
   const aesKey = await crypto.subtle.importKey(
     "raw",
-    sharedSecret,
+    aesKeyBytes,
     { name: "AES-GCM" },
     false,
     ["encrypt"],
   );
 
-  const nonce = crypto.getRandomValues(new Uint8Array(16)); // ← was 12
+  // 6. 16-byte nonce (Go uses cipher.NewGCMWithNonceSize(block, 16))
+  const nonce = crypto.getRandomValues(new Uint8Array(16));
 
+  // 7. Wrap. WebCrypto returns ct || tag; Go wants them split.
   const ctAndTag = new Uint8Array(
-    await crypto.subtle.encrypt({ name: "AES-GCM", iv: nonce }, aesKey, keyToWrap),
+    await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv: nonce },
+      aesKey,
+      keyToWrap,
+    ),
   );
   const ct = ctAndTag.slice(0, ctAndTag.length - 16);
   const tag = ctAndTag.slice(ctAndTag.length - 16);
 
-  // Layout: pubkey(65) || nonce(16) || tag(16) || ct
+  // 8. Envelope: pubkey(65) || nonce(16) || tag(16) || ct
   const envelope = new Uint8Array(65 + 16 + 16 + ct.length);
   envelope.set(ephemeralPub, 0);
   envelope.set(nonce, 65);
