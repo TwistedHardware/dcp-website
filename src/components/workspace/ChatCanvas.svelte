@@ -256,7 +256,7 @@
 		);
 	}
 
-   async function streamAssistantReply(
+  async function streamAssistantReply(
     text: string,
     model: ModelId,
     files: UploadedFile[]

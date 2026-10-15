@@ -151,7 +151,7 @@ export async function deriveSessionKey(
     },
     ikm,
     { name: "AES-GCM", length: AES_KEY_LENGTH_BITS },
-    false,
+    true,
     ["encrypt", "decrypt"],
   );
 }
