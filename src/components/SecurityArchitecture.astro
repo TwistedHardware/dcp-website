@@ -7,86 +7,87 @@ const t = useTranslations(lang);
 const securityPillars = [
   {
     step: '01',
-    title: t('home.passkey.title'),
-    desc: t('home.passkey.desc'),
+    title: t('home.security.p1.title'),
+    desc: t('home.security.p1.desc'),
   },
   {
     step: '02',
-    title: t('home.envelope.title'),
-    desc: t('home.envelope.desc'),
+    title: t('home.security.p2.title'),
+    desc: t('home.security.p2.desc'),
   },
   {
     step: '03',
-    title: t('home.zk.title'),
-    desc: t('home.zk.desc'),
+    title: t('home.security.p3.title'),
+    desc: t('home.security.p3.desc'),
   },
   {
     step: '04',
-    title: t('home.tee.title'),
-    desc: t('home.tee.desc'),
-    tag: t('home.tee.tag'),
-  },
+    title: t('home.security.p4.title'),
+    desc: t('home.security.p4.desc'),
+  }
 ];
 ---
 
-<section class="py-24 bg-zinc-900 text-white relative overflow-hidden border-t border-zinc-800">
+<section class="py-24 bg-zinc-950 text-white relative overflow-hidden border-t border-zinc-800/50">
+  <!-- Subtle background accent -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"></div>
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <span class="text-indigo-400 text-sm font-semibold tracking-wide uppercase">
-        {t('home.eyebrow')}
+      <span class="text-emerald-400 text-sm font-semibold tracking-wide uppercase flex items-center justify-center gap-2">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd" />
+        </svg>
+        {t('home.security.eyebrow')}
       </span>
-      <h2 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-        {t('home.title')}
+      <h2 class="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+        {t('home.security.title')}
       </h2>
       <p class="mt-4 max-w-2xl text-lg text-zinc-400 mx-auto">
-        {t('home.subtitle')}
+        {t('home.security.subtitle')}
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-start">
       {securityPillars.map((pillar) => (
-        <div class="relative flex flex-col p-6 rounded-2xl bg-zinc-800/60 border border-zinc-700/60 backdrop-blur-sm">
+        <div class="relative flex flex-col p-6 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
           <div class="flex items-center justify-between mb-4">
-            <span class="text-2xl font-black text-indigo-400">{pillar.step}</span>
-            {pillar.tag && (
-              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                {pillar.tag}
-              </span>
-            )}
+            <span class="text-2xl font-black text-zinc-700">{pillar.step}</span>
           </div>
-          <h3 class="text-lg font-semibold text-white mb-2">{pillar.title}</h3>
+          <h3 class="text-lg font-semibold text-zinc-100 mb-2">{pillar.title}</h3>
           <p class="text-sm text-zinc-400 leading-relaxed flex-1">{pillar.desc}</p>
         </div>
       ))}
     </div>
 
-    <!-- Terminal-like technical callout -->
-    <div class="mt-12 rounded-2xl bg-zinc-950 border border-zinc-800 p-6 max-w-4xl mx-auto" dir="ltr">
-      <div class="flex items-center gap-2 mb-4 pb-3 border-b border-zinc-800 text-xs text-zinc-500 font-mono">
+    <!-- Terminal-like technical callout: Showing the actual network payload -->
+    <div class="mt-12 rounded-2xl bg-[#0d1117] border border-zinc-800 shadow-2xl max-w-4xl mx-auto overflow-hidden" dir="ltr">
+      <div class="flex items-center gap-2 px-4 py-3 border-b border-zinc-800 bg-zinc-900/50 text-xs text-zinc-500 font-mono">
         <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
         <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
         <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
-        <span class="ms-2">client-side-handshake.ts</span>
+        <span class="ms-2">network_payload.json</span>
       </div>
-      <pre class="font-mono text-xs sm:text-sm text-zinc-300 overflow-x-auto leading-relaxed">
-<code>{`// 1. Session AES key derived via WebAuthn PRF
-const sessionKey = await crypto.subtle.generateKey(
-	{ name: "AES-GCM", length: 256 },
-	true,
-	["encrypt", "decrypt"]
-);
+      <div class="p-6 overflow-x-auto">
+<pre class="font-mono text-xs sm:text-sm text-zinc-300 leading-relaxed"><code><span class="text-zinc-500"># The actual payload sent from the browser:</span>
+{"{"}
+  <span class="text-cyan-200">"sessionId"</span>: <span class="text-green-400">"2de17f49-8aca-484e-86de-67a1c34644bf"</span>,
+  <span class="text-cyan-200">"model"</span>: <span class="text-green-400">"fast"</span>,
+  
+  <span class="text-zinc-500">// 1. AES Encrypted Message Body</span>
+  <span class="text-cyan-200">"encMessage"</span>: <span class="text-green-400">"M619z-9_TraUKTpElBdQpVQ9ZGT8KRvpf3Nb8Ou4-YEb..."</span>,
+  
+  <span class="text-zinc-500">// 2. ECIES Wrapped Ephemeral Key</span>
+  <span class="text-cyan-200">"key"</span>: <span class="text-green-400">"BJpx2YaWvYcxfwQ0zipOc3_mchl9wjWszGlu5b4iDXn..."</span>,
+  
+  <span class="text-cyan-200">"files"</span>: []
+{"}"}
 
-// 2. Wrap AES key in an ECIES envelope for runtime inference
-const encryptedKeyEnvelope = await eciesEncrypt(
-	sessionKeyRaw,
-	backendPublicVerificationKey
-);
-
-// 3. Dispatch payload - raw AES keys never enter cloud provider logs or databases
-await fetch("/api/v1/chat/completions", {
-  headers: { "X-DCP-Key-Envelope": encryptedKeyEnvelope },
-  body: encryptedContextPayload
-});`}</code></pre>
+<span class="text-cyan-400">SYSTEM SECURITY ENFORCEMENT:</span>
+- <span class="text-pink-400">Triple Encryption</span>: Payload is secured via SSL, AES, and ECIES.
+- <span class="text-pink-400">Ephemeral Keys</span>: The `key` is held strictly in volatile memory during inference.
+- <span class="text-pink-400">Zero Logging</span>: The key dies with the request and is NEVER written to the database.</code></pre>
+      </div>
     </div>
   </div>
 </section>

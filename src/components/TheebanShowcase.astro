@@ -1,0 +1,98 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="relative py-24 bg-zinc-950 border-t border-zinc-800/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+      
+      <!-- Text Content -->
+      <div class="mb-12 lg:mb-0">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6 border border-emerald-500/20">
+          <span class="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+          {t('home.theeban.badge')}
+        </div>
+        
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+          {t('home.theeban.title')}
+        </h2>
+        
+        <p class="text-lg text-zinc-400 mb-8">
+          {t('home.theeban.subtitle')}
+        </p>
+        
+        <div class="space-y-6">
+          <!-- Feature 1 -->
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 mt-1">
+               <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-800 text-emerald-400">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+               </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-zinc-100">{t('home.theeban.feature1.title')}</h3>
+              <p class="mt-1 text-zinc-400">{t('home.theeban.feature1.desc')}</p>
+            </div>
+          </div>
+          
+          <!-- Feature 2 -->
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 mt-1">
+               <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-800 text-indigo-400">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+               </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-zinc-100">{t('home.theeban.feature2.title')}</h3>
+              <p class="mt-1 text-zinc-400">{t('home.theeban.feature2.desc')}</p>
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 mt-1">
+               <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-800 text-cyan-400">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+               </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-zinc-100">{t('home.theeban.feature3.title')}</h3>
+              <p class="mt-1 text-zinc-400">{t('home.theeban.feature3.desc')}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-10">
+          <a href={`/${lang}/theeban`} class="text-emerald-400 font-semibold hover:text-emerald-300 flex items-center gap-2 group">
+            {t('home.theeban.cta')}
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Visual / Real Screenshot -->
+      <div class="relative group mt-12 lg:mt-0">
+        <!-- Background glow for the screenshot -->
+        <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        
+        <div class="relative rounded-xl bg-zinc-900 ring-1 ring-zinc-800 shadow-2xl overflow-hidden">
+          <img 
+            src="/images/theeban-workspace-screenshot.png" 
+            alt="Theeban Secure Workspace Interface" 
+            class="w-full h-auto object-cover opacity-90 hover:opacity-100 transition-opacity"
+          />
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>

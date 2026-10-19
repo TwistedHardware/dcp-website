@@ -1,12 +1,57 @@
 export const en = {
-  // Hero
-  'hero.badge': '100% Zero-Knowledge Architecture',
-  'hero.title_start': 'Enterprise AI,',
-  'hero.title_highlight': 'Without the Compromise.',
-  'hero.subtitle': 'Secure, private, and localized AI chat and API infrastructure. Backed by client-side ECIES encryption and managed compute.',
-  'hero.cta_primary': 'Launch Workspace',
-  'hero.cta_secondary': 'Read the Docs',
+	// Hero
+	"hero.badge": "100% Built and Hosted in Saudi Arabia",
+	"hero.title_start": "The Zero-Knowledge",
+	"hero.title_highlight": "AI Infrastructure Platform.",
+	"hero.subtitle": "Enterprise-grade AI chat with Theeban, 1-click Hugging Face deployments, and serverless API endpoints. Secure, scalable, and proudly engineered by Saudi talent for the unique needs of the Saudi market.",
+	"hero.cta_primary": "Meet Theeban (ذيبان)",
+	"hero.cta_secondary": "Deploy a Model",
+
+	// Theeban Showcase (Homepage)
+  'home.theeban.badge': 'Enterprise SaaS',
+  'home.theeban.title': 'Meet Theeban (ذيبان)',
+  'home.theeban.subtitle': 'The Zero-Knowledge AI Assistant built exclusively for Saudi enterprise and government. Cryptographically isolated, multi-model capable, and hosted 100% locally.',
+  'home.theeban.feature1.title': 'Absolute Data Sovereignty',
+  'home.theeban.feature1.desc': 'If we can leak it, it’s not secure. Your data never leaves KSA and cannot be accessed by our infrastructure team.',
+  'home.theeban.feature2.title': 'Model Agnostic',
+  'home.theeban.feature2.desc': 'Switch seamlessly between fast, pro, deep-research depending on your specific task.',
+  'home.theeban.feature3.title': 'Ready for Compliance',
+  'home.theeban.feature3.desc': 'Built from the ground up to meet strict Saudi healthcare, financial, and government data regulations.',
+  'home.theeban.cta': 'Discover Theeban',
+
+	// Security Architecture Section (Homepage)
+  'home.security.eyebrow': 'Enterprise Trust & Compliance',
+  'home.security.title': 'Zero-Knowledge by Design.',
+  'home.security.subtitle': 'Built for Saudi Arabia’s strictest compliance standards. If we can leak your data with root access, it isn’t secure—so we engineered the platform so we can’t.',
+  'home.security.p1.title': '100% Data Sovereignty',
+  'home.security.p1.desc': 'Every query, cache, and fine-tuned model weight is hosted exclusively on bare-metal servers located physically within the Kingdom of Saudi Arabia.',
+  'home.security.p2.title': 'Zero-Knowledge Storage',
+  'home.security.p2.desc': 'Frictionless, transparent encryption. Your chat logs and API payloads are cryptographically secured at rest. Our infrastructure team cannot decrypt your data.',
+  'home.security.p3.title': 'Strict Model Isolation',
+  'home.security.p3.desc': 'Our Fast, Pro, and Deep-Research tuned models run in isolated execution environments. Your private enterprise data is never used for continuous training.',
+  'home.security.p4.title': 'Extensive Tooling Safety',
+  'home.security.p4.desc': 'Agentic workflows and extensive external tool calls are sandboxed. API keys for third-party integrations never leave your encrypted vault.',
   
+	// MaaS Deployer Teaser (Homepage) - TRUE ACTIVE BILLING
+  'home.maas.badge': 'Model-as-a-Service (BYOM)',
+  'home.maas.title': 'Bring Your Own Model. Deploy in Seconds.',
+  'home.maas.subtitle': 'Skip the bare-metal setup. Paste any Hugging Face URL (even a private repo) and instantly spin up a dedicated VRAM allocation powered by vLLM. No Linux, no drivers, no waiting.',
+  'home.maas.feature1.title': 'Dedicated VRAM Allocation',
+  'home.maas.feature1.desc': 'At just 0.20 SAR/GB/hr, that memory is 100% yours. Guarantee zero queue times and maximum throughput for your specific model.',
+  'home.maas.feature2.title': 'True Active Billing',
+  'home.maas.feature2.desc': 'You only pay for the exact seconds your model is in the "Active" state. You never pay for weight downloads, cold starts, or teardown. Hit pause, and billing stops instantly.',
+  'home.maas.cta': 'Explore Compute Tiers',
+
+	// API Developers Section (Homepage)
+  'home.api.badge': 'Serverless API Endpoints',
+  'home.api.title': 'A drop-in replacement for your current AI stack.',
+  'home.api.subtitle': 'Our API is fully compatible with the OpenAI SDK. Access Llama 3, Mistral, and top open-weights models instantly without rewriting your application logic.',
+  'home.api.feature1.title': 'Pay Per Token',
+  'home.api.feature1.desc': 'No hourly rates. No idle costs. Pay strictly for the input and output tokens you process at ultra-competitive market rates.',
+  'home.api.feature2.title': 'Blazing Fast Inference',
+  'home.api.feature2.desc': 'Powered by our enterprise vLLM backend, delivering massive concurrency and minimal Time-to-First-Token (TTFT).',
+  'home.api.cta': 'View API Documentation',
+
   // Capabilities
   'home.section_title': 'Intelligence Tailored to the Task',
   'home.section_subtitle': 'Opaque, highly-optimized routing ensures you get the right reasoning model for the right price, instantly.',

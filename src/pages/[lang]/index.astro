@@ -9,25 +9,24 @@ import AppTeaser from '../../components/AppTeaser.astro'; // New mobile app comp
 import Footer from '../../components/Footer.astro';
 import AuthModal from '../../components/AuthModal.astro';
 import { languages } from '../../i18n/utils';
+import TheebanShowcase from '../../components/TheebanShowcase.astro';
+import MaasDeployerTeaser from '../../components/MaasDeployerTeaser.astro';
+import ApiDevelopers from '../../components/ApiDevelopers.astro';
 
 export function getStaticPaths() {
   return Object.keys(languages).map((lang) => ({ params: { lang } }));
 }
 ---
 
-<Layout title="DCP Cloud | Zero-Knowledge Enterprise AI">
+<Layout title="DCP | AI Infrastructure & Zero-Knowledge Chat" lang="en">
   <Header />
-  
   <main class="flex-1 overflow-x-hidden">
     <Hero />
-    <Capabilities />
+    <TheebanShowcase /> 
+    <MaasDeployerTeaser />
+    <ApiDevelopers />
     <SecurityArchitecture />
-    <Pricing />
-    <AppTeaser />
   </main>
-  
   <Footer />
-  
-  <!-- We will convert this into the 2-step SSO + Passkey flow -->
-  
+  <AuthModal />
 </Layout>

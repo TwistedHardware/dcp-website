@@ -1,0 +1,109 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="relative py-24 bg-zinc-950 border-t border-zinc-800/50 overflow-hidden">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+      
+      <!-- Text Content (Left Side) -->
+      <div class="mb-12 lg:mb-0">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-medium mb-6 border border-cyan-500/20">
+          <span class="flex h-2 w-2 rounded-full bg-cyan-500"></span>
+          {t('home.api.badge')}
+        </div>
+        
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+          {t('home.api.title')}
+        </h2>
+        
+        <p class="text-lg text-zinc-400 mb-8">
+          {t('home.api.subtitle')}
+        </p>
+        
+        <div class="space-y-6">
+          <!-- Feature 1: Economics -->
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 mt-1">
+               <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-800 text-cyan-400">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+               </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-zinc-100">{t('home.api.feature1.title')}</h3>
+              <p class="mt-1 text-zinc-400">{t('home.api.feature1.desc')}</p>
+            </div>
+          </div>
+          
+          <!-- Feature 2: Cache Hit -->
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 mt-1">
+               <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-800 text-blue-400">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+               </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-zinc-100">{t('home.api.feature2.title')}</h3>
+              <p class="mt-1 text-zinc-400">{t('home.api.feature2.desc')}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-10">
+          <a href={`/${lang}/api`} class="px-6 py-3 rounded-lg bg-zinc-800 text-white font-semibold hover:bg-zinc-700 border border-zinc-700 transition-colors inline-block">
+            {t('home.api.cta')}
+          </a>
+        </div>
+      </div>
+      
+      <!-- Visual: Mock IDE Window (Right Side) -->
+      <div class="relative group">
+        <!-- Subtle Glow -->
+        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+        
+        <!-- IDE Container -->
+        <div class="relative rounded-xl bg-[#0d1117] ring-1 ring-zinc-800 shadow-2xl overflow-hidden font-mono text-sm">
+          <!-- Window Header -->
+          <div class="flex items-center gap-2 border-b border-zinc-800 bg-zinc-900/50 px-4 py-3">
+            <div class="flex gap-1.5">
+              <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+            </div>
+            <div class="text-xs text-zinc-500 ml-4">main.py</div>
+          </div>
+          
+          <!-- Code Content -->
+          <div class="p-4 sm:p-6 overflow-x-auto text-zinc-300 leading-relaxed">
+<pre><code><span class="text-pink-400">from</span> openai <span class="text-pink-400">import</span> OpenAI
+
+<span class="text-zinc-500"># 1. Point the client to DCP</span>
+client = OpenAI(
+    api_key=<span class="text-green-400">"dcp_your_api_key_here"</span>,
+    base_url=<span class="text-green-400">"https://api.dcp.sa/v1"</span>
+)
+
+<span class="text-zinc-500"># 2. Query any available model</span>
+response = client.chat.completions.create(
+  model=<span class="text-green-400">"dcp/fast"</span>,
+    messages=[
+      {"{"}<span class="text-cyan-200">"role"</span>: <span class="text-green-400">"system"</span>, <span class="text-cyan-200">"content"</span>: <span class="text-green-400">"You are an AI."</span>{"}"},
+      {"{"}<span class="text-cyan-200">"role"</span>: <span class="text-green-400">"user"</span>, <span class="text-cyan-200">"content"</span>: <span class="text-green-400">"What's the meaning of life?"</span>{"}"}
+    ]
+)
+
+<span class="text-cyan-400">print</span>(response.choices[<span class="text-orange-400">0</span>].message.content)</code></pre>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
