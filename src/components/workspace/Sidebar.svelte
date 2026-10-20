@@ -91,7 +91,7 @@
 			<a href="/">
 				<div class="flex items-center gap-3">
 					<img src="/logo-white.png" class="w-16" alt="DCP">
-					<span class="self-start -mt-1 font-semibold text-zinc-100 text-2xl font-mono tracking-tight">Workspace</span>
+					<span class="self-start -mt-1 font-semibold text-zinc-100 text-2xl font-mono tracking-tight">Theeban</span>
 				</div>
 			</a>
 

@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import SaudiRiyal from './SaudiRiyal.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -28,7 +29,8 @@ const t = useTranslations(lang);
         <p class="text-sm text-zinc-400 mt-2 h-10">{t('theeban.pricing.starter.desc')}</p>
         <div class="mt-6 flex items-baseline gap-2">
           <span class="text-4xl font-bold text-white">{t('theeban.pricing.starter.price')}</span>
-          <span class="text-sm text-zinc-500">{t('theeban.pricing.starter.period')}</span>
+          <span class="text-sm text-zinc-500"><SaudiRiyal class="text-4xl" /> / month</span>
+					
         </div>
         <a href={`/${lang}/workspace`} class="mt-8 block w-full py-3 px-4 rounded-lg bg-zinc-800 text-white font-semibold text-center hover:bg-zinc-700 transition">
           {t('theeban.pricing.cta')}
@@ -59,7 +61,7 @@ const t = useTranslations(lang);
         <p class="text-sm text-zinc-400 mt-2 h-10">{t('theeban.pricing.pro.desc')}</p>
         <div class="mt-6 flex items-baseline gap-2">
           <span class="text-4xl font-bold text-white">{t('theeban.pricing.pro.price')}</span>
-          <span class="text-sm text-zinc-500">{t('theeban.pricing.pro.period')}</span>
+          <span class="text-sm text-zinc-500"><SaudiRiyal class="text-4xl" /> / month</span>
         </div>
         <a href={`/${lang}/workspace`} class="mt-8 block w-full py-3 px-4 rounded-lg bg-emerald-600 text-white font-semibold text-center hover:bg-emerald-500 transition shadow-lg shadow-emerald-500/20">
           {t('theeban.pricing.cta')}
@@ -86,7 +88,7 @@ const t = useTranslations(lang);
         <p class="text-sm text-zinc-400 mt-2 h-10">{t('theeban.pricing.advanced.desc')}</p>
         <div class="mt-6 flex items-baseline gap-2">
           <span class="text-4xl font-bold text-white">{t('theeban.pricing.advanced.price')}</span>
-          <span class="text-sm text-zinc-500">{t('theeban.pricing.advanced.period')}</span>
+          <span class="text-sm text-zinc-500"><SaudiRiyal class="text-4xl" /> / month</span>
         </div>
         <a href={`/${lang}/workspace`} class="mt-8 block w-full py-3 px-4 rounded-lg bg-zinc-800 text-white font-semibold text-center hover:bg-zinc-700 transition">
           {t('theeban.pricing.cta')}
