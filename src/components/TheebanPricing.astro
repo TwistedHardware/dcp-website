@@ -1,0 +1,112 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="py-24 bg-zinc-950 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6 border border-emerald-500/20">
+        <span class="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+        {t('theeban.pricing.badge')}
+      </div>
+      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        {t('theeban.pricing.title')}
+      </h2>
+      <p class="mt-4 max-w-2xl text-lg text-zinc-400 mx-auto">
+        {t('theeban.pricing.subtitle')}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto items-center">
+      
+      <!-- Starter Tier -->
+      <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-8 shadow-sm">
+        <h3 class="text-xl font-semibold text-white">{t('theeban.pricing.starter.name')}</h3>
+        <p class="text-sm text-zinc-400 mt-2 h-10">{t('theeban.pricing.starter.desc')}</p>
+        <div class="mt-6 flex items-baseline gap-2">
+          <span class="text-4xl font-bold text-white">{t('theeban.pricing.starter.price')}</span>
+          <span class="text-sm text-zinc-500">{t('theeban.pricing.starter.period')}</span>
+        </div>
+        <a href={`/${lang}/workspace`} class="mt-8 block w-full py-3 px-4 rounded-lg bg-zinc-800 text-white font-semibold text-center hover:bg-zinc-700 transition">
+          {t('theeban.pricing.cta')}
+        </a>
+        <ul class="mt-8 space-y-4 text-sm text-zinc-300">
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>{t('theeban.pricing.starter.f1')}</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>{t('theeban.pricing.starter.f2')}</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>{t('theeban.pricing.starter.f3')}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Pro Tier (Highlighted) -->
+      <div class="rounded-2xl bg-zinc-900 border-2 border-emerald-500/50 p-8 shadow-2xl relative transform lg:-translate-y-4 z-10">
+        <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
+        <h3 class="text-xl font-semibold text-white flex items-center justify-between">
+          {t('theeban.pricing.pro.name')}
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Most Popular</span>
+        </h3>
+        <p class="text-sm text-zinc-400 mt-2 h-10">{t('theeban.pricing.pro.desc')}</p>
+        <div class="mt-6 flex items-baseline gap-2">
+          <span class="text-4xl font-bold text-white">{t('theeban.pricing.pro.price')}</span>
+          <span class="text-sm text-zinc-500">{t('theeban.pricing.pro.period')}</span>
+        </div>
+        <a href={`/${lang}/workspace`} class="mt-8 block w-full py-3 px-4 rounded-lg bg-emerald-600 text-white font-semibold text-center hover:bg-emerald-500 transition shadow-lg shadow-emerald-500/20">
+          {t('theeban.pricing.cta')}
+        </a>
+        <ul class="mt-8 space-y-4 text-sm text-zinc-300">
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>{t('theeban.pricing.pro.f1')}</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-white font-medium">{t('theeban.pricing.pro.f2')}</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-white font-medium">{t('theeban.pricing.pro.f3')}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Advanced Tier -->
+      <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-8 shadow-sm">
+        <h3 class="text-xl font-semibold text-white">{t('theeban.pricing.advanced.name')}</h3>
+        <p class="text-sm text-zinc-400 mt-2 h-10">{t('theeban.pricing.advanced.desc')}</p>
+        <div class="mt-6 flex items-baseline gap-2">
+          <span class="text-4xl font-bold text-white">{t('theeban.pricing.advanced.price')}</span>
+          <span class="text-sm text-zinc-500">{t('theeban.pricing.advanced.period')}</span>
+        </div>
+        <a href={`/${lang}/workspace`} class="mt-8 block w-full py-3 px-4 rounded-lg bg-zinc-800 text-white font-semibold text-center hover:bg-zinc-700 transition">
+          {t('theeban.pricing.cta')}
+        </a>
+        <ul class="mt-8 space-y-4 text-sm text-zinc-300">
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>{t('theeban.pricing.advanced.f1')}</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-white font-medium">{t('theeban.pricing.advanced.f2')}</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <svg class="h-5 w-5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-emerald-400 font-medium">{t('theeban.pricing.advanced.f3')}</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -79,6 +79,77 @@ export const en = {
   'home.tee.desc': 'Full end-to-end encryption extending from your browser directly into hardware-isolated Confidential GPU enclaves.',
   'home.tee.tag': 'Roadmap',
 
+  // Theeban Pricing Section
+  'theeban.pricing.badge': 'Simple, Secure Pricing',
+  'theeban.pricing.title': 'Choose your intelligence tier.',
+  'theeban.pricing.subtitle': 'From daily operational tasks to deep local market analysis. No hidden fees.',
+  
+  // Starter Tier
+  'theeban.pricing.starter.name': 'Starter',
+  'theeban.pricing.starter.price': '30',
+  'theeban.pricing.starter.period': 'SAR / month',
+  'theeban.pricing.starter.desc': 'Just 1 Riyal a day for secure, enterprise-grade AI.',
+  'theeban.pricing.starter.f1': 'Unlimited Fast & Pro Models',
+  'theeban.pricing.starter.f2': 'Document & Image Uploads (RAG)',
+  'theeban.pricing.starter.f3': 'Standard Agentic Tools',
+  
+  // Pro Tier
+  'theeban.pricing.pro.name': 'Pro',
+  'theeban.pricing.pro.price': '99',
+  'theeban.pricing.pro.period': 'SAR / month',
+  'theeban.pricing.pro.desc': 'For researchers and public sector professionals.',
+  'theeban.pricing.pro.f1': 'Everything in Starter',
+  'theeban.pricing.pro.f2': 'Deep-Research Model (Standard Limits)',
+  'theeban.pricing.pro.f3': 'Saudi Government APIs Integration',
+  
+  // Advanced Tier
+  'theeban.pricing.advanced.name': 'Advanced',
+  'theeban.pricing.advanced.price': '499',
+  'theeban.pricing.advanced.period': 'SAR / month',
+  'theeban.pricing.advanced.desc': 'For finance professionals and power users.',
+  'theeban.pricing.advanced.f1': 'Everything in Pro',
+  'theeban.pricing.advanced.f2': 'Deep-Research Model (Highest Limits)',
+  'theeban.pricing.advanced.f3': 'Live Tadawul & Market Data Tools',
+  'theeban.pricing.cta': 'Start Secure Chat',
+
+  // Theeban Page - Hero
+  'theeban.hero.badge': 'The Zero-Knowledge Assistant',
+  'theeban.hero.title': 'Meet Theeban. (ذيبان)',
+  'theeban.hero.subtitle': 'Chat, analyze local market data, and execute deep research with absolute data sovereignty. Cryptographically secured and natively integrated with Saudi infrastructure.',
+  'theeban.hero.cta_primary': 'Start for 30 SAR',
+  'theeban.hero.cta_secondary': 'View Pricing',
+
+  // Theeban Page - Trust Pillar
+  'theeban.trust.title': 'Trust built on cryptography, not promises.',
+  'theeban.trust.f1.title': '100% Data Sovereignty',
+  'theeban.trust.f1.desc': 'Hosted exclusively on local bare-metal servers. Fully compliant with Saudi PDPL regulations.',
+  'theeban.trust.f2.title': 'Cryptographic Isolation',
+  'theeban.trust.f2.desc': 'Ephemeral keys wrap every session. We cannot read your chats or documents, even with root database access.',
+  'theeban.trust.f3.title': 'Corporate IP Protection',
+  'theeban.trust.f3.desc': 'Your data is yours. It is never used for model training or continuous learning. Period.',
+
+  // Theeban Page - Saudi Tooling
+  'theeban.tools.badge': 'Saudi-Native Integrations',
+  'theeban.tools.title': 'Engineered for the local ecosystem.',
+  'theeban.tools.f1.title': 'Government & Market APIs',
+  'theeban.tools.f1.desc': 'Direct integrations with Saudi public datasets and market data right inside your chat interface.',
+  'theeban.tools.f2.title': 'Intelligent Local Browsing',
+  'theeban.tools.f2.desc': 'Custom-built scrapers instantly read and parse local Saudi news portals and government websites.',
+  'theeban.tools.f3.title': 'Umm Al-Qura Native',
+  'theeban.tools.f3.desc': 'Flawless understanding and conversion of the Hijri calendar for official planning and document generation.',
+  'theeban.tools.f4.title': 'Multimodal Arabic RAG',
+  'theeban.tools.f4.desc': 'Drag and drop PDFs, Arabic documents, and images for instant, highly accurate OCR and analysis.',
+
+  // Theeban Page - Intelligence Engine (Models)
+  'theeban.models.badge': 'The Intelligence Engine',
+  'theeban.models.title': 'Three gears. Unlimited power.',
+  'theeban.models.fast.title': 'Fast',
+  'theeban.models.fast.desc': 'Ultra-low latency. Ideal for drafting emails, quick translations, and daily operational tasks.',
+  'theeban.models.pro.title': 'Pro',
+  'theeban.models.pro.desc': 'The heavy lifter. Advanced reasoning for complex Arabic document analysis and coding.',
+  'theeban.models.deep.title': 'Deep-Research',
+  'theeban.models.deep.desc': 'Autonomous multi-step research. Theeban navigates the web, aggregates sources, and synthesizes comprehensive reports.',
+
   // Pricing
   'home.price_title': 'Transparent, Capability-Based Pricing',
   'home.price_subtitle': 'Choose a workspace subscription for your team, or pay-as-you-go for direct API integration.',
