@@ -123,14 +123,16 @@ export const en = {
   'auth.workspace': 'Workspace',
 
   // Navigation
-  'nav.login': 'Sign In',
-  'nav.workspace': 'Workspace',
-  'nav.logout': 'Sign Out',
-	'nav.capabilities': 'Capabilities',
-  'nav.security': 'Security',
+  'nav.theeban': 'Theeban',
+  'nav.api': 'API',
+  'nav.maas': 'MaaS',
+  'nav.compute': 'Compute',
   'nav.pricing': 'Pricing',
-  'nav.docs': 'Documentation',
-	'nav.enterprise': 'Enterprise',
+  'nav.security': 'Security',
+  'nav.docs': 'Docs',
+  'nav.login': 'Login',
+  'nav.logout': 'Logout',
+  'nav.workspace': 'Workspace',
 
 	// Footer
   'footer.rights': '© 2026 DCP Cloud. All rights reserved.',

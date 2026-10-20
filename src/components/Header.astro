@@ -10,22 +10,28 @@ const t = useTranslations(lang);
       
       <!-- Logo -->
       <a href={`/${lang}`} class="flex items-center gap-2">
-				<img class="h-9" src="/logo-white.png" alt="DCP">
+        <img class="h-9" src="/logo-white.png" alt="DCP">
       </a>
 
-      <!-- Center Desktop Navigation -->
-      <nav class="hidden md:flex items-center gap-6 lg:gap-8">
-        <a href={`/${lang}/capabilities`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
-          {t('nav.capabilities')}
+      <!-- Center Desktop Navigation (Updated for new architecture) -->
+      <nav class="hidden md:flex items-center gap-4 lg:gap-7">
+        <a href={`/${lang}/theeban`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
+          {t('nav.theeban')}
         </a>
-        <a href={`/${lang}/security`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
-          {t('nav.security')}
+        <a href={`/${lang}/api`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
+          {t('nav.api')}
+        </a>
+        <a href={`/${lang}/maas`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
+          {t('nav.maas')}
+        </a>
+        <a href={`/${lang}/compute`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
+          {t('nav.compute')}
         </a>
         <a href={`/${lang}/pricing`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
           {t('nav.pricing')}
         </a>
-        <a href={`/${lang}/enterprise`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
-          {t('nav.enterprise')}
+        <a href={`/${lang}/security`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
+          {t('nav.security')}
         </a>
         <a href={`/${lang}/docs`} class="text-sm font-medium text-zinc-300 hover:text-white transition">
           {t('nav.docs')}
@@ -73,7 +79,7 @@ const t = useTranslations(lang);
     const loginBtn = document.getElementById('login-btn');
     const loggedInActions = document.getElementById('logged-in-actions');
 
-    // Optional: Sync UI visibility based on token presence
+    // Sync UI visibility based on token presence
     const token = localStorage.getItem('token');
     if (token && loggedInActions && loginBtn) {
       loggedInActions.classList.remove('hidden');
