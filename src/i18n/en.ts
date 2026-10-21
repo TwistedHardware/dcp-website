@@ -225,6 +225,66 @@ export const en = {
   'maas.pricing.note': 'Dedicated memory blocks. Billed strictly per active second.',
   'maas.pricing.cta': 'Open Workspace Deployer',
 
+	// Compute Page - Hero
+  'compute.hero.badge': 'High-Performance AI Infrastructure',
+  'compute.hero.title': 'Beyond Bare-Metal GPUs.',
+  'compute.hero.subtitle': 'Stop renting idle silicon. We abstracted physical hardware into dynamic 32GB GPU Units. Get the exact memory equivalents of an RTX 5090, H200, or an HGX cluster, but only pay while your models are actively inferencing.',
+  'compute.hero.cta_primary': 'Deploy on MaaS',
+  'compute.hero.cta_secondary': 'View Equivalency Matrix',
+
+  // Compute Page - Mental Model Cards
+  'compute.cards.badge': 'The Compute Mental Model',
+  'compute.cards.title': 'Mapped to the hardware you know.',
+  
+  'compute.cards.c1.unit': '1 Unit',
+  'compute.cards.c1.vram': '32 GB VRAM',
+  'compute.cards.c1.equiv': 'The RTX 5090 Equivalent',
+  'compute.cards.c1.desc': 'The Sandbox. Perfect for fast embedding generation, testing small instruct models, and isolated development environments.',
+  
+  'compute.cards.c2.unit': '5 Units',
+  'compute.cards.c2.vram': '160 GB VRAM',
+  'compute.cards.c2.equiv': 'The H200 Equivalent',
+  'compute.cards.c2.desc': 'The Enterprise Workhorse. The sweet spot for production deployments of 70B–100B parameter models requiring a massive KV cache for high concurrency.',
+  
+  'compute.cards.c3.unit': '16 Units',
+  'compute.cards.c3.vram': '512 GB VRAM',
+  'compute.cards.c3.equiv': 'The HGX Super-Node',
+  'compute.cards.c3.desc': 'The Frontier Cluster. Run massive MoE models like DeepSeek 4.1 Flash or GLM-5.3. Powered by enterprise interconnects impossible to replicate on consumer-grade hardware.',
+
+  // Compute Page - SEO Table
+  'compute.table.badge': 'Infrastructure Equivalency',
+  'compute.table.title': 'Traditional GPUaaS vs. DCP MaaS',
+  'compute.table.th1': 'Hardware Searched',
+  'compute.table.th2': 'Legacy GPUaaS Bottleneck',
+  'compute.table.th3': 'DCP MaaS Equivalent',
+  'compute.table.th4': 'The DCP Advantage',
+
+  'compute.table.r1.c1': 'RTX 5090 (32GB)',
+  'compute.table.r1.c2': 'Consumer-grade PCIe bottlenecks. No enterprise support.',
+  'compute.table.r1.c3': '1 GPU Unit (32GB)',
+  'compute.table.r1.c4': 'Enterprise reliability. Instant vLLM routing.',
+
+  'compute.table.r2.c1': 'Nvidia A100 (80GB)',
+  'compute.table.r2.c2': 'Expensive hourly commits. Long provisioning times.',
+  'compute.table.r2.c3': '2.5 GPU Units (80GB)',
+  'compute.table.r2.c4': 'Zero-cost weight downloads. Active billing only.',
+
+  'compute.table.r3.c1': 'Nvidia H200 (141GB)',
+  'compute.table.r3.c2': 'Massive idle waste while writing code or debugging.',
+  'compute.table.r3.c3': '4.5 GPU Units (144GB)',
+  'compute.table.r3.c4': 'Pause at any time. Scale concurrency instantly.',
+
+  'compute.table.r4.c1': '8x H200 HGX Cluster',
+  'compute.table.r4.c2': '1-year minimum contracts. 75K+ SAR/mo commitments.',
+  'compute.table.r4.c3': '16–32 GPU Units (512GB+)',
+  'compute.table.r4.c4': 'Pay strictly per second of inference heartbeat.',
+
+  // Compute Page - Re-education
+  'compute.reed.title': 'Why we killed the bare-metal rental.',
+  'compute.reed.desc': 'When you rent an H200 on traditional clouds, you pay while you sleep, while you write code, and while you wait 20 minutes for weights to download. By pooling our enterprise fabric into 32GB VRAM Units with True Active Billing, we cut your actual deployment costs by up to 30%. You bring the model, we provide the raw, unthrottled GPUs.',
+  'compute.reed.price': '0.20',
+  'compute.reed.unit': 'per GB / hour',
+
   // Pricing
   'home.price_title': 'Transparent, Capability-Based Pricing',
   'home.price_subtitle': 'Choose a workspace subscription for your team, or pay-as-you-go for direct API integration.',
@@ -273,6 +333,7 @@ export const en = {
   'nav.api': 'API',
   'nav.maas': 'MaaS',
   'nav.compute': 'Compute',
+	'nav.models': 'Models',
   'nav.pricing': 'Pricing',
   'nav.security': 'Security',
   'nav.docs': 'Docs',

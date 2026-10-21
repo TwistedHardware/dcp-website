@@ -1,0 +1,193 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import AuthModal from '../../components/AuthModal.astro';
+import SaudiRiyal from '../../components/SaudiRiyal.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'ar' } },
+  ];
+}
+---
+
+<Layout title="Compute | AI Infrastructure & GPU Equivalency" lang={lang}>
+  <Header />
+  
+  <main class="flex-1 overflow-x-hidden bg-zinc-950 text-white">
+    
+    <!-- Hero Section -->
+    <section class="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden border-b border-zinc-800/50">
+      <div class="absolute inset-0 bg-gradient-to-b from-amber-900/10 to-transparent"></div>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 text-sm font-medium mb-8 border border-amber-500/20">
+          <span class="flex h-2 w-2 rounded-full bg-amber-500"></span>
+          {t('compute.hero.badge')}
+        </div>
+        
+        <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-8">
+          {t('compute.hero.title')}
+        </h1>
+        
+        <p class="mt-4 text-xl text-zinc-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+          {t('compute.hero.subtitle')}
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a href={`/${lang}/maas`} class="px-8 py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-500 transition-colors shadow-lg shadow-amber-500/20">
+            {t('compute.hero.cta_primary')}
+          </a>
+          <a href="#matrix" class="px-8 py-3 rounded-lg bg-zinc-800 text-white font-semibold hover:bg-zinc-700 border border-zinc-700 transition-colors">
+            {t('compute.hero.cta_secondary')}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mental Model Cards (The Pivot) -->
+    <section class="py-24 bg-[#0a0a0a]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-sm font-medium mb-4">
+            {t('compute.cards.badge')}
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold">{t('compute.cards.title')}</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <!-- Card 1: 1 Unit -->
+          <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-8 shadow-lg relative overflow-hidden group">
+            <div class="absolute top-0 inset-x-0 h-1 bg-zinc-800 group-hover:bg-amber-500 transition-colors"></div>
+            <div class="flex justify-between items-baseline mb-2">
+              <span class="text-amber-500 font-mono font-bold">{t('compute.cards.c1.unit')}</span>
+              <span class="text-3xl font-black text-white">{t('compute.cards.c1.vram')}</span>
+            </div>
+            <h3 class="text-lg font-semibold text-zinc-300 mb-4">{t('compute.cards.c1.equiv')}</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed">
+              {t('compute.cards.c1.desc')}
+            </p>
+          </div>
+
+          <!-- Card 2: 5 Units -->
+          <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-8 shadow-lg relative overflow-hidden group">
+            <div class="absolute top-0 inset-x-0 h-1 bg-amber-500/50 group-hover:bg-amber-500 transition-colors"></div>
+            <div class="flex justify-between items-baseline mb-2">
+              <span class="text-amber-500 font-mono font-bold">{t('compute.cards.c2.unit')}</span>
+              <span class="text-3xl font-black text-white">{t('compute.cards.c2.vram')}</span>
+            </div>
+            <h3 class="text-lg font-semibold text-zinc-300 mb-4">{t('compute.cards.c2.equiv')}</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed">
+              {t('compute.cards.c2.desc')}
+            </p>
+          </div>
+
+          <!-- Card 3: 16 Units (The Flex) -->
+          <div class="rounded-2xl bg-zinc-900 border-2 border-amber-500/30 p-8 shadow-2xl relative overflow-hidden group">
+            <div class="absolute top-0 inset-x-0 h-1 bg-amber-500"></div>
+            <div class="absolute -inset-1 bg-gradient-to-br from-amber-500/10 to-transparent blur-xl pointer-events-none"></div>
+            <div class="relative">
+              <div class="flex justify-between items-baseline mb-2">
+                <span class="text-amber-400 font-mono font-bold">{t('compute.cards.c3.unit')}</span>
+                <span class="text-3xl font-black text-white">{t('compute.cards.c3.vram')}</span>
+              </div>
+              <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                {t('compute.cards.c3.equiv')}
+              </h3>
+              <p class="text-zinc-300 text-sm leading-relaxed">
+                {t('compute.cards.c3.desc')}
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SEO Hardware Equivalency Table -->
+    <section id="matrix" class="py-24 bg-zinc-950 border-t border-zinc-800/50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-sm font-medium mb-4">
+            {t('compute.table.badge')}
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold">{t('compute.table.title')}</h2>
+        </div>
+
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden shadow-2xl">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-zinc-300">
+              <thead class="bg-zinc-800/80 text-zinc-300 uppercase text-xs font-semibold">
+                <tr>
+                  <th class="px-6 py-5 border-b border-zinc-700 whitespace-nowrap">{t('compute.table.th1')}</th>
+                  <th class="px-6 py-5 border-b border-zinc-700 hidden md:table-cell">{t('compute.table.th2')}</th>
+                  <th class="px-6 py-5 border-b border-zinc-700 whitespace-nowrap">{t('compute.table.th3')}</th>
+                  <th class="px-6 py-5 border-b border-zinc-700">{t('compute.table.th4')}</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-800">
+                <tr class="hover:bg-zinc-800/40 transition">
+                  <td class="px-6 py-5 font-mono font-medium text-white">{t('compute.table.r1.c1')}</td>
+                  <td class="px-6 py-5 text-red-400/80 hidden md:table-cell">{t('compute.table.r1.c2')}</td>
+                  <td class="px-6 py-5 font-bold text-amber-500 whitespace-nowrap">{t('compute.table.r1.c3')}</td>
+                  <td class="px-6 py-5 text-emerald-400">{t('compute.table.r1.c4')}</td>
+                </tr>
+                <tr class="hover:bg-zinc-800/40 transition">
+                  <td class="px-6 py-5 font-mono font-medium text-white">{t('compute.table.r2.c1')}</td>
+                  <td class="px-6 py-5 text-red-400/80 hidden md:table-cell">{t('compute.table.r2.c2')}</td>
+                  <td class="px-6 py-5 font-bold text-amber-500 whitespace-nowrap">{t('compute.table.r2.c3')}</td>
+                  <td class="px-6 py-5 text-emerald-400">{t('compute.table.r2.c4')}</td>
+                </tr>
+                <tr class="hover:bg-zinc-800/40 transition">
+                  <td class="px-6 py-5 font-mono font-medium text-white">{t('compute.table.r3.c1')}</td>
+                  <td class="px-6 py-5 text-red-400/80 hidden md:table-cell">{t('compute.table.r3.c2')}</td>
+                  <td class="px-6 py-5 font-bold text-amber-500 whitespace-nowrap">{t('compute.table.r3.c3')}</td>
+                  <td class="px-6 py-5 text-emerald-400">{t('compute.table.r3.c4')}</td>
+                </tr>
+                <tr class="hover:bg-zinc-800/40 transition bg-zinc-800/20">
+                  <td class="px-6 py-5 font-mono font-bold text-white">{t('compute.table.r4.c1')}</td>
+                  <td class="px-6 py-5 text-red-400/80 hidden md:table-cell">{t('compute.table.r4.c2')}</td>
+                  <td class="px-6 py-5 font-bold text-amber-400 whitespace-nowrap">{t('compute.table.r4.c3')}</td>
+                  <td class="px-6 py-5 text-emerald-400 font-medium">{t('compute.table.r4.c4')}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Re-education Block -->
+    <section class="py-24 bg-[#0a0a0a] border-t border-zinc-800/50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-8">{t('compute.reed.title')}</h2>
+        <p class="text-lg text-zinc-400 leading-relaxed mb-12">
+          {t('compute.reed.desc')}
+        </p>
+
+        <div class="inline-flex flex-col items-center justify-center p-8 rounded-2xl bg-zinc-900 border border-amber-500/30 relative">
+          <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
+          <div class="flex items-baseline gap-2">
+            <span class="text-5xl font-bold text-white">{t('compute.reed.price')}</span>
+            <SaudiRiyal class="text-4xl text-amber-500 font-bold ml-1 mr-2" />
+            <span class="text-lg text-zinc-500">{t('compute.reed.unit')}</span>
+          </div>
+          <a href={`/${lang}/pricing`} class="mt-6 text-amber-500 hover:text-amber-400 font-medium transition-colors">
+            View full pricing terms &rarr;
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  
+  <Footer />
+  <AuthModal />
+</Layout>
