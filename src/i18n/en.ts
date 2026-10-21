@@ -150,6 +150,81 @@ export const en = {
   'theeban.models.deep.title': 'Deep-Research',
   'theeban.models.deep.desc': 'Autonomous multi-step research. Theeban navigates the web, aggregates sources, and synthesizes comprehensive reports.',
 
+  // API Page - Hero
+  'api.hero.badge': 'Developer API',
+  'api.hero.title': 'Serverless Endpoints. Zero Migration.',
+  'api.hero.subtitle': 'Fully compatible with the OpenAI SDK. Access our fine-tuned models instantly with ultra-low latency. We log your metering data, never your payloads.',
+  'api.hero.cta_primary': 'Generate API Key',
+  'api.hero.cta_secondary': 'Read Documentation',
+
+  // API Page - Features
+  'api.features.f1.title': 'Blazing Fast TTFT',
+  'api.features.f1.desc': 'Powered by our enterprise vLLM backend, designed for massive concurrency and minimal Time-to-First-Token overhead.',
+  'api.features.f2.title': 'Absolute Zero Logging',
+  'api.features.f2.desc': 'We only keep metering data for billing. We do not log, store, or train on your API payloads. Your requests vanish the moment inference completes.',
+  'api.features.f3.title': 'Sovereign Infrastructure',
+  'api.features.f3.desc': 'All API requests are routed and processed entirely on bare-metal servers physically located within Saudi Arabia.',
+
+  // API Page - Economics
+  'api.pricing.badge': 'Transparent Economics',
+  'api.pricing.title': 'Pay strictly for what you compute.',
+  'api.pricing.subtitle': 'Our pricing is anchored to a Base Rate per 1 Million tokens, adjusted dynamically via multipliers based on your model and workload.',
+  'api.pricing.base_label': 'Base Price (Input)',
+  'api.pricing.base_per_m': '/ 1M tokens',
+  
+  // Multipliers
+  'api.pricing.m_fast': 'Fast Model Input',
+  'api.pricing.m_pro': 'Pro Model Input',
+  'api.pricing.m_deep': 'Deep-Research Input',
+  'api.pricing.m_output': 'Output Tokens (All Models)',
+  'api.pricing.m_cache': 'Cache-Hit Input',
+
+  // MaaS Page - Hero
+  'maas.hero.badge': 'Dedicated Model-as-a-Service',
+  'maas.hero.title': 'Bring Your Own Model. Deploy in Seconds.',
+  'maas.hero.subtitle': 'Skip the bare-metal provisioning, CUDA drivers, and Linux configuration. Paste any Hugging Face URL—public or private—and instantly spin up a dedicated VRAM allocation powered by vLLM.',
+  'maas.hero.cta_primary': 'Deploy in Workspace',
+  'maas.hero.cta_secondary': 'Compare Billing Models',
+
+  // MaaS Page - True Active Billing
+  'maas.billing.badge': 'True Active Billing',
+  'maas.billing.title': 'Stop paying for idle time, cold starts, and downloads.',
+  'maas.billing.subtitle': 'Traditional GPUaaS bills you the moment a server boots up—even while you are still debugging SSH or waiting 20 minutes for weights to download. With DCP, you only pay for active inference availability.',
+  'maas.billing.card_traditional': 'Traditional GPUaaS (Bare-Metal & Clouds)',
+  'maas.billing.card_traditional_desc': 'Billed continuously across human setup, network download wait times, and background evictions.',
+  'maas.billing.card_dcp': 'DCP Dedicated MaaS',
+  'maas.billing.card_dcp_desc': 'Free weight downloads, free vLLM initialization, zero teardown latency costs. You only pay while active.',
+
+  // MaaS Page - Dedicated VRAM
+  'maas.dedicated.badge': 'No Noisy Neighbors',
+  'maas.dedicated.title': 'Dedicated VRAM. Guaranteed Performance.',
+  'maas.dedicated.f1.title': 'Isolated Memory Blocks',
+  'maas.dedicated.f1.desc': 'Your allocated gigabytes are reserved strictly for your instance. No memory contention, no cache thrashing, and zero noisy neighbors.',
+  'maas.dedicated.f2.title': 'No Cold Starts',
+  'maas.dedicated.f2.desc': 'Unlike scale-to-zero serverless runtimes that freeze when idle, your dedicated allocation keeps your model hot and ready in memory.',
+  'maas.dedicated.f3.title': 'Native vLLM Concurrency',
+  'maas.dedicated.f3.desc': 'State-of-the-art PagedAttention and continuous batching built in, delivering maximum tokens-per-second throughput.',
+
+  // MaaS Page - 3-Step Workflow
+  'maas.steps.badge': 'The Deployment Flow',
+  'maas.steps.title': 'From Hugging Face to Production Endpoint',
+  'maas.steps.s1.step': '01',
+  'maas.steps.s1.title': 'Bring Your Weights',
+  'maas.steps.s1.desc': 'Paste any Hugging Face repository URL. Deploy your fine-tuned models with a private access token, or select an already vetted community quantization (AWQ, GPTQ, FP8) that matches your memory target.',
+  'maas.steps.s2.step': '02',
+  'maas.steps.s2.title': 'Allocate Dedicated VRAM',
+  'maas.steps.s2.desc': 'Never overpay for an entire physical card when you only need a slice. Slide to specify exact VRAM capacity. We handle distributed shard placement across the cluster.',
+  'maas.steps.s3.step': '03',
+  'maas.steps.s3.title': 'Instant Production Endpoint',
+  'maas.steps.s3.desc': 'Click Deploy. Once weights load and the API health heartbeat registers green, you get an OpenAI-compatible endpoint ready for production traffic.',
+
+  // MaaS Page - Pricing Banner
+  'maas.pricing.badge': 'Predictable Memory Pricing',
+  'maas.pricing.title': '0.20',
+  'maas.pricing.unit': 'per GB / hour',
+  'maas.pricing.note': 'Dedicated memory blocks. Billed strictly per active second.',
+  'maas.pricing.cta': 'Open Workspace Deployer',
+
   // Pricing
   'home.price_title': 'Transparent, Capability-Based Pricing',
   'home.price_subtitle': 'Choose a workspace subscription for your team, or pay-as-you-go for direct API integration.',
