@@ -227,29 +227,33 @@ export const en = {
 
 	// Compute Page - Hero
   'compute.hero.badge': 'High-Performance AI Infrastructure',
-  'compute.hero.title': 'Beyond Bare-Metal GPUs.',
-  'compute.hero.subtitle': 'Stop renting idle silicon. We abstracted physical hardware into dynamic 32GB GPU Units. Get the exact memory equivalents of an RTX 5090, H200, or an HGX cluster, but only pay while your models are actively inferencing.',
+  'compute.hero.title': 'Limitless GPU Power',
+  'compute.hero.subtitle': 'We abstracted physical hardware into dedicated 32GB GPU Units. Get the exact memory equivalents of an RTX 5090, H200, or an HGX cluster, but only pay while your models are actively inferencing.',
   'compute.hero.cta_primary': 'Deploy on MaaS',
   'compute.hero.cta_secondary': 'View Equivalency Matrix',
 
   // Compute Page - Mental Model Cards
   'compute.cards.badge': 'The Compute Mental Model',
   'compute.cards.title': 'Mapped to the hardware you know.',
+	'compute.cards.price_suffix': '/ hour (Active)',
   
   'compute.cards.c1.unit': '1 Unit',
   'compute.cards.c1.vram': '32 GB VRAM',
   'compute.cards.c1.equiv': 'The RTX 5090 Equivalent',
   'compute.cards.c1.desc': 'The Sandbox. Perfect for fast embedding generation, testing small instruct models, and isolated development environments.',
+	'compute.cards.c1.price': '6.40',
   
   'compute.cards.c2.unit': '5 Units',
   'compute.cards.c2.vram': '160 GB VRAM',
   'compute.cards.c2.equiv': 'The H200 Equivalent',
   'compute.cards.c2.desc': 'The Enterprise Workhorse. The sweet spot for production deployments of 70B–100B parameter models requiring a massive KV cache for high concurrency.',
+	'compute.cards.c2.price': '32.00',
   
   'compute.cards.c3.unit': '16 Units',
   'compute.cards.c3.vram': '512 GB VRAM',
   'compute.cards.c3.equiv': 'The HGX Super-Node',
-  'compute.cards.c3.desc': 'The Frontier Cluster. Run massive MoE models like DeepSeek 4.1 Flash or GLM-5.3. Powered by enterprise interconnects impossible to replicate on consumer-grade hardware.',
+  'compute.cards.c3.desc': 'The Frontier Cluster. Run massive MoE and frontier models. Powered by enterprise interconnects impossible to replicate on consumer-grade hardware.',
+	'compute.cards.c3.price': '102.40',
 
   // Compute Page - SEO Table
   'compute.table.badge': 'Infrastructure Equivalency',
@@ -281,7 +285,7 @@ export const en = {
 
   // Compute Page - Re-education
   'compute.reed.title': 'Why we killed the bare-metal rental.',
-  'compute.reed.desc': 'When you rent an H200 on traditional clouds, you pay while you sleep, while you write code, and while you wait 20 minutes for weights to download. By pooling our enterprise fabric into 32GB VRAM Units with True Active Billing, we cut your actual deployment costs by up to 30%. You bring the model, we provide the raw, unthrottled GPUs.',
+  'compute.reed.desc': 'Standard clouds bill for hardware the moment a server is provisioned, meaning you pay for idle configuration time and long weight downloads. Our Model-as-a-Service provides dedicated GPU allocations without the bare-metal tax. You get the raw, unthrottled GPUs, but billing strictly begins the second your API health check turns green. By paying only for active uptime rather than setup time, you reduce actual deployment costs by up to 30%.',
   'compute.reed.price': '0.20',
   'compute.reed.unit': 'per GB / hour',
 
