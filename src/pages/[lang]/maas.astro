@@ -125,64 +125,62 @@ export function getStaticPaths() {
         </div>
 
         <!-- Custom Comparative SVG Timeline -->
-        <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-6 sm:p-8 shadow-2xl overflow-x-auto" dir="ltr">
-          <div class="min-w-[900px]">
-            <svg viewBox="0 0 950 320" class="w-full h-auto font-mono text-[11px] sm:text-xs select-none">
-              <!-- Grid background lines -->
-              <line x1="180" y1="40" x2="180" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
-              <line x1="280" y1="40" x2="280" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
-              <line x1="400" y1="40" x2="400" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
-              <line x1="580" y1="40" x2="580" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
-              <line x1="850" y1="40" x2="850" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
-              <line x1="930" y1="40" x2="930" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
+        <div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-4 sm:p-8 shadow-2xl overflow-x-auto custom-scrollbar" dir="ltr">
+          <svg viewBox="0 0 800 320" class="w-full h-auto min-w-[600px] md:min-w-full font-mono select-none">
+            
+            <!-- Grid background lines -->
+            <line x1="120" y1="40" x2="120" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
+            <line x1="240" y1="40" x2="240" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
+            <line x1="420" y1="40" x2="420" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
+            <line x1="700" y1="40" x2="700" y2="280" stroke="#27272a" stroke-dasharray="4 4" />
 
-              <!-- Phase Header Markers -->
-              <text x="230" y="25" fill="#71717a" text-anchor="middle">Provision</text>
-              <text x="340" y="25" fill="#71717a" text-anchor="middle">SSH / Drivers</text>
-              <text x="490" y="25" fill="#71717a" text-anchor="middle">Weight Download (~20m)</text>
-              <text x="715" y="25" fill="#a1a1aa" text-anchor="middle" font-weight="bold">Active API Inference</text>
-              <text x="890" y="25" fill="#71717a" text-anchor="middle">Teardown</text>
+            <!-- Phase Header Markers -->
+            <text x="60" y="25" fill="#71717a" font-size="12" text-anchor="middle">Provision</text>
+            <text x="180" y="25" fill="#71717a" font-size="12" text-anchor="middle">SSH / Config</text>
+            <text x="330" y="25" fill="#71717a" font-size="12" text-anchor="middle">Weights (~20m)</text>
+            <text x="560" y="25" fill="#a1a1aa" font-size="12" text-anchor="middle" font-weight="bold">Active API Inference</text>
+            <text x="750" y="25" fill="#71717a" font-size="12" text-anchor="middle">Teardown</text>
 
-              <!-- Track 1: Traditional GPUaaS -->
-              <g transform="translate(0, 60)">
-                <!-- Left Label -->
-                <text x="10" y="32" fill="#ef4444" font-weight="bold" text-anchor="start">Traditional GPUaaS</text>
-                
-                <!-- Billed continuous bar (RED) -->
-                <rect x="180" y="15" width="750" height="34" rx="6" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1.5" />
-                
-                <!-- Internal progress lines -->
-                <line x1="280" y1="15" x2="280" y2="49" stroke="#ef4444" stroke-opacity="0.4" />
-                <line x1="400" y1="15" x2="400" y2="49" stroke="#ef4444" stroke-opacity="0.4" />
-                <line x1="580" y1="15" x2="580" y2="49" stroke="#ef4444" stroke-opacity="0.4" />
-                <line x1="850" y1="15" x2="850" y2="49" stroke="#ef4444" stroke-opacity="0.4" />
+            <!-- Track 1: Traditional GPUaaS -->
+            <g transform="translate(0, 80)">
+              <!-- Title Moved Above the Track -->
+              <text x="0" y="-12" fill="#ef4444" font-weight="bold" font-size="16" text-anchor="start">Traditional GPUaaS</text>
+              
+              <!-- Billed continuous bar (RED) -->
+              <rect x="0" y="0" width="800" height="44" rx="8" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1.5" />
+              
+              <!-- Internal progress lines (Matching Grid) -->
+              <line x1="120" y1="0" x2="120" y2="44" stroke="#ef4444" stroke-opacity="0.4" />
+              <line x1="240" y1="0" x2="240" y2="44" stroke="#ef4444" stroke-opacity="0.4" />
+              <line x1="420" y1="0" x2="420" y2="44" stroke="#ef4444" stroke-opacity="0.4" />
+              <line x1="700" y1="0" x2="700" y2="44" stroke="#ef4444" stroke-opacity="0.4" />
 
-                <!-- Centered Text -->
-                <text x="555" y="36" fill="#fca5a5" text-anchor="middle">Billed for idle setup, SSH keys, network queues, &amp; cold starts</text>
-                <text x="930" y="68" fill="#ef4444" text-anchor="end" font-size="11">100% of elapsed time billed</text>
-              </g>
+              <!-- Centered Text -->
+              <text x="400" y="27" fill="#fca5a5" font-size="13" text-anchor="middle">Billed for idle setup, SSH keys, network queues &amp; cold starts</text>
+              <text x="800" y="64" fill="#ef4444" font-size="12" text-anchor="end">100% of elapsed time billed</text>
+            </g>
 
-              <!-- Track 2: DCP True Active Billing -->
-              <g transform="translate(0, 180)">
-                <!-- Left Label -->
-                <text x="10" y="32" fill="#a855f7" font-weight="bold" text-anchor="start">DCP Dedicated MaaS</text>
-                
-                <!-- Free Phase 1: Setup & Downloads (GRAY/UNBILLED) -->
-                <rect x="180" y="15" width="400" height="34" rx="6" fill="#27272a" stroke="#3f3f46" stroke-width="1" stroke-dasharray="3 3" />
-                <text x="380" y="36" fill="#a1a1aa" text-anchor="middle">Weight download &amp; loading: FREE (0.00)</text>
+            <!-- Track 2: DCP True Active Billing -->
+            <g transform="translate(0, 200)">
+              <!-- Title Moved Above the Track -->
+              <text x="0" y="-12" fill="#a855f7" font-weight="bold" font-size="16" text-anchor="start">DCP Dedicated MaaS</text>
+              
+              <!-- Free Phase 1: Setup & Downloads (GRAY/UNBILLED) -->
+              <rect x="0" y="0" width="420" height="44" rx="8" fill="#27272a" stroke="#3f3f46" stroke-width="1" stroke-dasharray="4 4" />
+              <text x="210" y="27" fill="#a1a1aa" font-size="13" text-anchor="middle">Downloads &amp; Setup: FREE (0.00)</text>
 
-                <!-- Active Phase: The only billed phase (GREEN) -->
-                <rect x="580" y="15" width="270" height="34" rx="6" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="2" />
-                <text x="715" y="36" fill="#34d399" font-weight="bold" text-anchor="middle">ACTIVE INFERENCE (BILLED)</text>
+              <!-- Active Phase: The only billed phase (GREEN) -->
+              <rect x="420" y="0" width="280" height="44" rx="8" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="2" />
+              <text x="560" y="27" fill="#34d399" font-weight="bold" font-size="14" text-anchor="middle">ACTIVE (BILLED)</text>
 
-                <!-- Free Phase 2: Pause / Eviction (GRAY/UNBILLED) -->
-                <rect x="850" y="15" width="80" height="34" rx="6" fill="#27272a" stroke="#3f3f46" stroke-width="1" stroke-dasharray="3 3" />
-                <text x="890" y="36" fill="#a1a1aa" text-anchor="middle">Evict</text>
+              <!-- Free Phase 2: Pause / Eviction (GRAY/UNBILLED) -->
+              <rect x="700" y="0" width="100" height="44" rx="8" fill="#27272a" stroke="#3f3f46" stroke-width="1" stroke-dasharray="4 4" />
+              <text x="750" y="27" fill="#a1a1aa" font-size="13" text-anchor="middle">FREE</text>
 
-                <text x="715" y="68" fill="#10b981" text-anchor="middle" font-size="11">Billing starts on 1st API heartbeat. Halts on Pause.</text>
-              </g>
-            </svg>
-          </div>
+              <!-- Subtext -->
+              <text x="560" y="64" fill="#10b981" font-size="12" text-anchor="middle">Billing starts on 1st API heartbeat. Halts instantly on pause.</text>
+            </g>
+          </svg>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
