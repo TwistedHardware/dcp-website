@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: twistedhardware/dcp-website
+
+media_folder: /public/media
+public_folder: /media
+
+i18n:
+  structure: multiple_folders
+  locales: [en, ar]
+
+collections:
+  - name: models
+    label: Models
+    label_singular: Model
+    folder: /content/models
+    i18n: true
+    fields:
+      - { label: Name, name: name, widget: string, i18n: duplicate }
+      - { label: Publish Date, name: publish_date, widget: datetime, type: date, i18n: duplicate }
+      - { label: Parameters, name: parameters, widget: number, value_type: int, i18n: duplicate }
+      - { label: Publisher, name: publisher, widget: string, type: text, i18n: duplicate }
+      - { label: Icon, name: icon, widget: image, i18n: duplicate }
+      - { label: Meta Data, name: meta_data, widget: code, i18n: duplicate }
+      - label: Type
+        name: type
+        widget: select
+        options: [
+          "text-to-text",
+          "image-text-to-text",
+          "text-to-image",
+          "image-to-image",
+          "text-to-audio",
+          "audio-to-text"
+        ]
+        i18n: duplicate
+      - { label: Content, name: content, i18n: true, widget: richtext }
+      

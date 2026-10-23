@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import svelte from '@astrojs/svelte';
 import icon from 'astro-icon';
 import typography from '@tailwindcss/typography';
+import serveStatic from 'serve-static';
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,7 +16,16 @@ export default defineConfig({
     enabled: false
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+			tailwindcss(),
+      {
+        name: 'serve-root-admin',
+        apply: 'serve',
+        configureServer(server) {
+          server.middlewares.use('/admin', serveStatic('./admin'));
+        }
+      }
+		],
     server: {
       hmr: false,
       ws: false,
@@ -23,6 +33,6 @@ export default defineConfig({
   },
   server: {
     host: true, // required to listen on 0.0.0.0 for external/proxy traffic
-    allowedHosts: ['ln.tejory.io', 'dcp.tc-sa.com', 'dcp.sa'], // or true to allow all
+    allowedHosts: ['dcp.tc-sa.com', 'dcp.sa'], // or true to allow all
   },
 });
