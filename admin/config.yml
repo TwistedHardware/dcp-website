@@ -17,10 +17,13 @@ collections:
     label_singular: Model
     folder: /content/models
     i18n: true
+    slug: "{{slug}}"
     fields:
       - { label: Name, name: name, widget: string, i18n: duplicate }
       - { label: Publish Date, name: publish_date, widget: datetime, type: date, i18n: duplicate }
       - { label: Parameters, name: parameters, widget: number, value_type: int, i18n: duplicate }
+      - { label: vRAM, name: v_ram, widget: number, value_type: int, i18n: duplicate }
+      - { label: Context Window, name: context_window, widget: number, value_type: int, required: false,  i18n: duplicate }
       - { label: Publisher, name: publisher, widget: string, type: text, i18n: duplicate }
       - { label: Icon, name: icon, widget: image, i18n: duplicate }
       - { label: Meta Data, name: meta_data, widget: code, i18n: duplicate }
